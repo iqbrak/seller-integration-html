@@ -38,7 +38,6 @@
 <body class="h-full bg-surface-100">
 <div class="flex h-full">
 
-  <!-- SIDEBAR -->
   <aside class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
     <div class="p-6 border-b border-surface-200">
       <div class="flex items-center gap-3">
@@ -124,15 +123,15 @@
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="flex-1 overflow-y-auto">
-    <!-- Header -->
          <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
       <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
         <nav class="flex items-center gap-2 text-sm text-slate-500">
-          <span>Dashboard</span>
+          <a href="#" class="hover:text-primary-600 transition">System Settings</a>
           <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          <span class="text-slate-900 font-semibold">Overview</span>
+          <span>Market Integration</span>
+          <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          <span class="text-slate-900 font-semibold">Shopee</span>
         </nav>
 
         <div class="flex items-center gap-3">
@@ -184,7 +183,6 @@
 
     <div class="p-8 space-y-6">
 
-      <!-- Title + stats -->
       <div class="flex items-center justify-between">
         <div>
           <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
@@ -200,7 +198,6 @@
         </button>
       </div>
 
-      <!-- Stat cards -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
           <div class="flex items-center justify-between mb-2">
@@ -232,7 +229,6 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 flex flex-wrap items-center gap-3">
         <div class="relative flex-1 min-w-[200px]">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
@@ -263,7 +259,6 @@
         <span id="result-count" class="ml-auto text-xs text-gray-400 font-medium"></span>
       </div>
 
-      <!-- Table -->
       <div class="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-sm min-w-[900px]">
@@ -279,11 +274,9 @@
               </tr>
             </thead>
             <tbody id="shop-table-body" class="divide-y divide-surface-100">
-              <!-- Rows injected by JS -->
             </tbody>
           </table>
         </div>
-        <!-- Empty state -->
         <div id="empty-state" class="hidden py-16 text-center">
           <div class="w-14 h-14 rounded-2xl bg-surface-100 flex items-center justify-center mx-auto mb-3">
             <i class="fa-solid fa-store-slash text-gray-300 text-xl"></i>
@@ -291,7 +284,6 @@
           <p class="text-sm font-semibold text-gray-500">No shops found</p>
           <p class="text-xs text-gray-400 mt-1">Try adjusting your filters</p>
         </div>
-        <!-- Pagination -->
         <div class="flex items-center justify-between px-5 py-3 border-t border-surface-100">
           <span id="pagination-info" class="text-xs text-gray-400"></span>
           <div class="flex items-center gap-1" id="pagination-controls"></div>
@@ -300,7 +292,6 @@
 
     </div>
 
-    <!-- Footer -->
     <footer class="border-t border-surface-200 bg-white px-8 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center">
@@ -317,10 +308,8 @@
   </main>
 </div>
 
-<!-- ===== DETAIL MODAL ===== -->
 <div id="detailModal" class="fixed inset-0 z-50 hidden modal-overlay bg-black/40 flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-    <!-- Modal header -->
     <div class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
@@ -335,7 +324,6 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-    <!-- Modal body -->
     <div class="px-6 py-5 space-y-3 text-sm">
       <div class="grid grid-cols-2 gap-3">
         <div class="bg-surface-50 rounded-xl p-3">
@@ -395,7 +383,6 @@
   </div>
 </div>
 
-<!-- ===== AUTHORIZE MODAL ===== -->
 <div id="authorizeModal" class="fixed inset-0 z-50 hidden modal-overlay bg-black/40 flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm">
     <div class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
@@ -410,7 +397,6 @@
       </button>
     </div>
     <div class="px-6 py-5 space-y-4">
-      <!-- Credential summary (read-only, from settings) -->
       <div class="bg-primary-50 border border-primary-100 rounded-xl px-4 py-3 space-y-2">
         <p class="text-[10px] font-bold text-primary-500 uppercase tracking-wider">Using saved credentials</p>
         <div class="flex items-center justify-between text-xs gap-3">
@@ -448,7 +434,6 @@
 </div>
 
 <script>
-// ── Mock data matching shop_auth schema ──────────────────────────────────────
 var now = new Date('2026-02-25T10:00:00Z');
 
 function daysFromNow(days) {
@@ -503,7 +488,6 @@ var SHOPS = [
   },
 ];
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtDate(iso) {
   if (!iso) return '—';
   var d = new Date(iso);
@@ -536,12 +520,10 @@ function countryFlag(code) {
   return (flags[code] || '') + ' ' + code;
 }
 
-// ── Pagination state ──────────────────────────────────────────────────────────
 var PAGE_SIZE = 10;
 var currentPage = 1;
 var filteredData = SHOPS.slice();
 
-// ── Render ────────────────────────────────────────────────────────────────────
 function renderTable() {
   var start = (currentPage - 1) * PAGE_SIZE;
   var page  = filteredData.slice(start, start + PAGE_SIZE);
@@ -574,7 +556,6 @@ function renderTable() {
     }).join('');
   }
 
-  // Pagination info
   var total = filteredData.length;
   var showing = Math.min(start + PAGE_SIZE, total);
   document.getElementById('pagination-info').textContent =
@@ -582,7 +563,6 @@ function renderTable() {
   document.getElementById('result-count').textContent =
     total + ' result' + (total !== 1 ? 's' : '');
 
-  // Pagination buttons
   var totalPages = Math.ceil(total / PAGE_SIZE);
   var ctrl = document.getElementById('pagination-controls');
   ctrl.innerHTML = '';
@@ -627,7 +607,6 @@ function clearFilters() {
   filterTable();
 }
 
-// ── Detail modal ──────────────────────────────────────────────────────────────
 function openDetailModal(id) {
   var s = SHOPS.find(function(x) { return x.id === id; });
   if (!s) return;
@@ -652,7 +631,6 @@ function closeModal() {
   document.getElementById('detailModal').classList.add('hidden');
 }
 
-// ── Authorize modal ───────────────────────────────────────────────────────────
 function openAuthorizeModal() {
   document.getElementById('authorizeModal').classList.remove('hidden');
 }
@@ -660,7 +638,6 @@ function closeAuthorizeModal() {
   document.getElementById('authorizeModal').classList.add('hidden');
 }
 
-// ── Sidebar dropdown ──────────────────────────────────────────────────────────
 function toggleDropdown(name) {
   var dropdown = document.getElementById(name + '-dropdown');
   var arrow    = document.getElementById(name + '-arrow');
@@ -673,7 +650,6 @@ function toggleDropdown(name) {
   }
 }
 
-// ── Click-outside to close modals ─────────────────────────────────────────────
 document.getElementById('detailModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
@@ -681,7 +657,6 @@ document.getElementById('authorizeModal').addEventListener('click', function(e) 
   if (e.target === this) closeAuthorizeModal();
 });
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 filterTable();
 </script>
 </body>
