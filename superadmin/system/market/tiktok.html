@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seller Integration - Shopee Connected Shops</title>
+  <title>Seller Integration - TikTok/Tokopedia Connected Shops</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,8 +104,8 @@
           <i id="market-arrow" class="fa-solid fa-chevron-up text-primary-400"></i>
         </button>
         <div id="market-dropdown" class="dropdown-content open pl-11 space-y-0.5 mt-0.5">
-          <a href="shopee.html" class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">Shopee</a>
-          <a href="tiktok.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
+          <a href="shopee.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+          <a href="tiktok.html" class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">TikTok/Tokopedia</a>
         </div>
       </div>
       <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-code w-5"></i>API Documentation</a>
@@ -127,12 +127,14 @@
   <!-- MAIN -->
   <main class="flex-1 overflow-y-auto">
     <!-- Header -->
-         <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+    <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
       <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
         <nav class="flex items-center gap-2 text-sm text-slate-500">
-          <span>Dashboard</span>
+          <a href="../../dashboard.html" class="hover:text-primary-600 transition">Dashboard</a>
           <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          <span class="text-slate-900 font-semibold">Overview</span>
+          <span>Market Integration</span>
+          <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          <span class="text-slate-900 font-semibold">TikTok / Tokopedia</span>
         </nav>
 
         <div class="flex items-center gap-3">
@@ -184,16 +186,18 @@
 
     <div class="p-8 space-y-6">
 
-      <!-- Title + stats -->
+      <!-- Title row -->
       <div class="flex items-center justify-between">
         <div>
           <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
             <span class="w-9 h-9 rounded-xl flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0 bg-gradient-to-br from-primary-500 to-primary-700">
-              <i class="fa-solid fa-shopping-bag text-white text-sm"></i>
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
+              </svg>
             </span>
-            Shopee Shop Integration
+            TikTok / Tokopedia Shop Integration
           </h2>
-          <p class="text-slate-500 text-sm mt-1">Overview of authorized stores and token validity</p>
+          <p class="text-slate-500 text-sm mt-1">Overview of authorized TikTok shops and token validity</p>
         </div>
         <button onclick="openAuthorizeModal()" class="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-xl bg-primary-600 hover:bg-primary-700 shadow shadow-primary-500/30 transition-all">
           <i class="fa-solid fa-plug text-xs"></i>Authorize New Shop
@@ -207,28 +211,28 @@
             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Shops</span>
             <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center"><i class="fa-solid fa-store text-primary-500 text-sm"></i></div>
           </div>
-          <p class="text-3xl font-extrabold text-gray-900" id="stat-total">3</p>
+          <p class="text-3xl font-extrabold text-gray-900" id="stat-total">—</p>
         </div>
         <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active</span>
             <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"><i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i></div>
           </div>
-          <p class="text-3xl font-extrabold text-emerald-600" id="stat-active">1</p>
+          <p class="text-3xl font-extrabold text-emerald-600" id="stat-active">—</p>
         </div>
         <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Inactive</span>
             <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center"><i class="fa-solid fa-circle-xmark text-red-400 text-sm"></i></div>
           </div>
-          <p class="text-3xl font-extrabold text-red-500" id="stat-inactive">1</p>
+          <p class="text-3xl font-extrabold text-red-500" id="stat-inactive">—</p>
         </div>
         <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Token Expiring</span>
             <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i></div>
           </div>
-          <p class="text-3xl font-extrabold text-amber-600" id="stat-expiring">1</p>
+          <p class="text-3xl font-extrabold text-amber-600" id="stat-expiring">—</p>
         </div>
       </div>
 
@@ -236,7 +240,7 @@
       <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 flex flex-wrap items-center gap-3">
         <div class="relative flex-1 min-w-[200px]">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-          <input id="search-input" type="text" placeholder="Search shop name, shop ID, country…" oninput="filterTable()"
+          <input id="search-input" type="text" placeholder="Search shop name, shop ID, cipher…" oninput="filterTable()"
             class="w-full pl-8 pr-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition">
         </div>
         <select id="filter-status" onchange="filterTable()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
@@ -244,12 +248,16 @@
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
         </select>
-        <select id="filter-country" onchange="filterTable()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
-          <option value="">All Countries</option>
+        <select id="filter-region" onchange="filterTable()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
+          <option value="">All Regions</option>
           <option value="ID">Indonesia (ID)</option>
           <option value="MY">Malaysia (MY)</option>
           <option value="SG">Singapore (SG)</option>
           <option value="TH">Thailand (TH)</option>
+          <option value="PH">Philippines (PH)</option>
+          <option value="VN">Vietnam (VN)</option>
+          <option value="GB">United Kingdom (GB)</option>
+          <option value="US">United States (US)</option>
         </select>
         <select id="filter-expiry" onchange="filterTable()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
           <option value="">All Token Status</option>
@@ -266,12 +274,13 @@
       <!-- Table -->
       <div class="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="w-full text-sm min-w-[900px]">
+          <table class="w-full text-sm min-w-[1050px]">
             <thead>
               <tr class="border-b border-surface-200 bg-surface-50">
                 <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Shop ID</th>
+                <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Shop Cipher</th>
                 <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Shop Name</th>
-                <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Country</th>
+                <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Region</th>
                 <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
                 <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Token Expires</th>
                 <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Last Refreshed</th>
@@ -337,36 +346,51 @@
     </div>
     <!-- Modal body -->
     <div class="px-6 py-5 space-y-3 text-sm">
+      <!-- Record ID + App Key -->
       <div class="grid grid-cols-2 gap-3">
         <div class="bg-surface-50 rounded-xl p-3">
           <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Record ID</p>
           <p class="font-mono text-xs text-gray-700 break-all" id="modal-id">—</p>
         </div>
         <div class="bg-surface-50 rounded-xl p-3">
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Partner ID</p>
-          <p class="font-mono text-xs text-gray-700" id="modal-partner-id">—</p>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">App Key</p>
+          <p class="font-mono text-xs text-gray-700 break-all" id="modal-app-key">—</p>
         </div>
       </div>
+      <!-- Shop ID + Region -->
       <div class="grid grid-cols-2 gap-3">
         <div class="bg-surface-50 rounded-xl p-3">
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Country</p>
-          <p class="text-sm font-semibold text-gray-800" id="modal-country">—</p>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Shop ID</p>
+          <p class="font-mono text-xs text-gray-700 break-all" id="modal-shop-id">—</p>
         </div>
         <div class="bg-surface-50 rounded-xl p-3">
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Status</p>
-          <p id="modal-status">—</p>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Region</p>
+          <p class="text-sm font-semibold text-gray-800" id="modal-region">—</p>
         </div>
       </div>
+      <!-- Shop Cipher (full, monospace) -->
+      <div class="bg-surface-50 rounded-xl p-3">
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Shop Cipher</p>
+        <p class="font-mono text-[11px] text-gray-700 break-all" id="modal-shop-cipher">—</p>
+      </div>
+      <!-- Status -->
+      <div class="bg-surface-50 rounded-xl p-3">
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Status</p>
+        <p id="modal-status">—</p>
+      </div>
+      <!-- Access Token -->
       <div class="bg-surface-50 rounded-xl p-3">
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Access Token</p>
         <p class="font-mono text-[11px] text-gray-600 break-all blur-sm hover:blur-none transition-all select-all cursor-pointer" id="modal-access-token" title="Hover to reveal">—</p>
         <p class="text-[10px] text-gray-400 mt-1">Hover to reveal</p>
       </div>
+      <!-- Refresh Token -->
       <div class="bg-surface-50 rounded-xl p-3">
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Refresh Token</p>
         <p class="font-mono text-[11px] text-gray-600 break-all blur-sm hover:blur-none transition-all select-all cursor-pointer" id="modal-refresh-token" title="Hover to reveal">—</p>
         <p class="text-[10px] text-gray-400 mt-1">Hover to reveal</p>
       </div>
+      <!-- Timestamps -->
       <div class="grid grid-cols-2 gap-3">
         <div class="bg-surface-50 rounded-xl p-3">
           <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Token Expires At</p>
@@ -403,137 +427,150 @@
         <div class="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
           <i class="fa-solid fa-plug text-white text-xs"></i>
         </div>
-        <h3 class="font-bold text-gray-900 text-sm">Authorize New Shop</h3>
+        <h3 class="font-bold text-gray-900 text-sm">Authorize New TikTok Shop</h3>
       </div>
       <button onclick="closeAuthorizeModal()" class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
     <div class="px-6 py-5 space-y-4">
-      <!-- Credential summary (read-only, from settings) -->
+      <!-- Saved credentials (read-only) -->
       <div class="bg-primary-50 border border-primary-100 rounded-xl px-4 py-3 space-y-2">
         <p class="text-[10px] font-bold text-primary-500 uppercase tracking-wider">Using saved credentials</p>
         <div class="flex items-center justify-between text-xs gap-3">
-          <span class="text-gray-500 shrink-0">API Host</span>
-          <span class="font-mono font-semibold text-gray-800 truncate">https://partner.shopeemobile.com</span>
+          <span class="text-gray-500 shrink-0">App Key</span>
+          <span class="font-mono font-semibold text-gray-800">7a4f2e1b9c3d</span>
         </div>
         <div class="flex items-center justify-between text-xs gap-3">
-          <span class="text-gray-500 shrink-0">Partner ID</span>
-          <span class="font-mono font-semibold text-gray-800">1001234</span>
-        </div>
-        <div class="flex items-center justify-between text-xs gap-3">
-          <span class="text-gray-500 shrink-0">Partner Key</span>
+          <span class="text-gray-500 shrink-0">App Secret</span>
           <span class="font-mono font-semibold text-gray-800 blur-sm hover:blur-none transition-all cursor-pointer" title="Hover to reveal">••••••••••••••••••••••••</span>
         </div>
         <div class="flex items-center justify-between text-xs gap-3">
           <span class="text-gray-500 shrink-0">Redirect URL</span>
-          <span class="font-mono font-semibold text-gray-800 truncate">https://app.seller.id/oauth/callback</span>
+          <span class="font-mono font-semibold text-gray-800 truncate">https://app.seller.id/oauth/tiktok/callback</span>
         </div>
         <a href="#" class="inline-flex items-center gap-1 text-[11px] text-primary-600 hover:underline mt-1">
           <i class="fa-solid fa-gear text-[10px]"></i>Change in Integration Setup
         </a>
       </div>
+      <!-- Info notice -->
       <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex gap-2 text-xs text-amber-700">
         <i class="fa-solid fa-circle-info mt-0.5 flex-shrink-0"></i>
-        <span>You'll be redirected to Shopee's OAuth page. Once approved, the access token will be saved to <code class="font-mono">shop_auth</code>.</span>
+        <span>You'll be redirected to TikTok's OAuth page. Once approved, the shop's <code class="font-mono">shop_id</code>, <code class="font-mono">shop_cipher</code>, and access token will be saved to <code class="font-mono">tiktok_auth</code>.</span>
       </div>
     </div>
     <div class="px-6 py-4 border-t border-surface-100 flex justify-end gap-2">
       <button onclick="closeAuthorizeModal()" class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition">Cancel</button>
       <button class="px-4 py-2 text-sm font-semibold text-white rounded-xl bg-primary-600 hover:bg-primary-700 transition flex items-center gap-2">
-        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>Go to Shopee OAuth
+        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>Go to TikTok OAuth
       </button>
     </div>
   </div>
 </div>
 
 <script>
-// ── Mock data matching shop_auth schema ──────────────────────────────────────
+// ── Mock data matching tiktok_auth schema ─────────────────────────────────────
+
 var now = new Date('2026-02-25T10:00:00Z');
 
-function daysFromNow(days) {
-  var d = new Date(now); d.setDate(d.getDate() + days); return d.toISOString();
-}
-function daysAgo(days) {
-  var d = new Date(now); d.setDate(d.getDate() - days); return d.toISOString();
-}
+function daysFromNow(days) { var d = new Date(now); d.setDate(d.getDate() + days); return d.toISOString(); }
+function daysAgo(days)     { var d = new Date(now); d.setDate(d.getDate() - days); return d.toISOString(); }
 
 var SHOPS = [
   {
-    id: 'sa_3f7a1b2c8d4e9f0a',
-    shop_id: 220481920,
-    partner_id: 1001234,
-    access_token:  'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wX2lkIjoyMjA0ODE5MjAsInBhcnRuZXJfaWQiOjEwMDEyMzQsImV4cCI6MTc0MDkxMjAwMH0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-    refresh_token: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wX2lkIjoyMjA0ODE5MjAsInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzQzNTA0MDAwfQ.dBjftJeZ4CVP-mB92K9banfu6oMkk',
-    expires_at:        daysFromNow(1),
+    id: 'tt_3f7a1b2c8d4e9f0a',
+    shop_id: '7201938475610234881',
+    shop_cipher: 'ROW_vXkLp2QmYrNsT8uJdHzAbcDeFgHiJkLmNoPqRsT',
+    app_key: '7a4f2e1b9c3d',
+    app_secret: 'f9e2d1c4b8a7663f2e1b9c3d4a5b6c7d8e9f0a1b2c3d',
+    access_token: 'TTP_eyJhbGciOiJSUzI1NiJ9.eyJzaG9wX2lkIjoiNzIwMTkzODQ3NTYxMDIzNDg4MSIsImV4cCI6MTc0MDk1NjgwMH0.SflKxwRJSMeKKF2QT4fw',
+    refresh_token: 'TTP_RT_a1B2c3D4e5F6g7H8i9J0kK1lL2mM3nN4oO5pP6qQ7rR8sS9tT0uU',
+    expires_at: daysFromNow(1),
     last_refreshed_at: daysAgo(3),
-    shop_name: 'Pakan Ayam',
-    country: 'ID',
+    shop_name: 'Pakan Ayam Official',
+    region: 'ID',
     is_active: true,
     updated: daysAgo(3),
     created: daysAgo(120),
   },
   {
-    id: 'sa_5e8f2a4b6c1d9e3f',
-    shop_id: 441029573,
-    partner_id: 1001234,
-    access_token:  'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wX2lkIjo0NDEwMjk1NzMsInBhcnRuZXJfaWQiOjEwMDEyMzQsImV4cCI6MTc0MTQxNjAwMH0.pRmSnToUpVqWxYzAaBbCcDdEeFfGgHh',
-    refresh_token: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wX2lkIjo0NDEwMjk1NzMsInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzQ0MDA4MDAwfQ.IiJjKkLlMmNnOoPpQqRrSsTtUuVvWwX',
-    expires_at:        daysFromNow(7),
+    id: 'tt_5e8f2a4b6c1d9e3f',
+    shop_id: '7183746291038475264',
+    shop_cipher: 'ROW_aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890abcDe',
+    app_key: '7a4f2e1b9c3d',
+    app_secret: 'f9e2d1c4b8a7663f2e1b9c3d4a5b6c7d8e9f0a1b2c3d',
+    access_token: 'TTP_eyJhbGciOiJSUzI1NiJ9.eyJzaG9wX2lkIjoiNzE4Mzc0NjI5MTAzODQ3NTI2NCIsImV4cCI6MTc0MTQ2MDQwMH0.pRmSnToUpVqWxYzAa',
+    refresh_token: 'TTP_RT_b2C3d4E5f6G7h8I9j0K1lL2mM3nN4oO5pP6qQ7rR8sS9tT0uU1vV2wW',
+    expires_at: daysFromNow(7),
     last_refreshed_at: daysAgo(0),
-    shop_name: 'Pakan Ayam Bebek',
-    country: 'ID',
+    shop_name: 'Pakan Ayam Bebek Store',
+    region: 'ID',
     is_active: true,
     updated: daysAgo(0),
     created: daysAgo(60),
   },
   {
-    id: 'sa_2f6b9e1c4d7a0f3b',
-    shop_id: 774928301,
-    partner_id: 1001234,
-    access_token:  'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wX2lkIjo3NzQ5MjgzMDEsInBhcnRuZXJfaWQiOjEwMDEyMzQsImV4cCI6MTczODY5NjAwMH0.JjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYy',
-    refresh_token: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wX2lkIjo3NzQ5MjgzMDEsInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzQxMjg4MDAwfQ.ZzAaBbCcDdEeFfGgHhIiJjKkLlMmNnOo',
-    expires_at:        daysAgo(15),
+    id: 'tt_2f6b9e1c4d7a0f3b',
+    shop_id: '7094827361058394112',
+    shop_cipher: 'ROW_xYzAbCdEfGhIjKlMnOpQrStUvWxYz0987654321XyZ',
+    app_key: '7a4f2e1b9c3d',
+    app_secret: 'f9e2d1c4b8a7663f2e1b9c3d4a5b6c7d8e9f0a1b2c3d',
+    access_token: 'TTP_eyJhbGciOiJSUzI1NiJ9.eyJzaG9wX2lkIjoiNzA5NDgyNzM2MTA1ODM5NDExMiIsImV4cCI6MTczODY5NjAwMH0.JjKkLlMmNnOoPpQq',
+    refresh_token: null,
+    expires_at: daysAgo(15),
     last_refreshed_at: daysAgo(45),
-    shop_name: 'Adisatya ITC',
-    country: 'ID',
+    shop_name: 'Adisatya ITC TikTok',
+    region: 'ID',
     is_active: false,
     updated: daysAgo(45),
     created: daysAgo(400),
   },
 ];
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function fmtDate(iso) {
   if (!iso) return '—';
   var d = new Date(iso);
-  return d.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'})
-       + ' ' + d.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})
+       + ' ' + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
 }
 
 function tokenExpiryBadge(isoExpires) {
-  var exp = new Date(isoExpires);
-  var diff = (exp - now) / (1000 * 60 * 60 * 24);
-  if (diff < 0) {
-    return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-600 border border-red-200"><i class="fa-solid fa-circle-xmark text-[8px]"></i>Expired</span>';
-  } else if (diff <= 3) {
-    return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-triangle-exclamation text-[8px]"></i>Expiring Soon</span>';
-  }
+  var diff = (new Date(isoExpires) - now) / 86400000;
+  if (diff < 0)   return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-600 border border-red-200"><i class="fa-solid fa-circle-xmark text-[8px]"></i>Expired</span>';
+  if (diff <= 3)  return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-triangle-exclamation text-[8px]"></i>Expiring Soon</span>';
   return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle-check text-[8px]"></i>Valid</span>';
 }
 
 function tokenExpiryStatus(isoExpires) {
-  var exp = new Date(isoExpires);
-  var diff = (exp - now) / (1000 * 60 * 60 * 24);
-  if (diff < 0) return 'expired';
+  var diff = (new Date(isoExpires) - now) / 86400000;
+  if (diff < 0)  return 'expired';
   if (diff <= 3) return 'expiring';
   return 'valid';
 }
 
-function countryFlag(code) {
+function regionFlag(code) {
   if (!code) return '—';
-  var flags = {ID:'🇮🇩', MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', PH:'🇵🇭', VN:'🇻🇳'};
+  var flags = {ID:'🇮🇩', MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', PH:'🇵🇭', VN:'🇻🇳', GB:'🇬🇧', US:'🇺🇸'};
   return (flags[code] || '') + ' ' + code;
+}
+
+function truncateCipher(cipher) {
+  if (!cipher) return '—';
+  return cipher.length <= 22 ? cipher : cipher.slice(0, 10) + '…' + cipher.slice(-8);
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function updateStats() {
+  var total    = SHOPS.length;
+  var active   = SHOPS.filter(function(s) { return s.is_active; }).length;
+  var expiring = SHOPS.filter(function(s) {
+    return s.is_active && tokenExpiryStatus(s.expires_at) === 'expiring';
+  }).length;
+  document.getElementById('stat-total').textContent    = total;
+  document.getElementById('stat-active').textContent   = active;
+  document.getElementById('stat-inactive').textContent = total - active;
+  document.getElementById('stat-expiring').textContent = expiring;
 }
 
 // ── Pagination state ──────────────────────────────────────────────────────────
@@ -541,7 +578,7 @@ var PAGE_SIZE = 10;
 var currentPage = 1;
 var filteredData = SHOPS.slice();
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// ── Render table ──────────────────────────────────────────────────────────────
 function renderTable() {
   var start = (currentPage - 1) * PAGE_SIZE;
   var page  = filteredData.slice(start, start + PAGE_SIZE);
@@ -558,13 +595,16 @@ function renderTable() {
         ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle text-[6px]"></i>Active</span>'
         : '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-600 border border-red-200"><i class="fa-solid fa-circle text-[6px]"></i>Inactive</span>';
       var expCell = tokenExpiryBadge(s.expires_at)
-                  + '<br><span class="text-[10px] text-gray-400 mt-0.5 block">'
-                  + fmtDate(s.expires_at) + '</span>';
+                 + '<br><span class="text-[10px] text-gray-400 mt-0.5 block">' + fmtDate(s.expires_at) + '</span>';
+      var nameHtml = s.shop_name
+        ? '<span class="font-semibold text-gray-900 text-sm">' + s.shop_name + '</span>'
+        : '<span class="text-gray-400 font-normal italic text-xs">— unnamed —</span>';
       return [
         '<tr class="table-row transition-colors" onclick="openDetailModal(\'' + s.id + '\')">',
         '  <td class="px-5 py-3.5"><span class="font-mono text-xs text-gray-700 bg-surface-100 px-2 py-0.5 rounded">' + s.shop_id + '</span></td>',
-        '  <td class="px-5 py-3.5"><span class="font-semibold text-gray-900 text-sm">' + (s.shop_name || '<span class="text-gray-400 font-normal italic text-xs">— unnamed —</span>') + '</span></td>',
-        '  <td class="px-5 py-3.5 text-sm text-gray-700">' + countryFlag(s.country) + '</td>',
+        '  <td class="px-5 py-3.5"><span class="font-mono text-xs text-gray-500 bg-surface-50 border border-surface-200 px-2 py-0.5 rounded" title="' + s.shop_cipher + '">' + truncateCipher(s.shop_cipher) + '</span></td>',
+        '  <td class="px-5 py-3.5">' + nameHtml + '</td>',
+        '  <td class="px-5 py-3.5 text-sm text-gray-700">' + regionFlag(s.region) + '</td>',
         '  <td class="px-5 py-3.5">' + statusBadge + '</td>',
         '  <td class="px-5 py-3.5">' + expCell + '</td>',
         '  <td class="px-5 py-3.5 text-xs text-gray-500">' + fmtDate(s.last_refreshed_at) + '</td>',
@@ -574,15 +614,13 @@ function renderTable() {
     }).join('');
   }
 
-  // Pagination info
-  var total = filteredData.length;
+  var total   = filteredData.length;
   var showing = Math.min(start + PAGE_SIZE, total);
   document.getElementById('pagination-info').textContent =
     total === 0 ? '' : 'Showing ' + (start + 1) + '–' + showing + ' of ' + total + ' shops';
   document.getElementById('result-count').textContent =
     total + ' result' + (total !== 1 ? 's' : '');
 
-  // Pagination buttons
   var totalPages = Math.ceil(total / PAGE_SIZE);
   var ctrl = document.getElementById('pagination-controls');
   ctrl.innerHTML = '';
@@ -590,39 +628,38 @@ function renderTable() {
     var btn = document.createElement('button');
     btn.textContent = p;
     btn.className = 'w-8 h-8 rounded-lg text-xs font-semibold transition ' +
-      (p === currentPage
-        ? 'bg-primary-500 text-white'
-        : 'text-gray-500 bg-surface-100 hover:bg-surface-200');
-    btn.setAttribute('data-page', p);
+      (p === currentPage ? 'bg-primary-500 text-white' : 'text-gray-500 bg-surface-100 hover:bg-surface-200');
     btn.onclick = (function(pg) { return function() { currentPage = pg; renderTable(); }; })(p);
     ctrl.appendChild(btn);
   }
 }
 
+// ── Filter ────────────────────────────────────────────────────────────────────
 function filterTable() {
-  var q       = document.getElementById('search-input').value.toLowerCase();
-  var status  = document.getElementById('filter-status').value;
-  var country = document.getElementById('filter-country').value;
-  var expiry  = document.getElementById('filter-expiry').value;
+  var q      = document.getElementById('search-input').value.toLowerCase();
+  var status = document.getElementById('filter-status').value;
+  var region = document.getElementById('filter-region').value;
+  var expiry = document.getElementById('filter-expiry').value;
 
   filteredData = SHOPS.filter(function(s) {
     var matchQ = !q
-      || (s.shop_name && s.shop_name.toLowerCase().includes(q))
-      || String(s.shop_id).includes(q)
-      || (s.country && s.country.toLowerCase().includes(q));
-    var matchStatus  = !status  || (status === 'active' ? s.is_active : !s.is_active);
-    var matchCountry = !country || s.country === country;
-    var matchExpiry  = !expiry  || tokenExpiryStatus(s.expires_at) === expiry;
-    return matchQ && matchStatus && matchCountry && matchExpiry;
+      || (s.shop_name   && s.shop_name.toLowerCase().includes(q))
+      || s.shop_id.toLowerCase().includes(q)
+      || s.shop_cipher.toLowerCase().includes(q)
+      || (s.region && s.region.toLowerCase().includes(q));
+    var matchStatus = !status || (status === 'active' ? s.is_active : !s.is_active);
+    var matchRegion = !region || s.region === region;
+    var matchExpiry = !expiry || tokenExpiryStatus(s.expires_at) === expiry;
+    return matchQ && matchStatus && matchRegion && matchExpiry;
   });
   currentPage = 1;
   renderTable();
 }
 
 function clearFilters() {
-  document.getElementById('search-input').value = '';
+  document.getElementById('search-input').value  = '';
   document.getElementById('filter-status').value = '';
-  document.getElementById('filter-country').value = '';
+  document.getElementById('filter-region').value = '';
   document.getElementById('filter-expiry').value = '';
   filterTable();
 }
@@ -631,20 +668,23 @@ function clearFilters() {
 function openDetailModal(id) {
   var s = SHOPS.find(function(x) { return x.id === id; });
   if (!s) return;
-  document.getElementById('modal-shop-name').textContent   = s.shop_name || '— unnamed —';
-  document.getElementById('modal-shop-id-label').textContent = 'Shop ID: ' + s.shop_id;
-  document.getElementById('modal-id').textContent          = s.id;
-  document.getElementById('modal-partner-id').textContent  = s.partner_id;
-  document.getElementById('modal-country').textContent     = countryFlag(s.country);
-  document.getElementById('modal-status').innerHTML        = s.is_active
+  document.getElementById('modal-shop-name').textContent      = s.shop_name || '— unnamed —';
+  document.getElementById('modal-shop-id-label').textContent  = 'Shop ID: ' + s.shop_id;
+  document.getElementById('modal-id').textContent             = s.id;
+  document.getElementById('modal-app-key').textContent        = s.app_key;
+  document.getElementById('modal-shop-id').textContent        = s.shop_id;
+  document.getElementById('modal-shop-cipher').textContent    = s.shop_cipher;
+  document.getElementById('modal-region').textContent         = regionFlag(s.region);
+  document.getElementById('modal-status').innerHTML           = s.is_active
     ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>'
     : '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-600 border border-red-200">Inactive</span>';
-  document.getElementById('modal-access-token').textContent  = s.access_token;
-  document.getElementById('modal-refresh-token').textContent = s.refresh_token;
-  document.getElementById('modal-expires-at').textContent    = fmtDate(s.expires_at) + ' (' + tokenExpiryBadge(s.expires_at).replace(/<[^>]+>/g,'').trim() + ')';
+  document.getElementById('modal-access-token').textContent   = s.access_token;
+  document.getElementById('modal-refresh-token').textContent  = s.refresh_token || '— not available —';
+  document.getElementById('modal-expires-at').textContent     = fmtDate(s.expires_at)
+    + ' (' + tokenExpiryBadge(s.expires_at).replace(/<[^>]+>/g, '').trim() + ')';
   document.getElementById('modal-last-refreshed').textContent = fmtDate(s.last_refreshed_at);
-  document.getElementById('modal-created').textContent       = fmtDate(s.created);
-  document.getElementById('modal-updated').textContent       = fmtDate(s.updated);
+  document.getElementById('modal-created').textContent        = fmtDate(s.created);
+  document.getElementById('modal-updated').textContent        = fmtDate(s.updated);
   document.getElementById('detailModal').classList.remove('hidden');
 }
 
@@ -653,11 +693,12 @@ function closeModal() {
 }
 
 // ── Authorize modal ───────────────────────────────────────────────────────────
-function openAuthorizeModal() {
-  document.getElementById('authorizeModal').classList.remove('hidden');
-}
-function closeAuthorizeModal() {
-  document.getElementById('authorizeModal').classList.add('hidden');
+function openAuthorizeModal()  { document.getElementById('authorizeModal').classList.remove('hidden'); }
+function closeAuthorizeModal() { document.getElementById('authorizeModal').classList.add('hidden'); }
+
+// ── Profile dropdown ──────────────────────────────────────────────────────────
+function toggleProfileDropdown() {
+  document.getElementById('profile-dropdown').classList.toggle('hidden');
 }
 
 // ── Sidebar dropdown ──────────────────────────────────────────────────────────
@@ -682,6 +723,7 @@ document.getElementById('authorizeModal').addEventListener('click', function(e) 
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────────
+updateStats();
 filterTable();
 </script>
 </body>
