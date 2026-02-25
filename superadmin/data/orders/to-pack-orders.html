@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seller Integration - Dashboard</title>
+  <title>Seller Integration - To Pack Orders</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -106,13 +106,13 @@
     </button>
 
     <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-      <a href="all-orders.html" class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">
+      <a href="all-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">
         All Orders
       </a>
       <a href="to-confirm-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">
         Awaiting Confirmation
       </a>
-      <a href="to-pack-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">
+      <a href="to-pack-orders.html" class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">
         Ready to Pack
       </a>
       <a href="packed-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">
@@ -299,9 +299,9 @@
             <span class="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow shadow-primary-500/30">
               <i class="fa-solid fa-cart-shopping text-white text-sm"></i>
             </span>
-            All Orders
+            To Pack Orders
           </h2>
-          <p class="text-slate-500 text-sm mt-1.5">Complete order data from all uploaded batches</p>
+          <p class="text-slate-500 text-sm mt-1.5">Orders that have been confirmed and are ready to be prepared for packaging and shipment</p>
           <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
             <i class="fa-regular fa-clock"></i>
             Last updated: <span id="last-updated-time" class="font-medium text-slate-500">—</span>
@@ -333,13 +333,11 @@
             <option value="shopee">Shopee</option>
             <option value="tiktok">TikTok / Tokopedia</option>
           </select>
-          <select id="filter-status" onchange="filterTable()" class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]">
-            <option value="">All Status</option>
-            <option value="to confirm">To Confirm</option>
-            <option value="to pack">To Pack</option>
-            <option value="packed">Packed</option>
-            <option value="returned">Returned</option>
-          </select>
+          <!-- Status locked to "To Pack" — not user-changeable -->
+          <div class="flex items-center gap-1.5 px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-xl text-sm font-semibold text-blue-700 select-none" title="Status filter is fixed for this page">
+            <i class="fa-solid fa-lock text-blue-400 text-xs"></i>
+            Status: To Pack
+          </div>
           <select id="filter-duplicate" onchange="filterTable()" class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[150px]">
             <option value="">All Data</option>
             <option value="true">Duplicate Only</option>
@@ -1084,7 +1082,7 @@
   function filterTable() {
     const search=document.getElementById('search-input').value.toLowerCase();
     const platform=document.getElementById('filter-platform').value;
-    const status=document.getElementById('filter-status').value.toLowerCase();
+    const status='to pack'; // locked for this page
     const dup=document.getElementById('filter-duplicate').value;
     const dateFrom=document.getElementById('filter-date-from').value;
     const dateTo=document.getElementById('filter-date-to').value;
@@ -1105,7 +1103,7 @@
   }
 
   function resetFilter() {
-    ['search-input','filter-platform','filter-status','filter-duplicate','filter-date-from','filter-date-to'].forEach(id=>{document.getElementById(id).value='';});
+    ['search-input','filter-platform','filter-duplicate','filter-date-from','filter-date-to'].forEach(id=>{document.getElementById(id).value='';});
     filterTable();
   }
 
