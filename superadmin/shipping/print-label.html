@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Integration - Bulk Print Shipping Labels</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { jakarta: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            primary: { 50:'#f0f7ff',100:'#e0effe',200:'#bae0fd',300:'#7cc8fb',400:'#36aaf5',500:'#0c8ee6',600:'#0070c4',700:'#01599f',800:'#064b83',900:'#0b3f6d' },
+            surface: { 50:'#fafbfc',100:'#f4f6f8',200:'#e9ecef',300:'#dee2e6' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .sidebar-item:hover { background: rgba(12,142,230,0.08); }
+    .sidebar-item.active { background: rgba(12,142,230,0.12); color: #0c8ee6; }
+    .dropdown-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .dropdown-content.open { max-height: 600px; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #f4f6f8; }
+    ::-webkit-scrollbar-thumb { background: #c9d0d8; border-radius: 10px; }
+    .order-row.selected { background: #e0effe; }
+    .modal-overlay { backdrop-filter: blur(3px); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.8s linear infinite; }
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-area, #print-area * { visibility: visible !important; }
+      #print-area { position: fixed !important; inset: 0 !important; padding: 8mm !important; background: white !important; display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 6mm !important; align-content: start !important; }
+      .print-label { border: 1.5px solid #000 !important; padding: 5mm !important; page-break-inside: avoid !important; break-inside: avoid !important; font-size: 9pt !important; background: white !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="h-full bg-surface-100">
+<div class="flex h-full">
+
+  <aside class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
+    <div class="p-6 border-b border-surface-200">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div>
+          <h1 class="font-bold text-gray-900 text-lg leading-tight">Seller Integration</h1>
+          <span class="px-2 py-0.5 text-[10px] font-bold bg-primary-100 text-primary-700 rounded-full uppercase tracking-wide">SUPERADMIN</span>
+        </div>
+      </div>
+    </div>
+    <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+      <a href="../dashboard.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-home w-5"></i>Dashboard</a>
+      <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
+      <div>
+        <button onclick="toggleDropdown('orders')" class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <div class="flex items-center gap-3"><i class="fa-solid fa-cart-shopping w-5"></i>Orders</div>
+          <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+        </button>
+        <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+          <a href="../data/orders/all-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All Orders</a>
+          <a href="../data/orders/to-confirm-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting Confirmation</a>
+          <a href="../data/orders/to-pack-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready to Pack</a>
+          <a href="../data/orders/packed-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed Orders</a>
+          <a href="../data/orders/returned-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned Orders</a>
+          <a href="../data/orders/shopee-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+          <a href="../data/orders/tiktok-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
+        </div>
+      </div>
+      <a href="../data/data-upload.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-upload w-5"></i>Data Upload</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-users w-5"></i>User Management</a>
+      <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp; Logistics</div>
+      <a href="print-label.html" class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"><i class="fa-solid fa-print w-5"></i>Print Shipping Labels</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-barcode w-5"></i>Resi Checker</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-truck w-5"></i>Tracking Center</a>
+      <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics &amp; Reports</div>
+      <div>
+        <button onclick="toggleDropdown('reports')" class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <div class="flex items-center gap-3"><i class="fa-solid fa-chart-pie w-5"></i>Reports</div>
+          <i id="reports-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+        </button>
+        <div id="reports-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+          <a href="#" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Sales Report</a>
+          <a href="#" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Revenue Report</a>
+          <a href="#" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Product Performance</a>
+        </div>
+      </div>
+      <a href="../analytics/activity-logs.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-clipboard-list w-5"></i>Activity Logs</a>
+      <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">System Settings</div>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-gear w-5"></i>Integration Setup</a>
+      <div>
+        <button onclick="toggleDropdown('market')" class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <div class="flex items-center gap-3"><i class="fa-solid fa-store w-5"></i>Market Integration</div>
+          <i id="market-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+        </button>
+        <div id="market-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+          <a href="../system/market/shopee-market.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+          <a href="../system/market/tiktok-market.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
+        </div>
+      </div>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i class="fa-solid fa-code w-5"></i>API Documentation</a>
+    </nav>
+    <div class="p-4 border-t border-surface-200">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow">AM</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-800 truncate">Admin Master</p>
+          <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
+        </div>
+        <button class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Logout"><i class="fa-solid fa-right-from-bracket text-sm"></i></button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 overflow-y-auto">
+    <header class="bg-white border-b border-surface-200 sticky top-0 z-10 no-print">
+      <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
+        <nav class="flex items-center gap-2 text-sm text-slate-500">
+          <span>Shipping &amp; Logistics</span>
+          <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          <span class="text-slate-900 font-semibold">Print Shipping Labels</span>
+        </nav>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <input type="text" placeholder="Search orders, buyers…" class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all">
+            <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <button class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+          </button>
+          <button onclick="toggleProfileDropdown()" class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow">AM</div>
+            <div class="text-left">
+              <p class="text-sm font-semibold text-gray-900 leading-none">Admin Master</p>
+              <p class="text-[11px] text-primary-600 mt-0.5">Superadmin</p>
+            </div>
+            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="profile-dropdown" class="hidden absolute right-8 top-14 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
+            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i class="fa-solid fa-user w-4"></i>My Profile</a>
+            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i class="fa-solid fa-gear w-4"></i>Settings</a>
+            <hr class="my-1 border-surface-200">
+            <a href="../../../login.html" class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><i class="fa-solid fa-right-from-bracket w-4"></i>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-8 space-y-6 no-print">
+
+      <div class="flex items-start justify-between flex-wrap gap-4">
+        <div>
+          <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0">
+              <i class="fa-solid fa-print text-white text-sm"></i>
+            </span>
+            Bulk Print Shipping Labels
+          </h2>
+          <p class="text-slate-500 text-sm mt-1">Orders prepared for bulk shipping label printing and shipment handling</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="printSelected()" id="btn-print" disabled class="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white text-sm font-bold rounded-xl hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed shadow shadow-primary-500/25 transition-all">
+            <i class="fa-solid fa-print"></i>Print Selected (<span id="selected-count">0</span>)
+          </button>
+          <div class="relative">
+            <button onclick="toggleFetchMenu()" id="btn-fetch" class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
+              <i class="fa-solid fa-rotate"></i>Fetch Labels<i class="fa-solid fa-chevron-down text-xs text-gray-400 ml-1"></i>
+            </button>
+            <div id="fetch-menu" class="hidden absolute right-0 top-full mt-1.5 bg-white rounded-xl shadow-lg border border-surface-200 py-1.5 z-20" style="min-width:230px">
+              <div class="px-3 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Select platform to fetch</div>
+              <button onclick="startFetch('tiktok')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-surface-50 transition text-left">
+                <span class="w-7 h-7 rounded-md bg-gray-900 flex items-center justify-center flex-shrink-0"><i class="fa-brands fa-tiktok text-white text-xs"></i></span>
+                <p class="font-semibold text-gray-800 text-xs">TikTok / Tokopedia</p>
+              </button>
+              <button onclick="startFetch('shopee')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-surface-50 transition text-left">
+                <span class="w-7 h-7 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-s text-white text-xs"></i></span>
+                <p class="font-semibold text-gray-800 text-xs">Shopee</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl border border-surface-200 p-5">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Ready</span><div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"><i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i></div></div>
+          <p class="text-3xl font-extrabold text-emerald-600" id="stat-ready">0</p>
+          <p class="text-xs text-gray-400 mt-1">Label ready, not printed</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-surface-200 p-5">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Printed</span><div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center"><i class="fa-solid fa-print text-primary-500 text-sm"></i></div></div>
+          <p class="text-3xl font-extrabold text-primary-600" id="stat-printed">0</p>
+          <p class="text-xs text-gray-400 mt-1">Successfully printed</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-surface-200 p-5">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Selected</span><div class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center"><i class="fa-solid fa-check-double text-violet-500 text-sm"></i></div></div>
+          <p class="text-3xl font-extrabold text-violet-600" id="stat-selected">0</p>
+          <p class="text-xs text-gray-400 mt-1">Queued for printing</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-surface-200 p-4 flex flex-wrap items-center gap-3">
+        <div class="relative flex-1 min-w-[200px]">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <input id="search-input" type="text" placeholder="Search order ID, tracking no, buyer…" oninput="applyFilters()" class="w-full pl-8 pr-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition">
+        </div>
+        <select id="filter-platform" onchange="applyFilters()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400">
+          <option value="">All Platforms</option>
+          <option value="tiktok">TikTok / Tokopedia</option>
+          <option value="shopee">Shopee</option>
+        </select>
+        <select id="filter-label" onchange="applyFilters()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400">
+          <option value="">All Statuses</option>
+          <option value="ready">Ready</option>
+          <option value="printed">Printed</option>
+        </select>
+        <select id="filter-courier" onchange="applyFilters()" class="px-3 py-2 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400">
+          <option value="">All Couriers</option>
+          <option value="JNE">JNE</option>
+          <option value="J&T">J&amp;T Express</option>
+          <option value="SiCepat">SiCepat</option>
+          <option value="Anteraja">Anteraja</option>
+          <option value="SAP">SAP Express</option>
+          <option value="Ninja">Ninja Xpress</option>
+          <option value="Lion">Lion Parcel</option>
+        </select>
+        <div class="flex items-center gap-2 border border-surface-200 rounded-xl px-3 py-1.5 bg-white">
+          <i class="fa-solid fa-calendar-days text-gray-400 text-xs"></i>
+          <input id="filter-date-from" type="date" onchange="applyFilters()" title="From date" class="text-sm text-gray-700 bg-transparent focus:outline-none w-[130px]">
+          <span class="text-gray-300 text-xs font-semibold">—</span>
+          <input id="filter-date-to" type="date" onchange="applyFilters()" title="To date" class="text-sm text-gray-700 bg-transparent focus:outline-none w-[130px]">
+        </div>
+        <button onclick="clearFilters()" class="px-3 py-2 text-xs font-semibold text-gray-500 bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-xl transition"><i class="fa-solid fa-xmark mr-1"></i>Clear</button>
+        <span id="result-count" class="ml-auto text-xs text-gray-400 font-medium"></span>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-100 flex items-center gap-3 bg-surface-50">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="select-all" onchange="toggleSelectAll(this)" class="w-4 h-4 rounded text-primary-500 focus:ring-primary-300">
+            <span class="text-xs font-semibold text-gray-600">Select All</span>
+          </label>
+          <div class="h-4 w-px bg-surface-300 mx-1"></div>
+          <button onclick="selectReadyOnly()" class="text-xs font-semibold text-primary-600 hover:underline">Select Ready</button>
+          <button onclick="deselectAll()" class="text-xs font-semibold text-gray-400 hover:text-gray-700">Deselect All</button>
+          <span id="bulk-hint" class="ml-auto text-xs text-gray-400"></span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm min-w-[1060px]">
+            <thead>
+              <tr class="border-b border-surface-100 bg-surface-50">
+                <th class="w-10 px-4 py-3"></th>
+                <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Order / Package</th>
+                <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Platform</th>
+                <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Buyer / Item</th>
+                <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Courier</th>
+                <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Tracking No.</th>
+                <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Label Status</th>
+                <th class="text-right px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Action</th>
+              </tr>
+            </thead>
+            <tbody id="order-table-body" class="divide-y divide-surface-50"></tbody>
+          </table>
+        </div>
+        <div id="empty-state" class="hidden py-16 text-center">
+          <div class="w-14 h-14 rounded-2xl bg-surface-100 flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-box-open text-gray-300 text-xl"></i></div>
+          <p class="text-sm font-semibold text-gray-500">No orders found</p>
+          <p class="text-xs text-gray-400 mt-1">Adjust filters or fetch new data</p>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3 border-t border-surface-100">
+          <span id="pagination-info" class="text-xs text-gray-400"></span>
+          <div id="pagination-controls" class="flex items-center gap-1"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="border-t border-surface-200 bg-white px-8 py-4 flex items-center justify-between no-print">
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <span class="text-xs text-gray-500">Seller Integration Platform <span class="font-semibold text-gray-700">v3.2.1</span></span>
+      </div>
+      <div class="flex items-center gap-4 text-xs text-gray-400">
+        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>API: Operational</span>
+        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>DB: Connected</span>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<div id="previewModal" class="hidden fixed inset-0 z-50 modal-overlay bg-black/50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center"><i class="fa-solid fa-tag text-white text-xs"></i></div>
+        <div><h3 class="font-bold text-gray-900 text-sm">Label Preview</h3><p class="text-xs text-gray-400" id="preview-subtitle">—</p></div>
+      </div>
+      <button onclick="closePreview()" class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-6">
+      <div id="preview-label-content" class="border-2 border-gray-800 rounded-xl p-5 bg-white font-mono text-xs"></div>
+    </div>
+    <div class="px-6 py-4 border-t border-surface-100 flex justify-end gap-2">
+      <button onclick="closePreview()" class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition">Close</button>
+      <button onclick="printSingle()" class="px-4 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-xl transition flex items-center gap-2"><i class="fa-solid fa-print"></i>Print This Label</button>
+    </div>
+  </div>
+</div>
+
+<div id="print-area" class="hidden"></div>
+
+<div id="fetchModal" class="hidden fixed inset-0 z-50 modal-overlay bg-black/50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+    <div class="flex items-center gap-3 mb-5">
+      <div id="fetch-platform-icon" class="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-rotate text-white spin"></i></div>
+      <div>
+        <h3 class="font-bold text-gray-900 text-base" id="fetch-title">Fetching Labels…</h3>
+        <p class="text-xs text-gray-400" id="fetch-subtitle">Calling platform API</p>
+      </div>
+    </div>
+    <div class="mb-4 p-3 bg-surface-50 rounded-xl border border-surface-200 text-xs font-mono space-y-1">
+      <div class="flex gap-2"><span class="text-gray-400 font-sans font-semibold w-20 flex-shrink-0">Endpoint</span><span id="fetch-endpoint" class="break-all text-primary-700"></span></div>
+      <div class="flex gap-2"><span class="text-gray-400 font-sans font-semibold w-20 flex-shrink-0">Method</span><span id="fetch-method" class="text-emerald-600 font-bold"></span></div>
+      <div class="flex gap-2"><span class="text-gray-400 font-sans font-semibold w-20 flex-shrink-0">Key param</span><span id="fetch-key-param" class="text-amber-700"></span></div>
+      <div class="flex gap-2"><span class="text-gray-400 font-sans font-semibold w-20 flex-shrink-0">Returns</span><span id="fetch-returns" class="text-gray-600"></span></div>
+    </div>
+    <div class="w-full bg-surface-200 rounded-full h-2 mb-1.5">
+      <div id="fetch-progress-bar" class="h-2 rounded-full transition-all duration-300 bg-gray-800" style="width:0%"></div>
+    </div>
+    <div class="flex items-center justify-between mb-3">
+      <p class="text-xs text-gray-400" id="fetch-progress-text">0 / 0 processed</p>
+      <p class="text-xs font-mono font-semibold text-gray-500" id="fetch-current-order"></p>
+    </div>
+    <div id="fetch-log" class="max-h-28 overflow-y-auto space-y-0.5 text-xs mb-4 p-2 bg-surface-50 rounded-xl border border-surface-100"></div>
+    <div id="fetch-done-actions" class="hidden flex gap-2 justify-end">
+      <button onclick="closeFetchModal()" class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var MOCK_ORDERS = [
+    { id:'TT-2024102400001', platform:'tiktok',  buyer:'Budi Santoso',          buyer_phone:'081234567890', buyer_addr:'Jl. Kebon Jeruk No.12, Jakarta Barat, DKI Jakarta 11530',        item:'Pakan Ayam Starter 5kg x2',           weight:'10 kg', courier:'J&T',      tracking:'JP0018273645ID', order_date:'2024-10-24 09:12', label_status:'ready', printed_at:null, package_id:'PKG-TT-00001', shop:'Pakan Ayam Official',    shop_id:'7201938475610234881', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00001.pdf' },
+    { id:'TT-2024102400002', platform:'tiktok',  buyer:'Siti Rahayu',           buyer_phone:'082345678901', buyer_addr:'Jl. Raya Bogor KM.24, Depok, Jawa Barat 16456',                 item:'Pakan Bebek Grower 10kg x1',          weight:'10 kg', courier:'SiCepat',  tracking:'JP0027364859ID', order_date:'2024-10-24 09:45', label_status:'ready', printed_at:null, package_id:'PKG-TT-00002', shop:'Pakan Ayam Official',    shop_id:'7201938475610234881', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00002.pdf' },
+    { id:'TT-2024102400003', platform:'tiktok',  buyer:'Ahmad Fauzi',           buyer_phone:'083456789012', buyer_addr:'Jl. Diponegoro No.88, Surabaya, Jawa Timur 60271',               item:'Vitamin Ayam Broiler 1L x3',          weight:'3 kg',  courier:'JNE',      tracking:'JP0036475920ID', order_date:'2024-10-24 10:02', label_status:'ready', printed_at:null, package_id:'PKG-TT-00003', shop:'Pakan Ayam Bebek Store', shop_id:'7183746291038475264', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00003.pdf' },
+    { id:'TT-2024102400004', platform:'tiktok',  buyer:'Dewi Kusuma',           buyer_phone:'084567890123', buyer_addr:'Jl. Gatot Subroto No.44, Bandung, Jawa Barat 40271',             item:'Pakan Lele Jumbo 25kg x1',            weight:'25 kg', courier:'Anteraja', tracking:'JP0045861073ID', order_date:'2024-10-24 10:30', label_status:'printed', printed_at:'2024-10-24 14:05', package_id:'PKG-TT-00004', shop:'Pakan Ayam Bebek Store', shop_id:'7183746291038475264', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00004.pdf' },
+    { id:'TT-2024102400005', platform:'tiktok',  buyer:'Eko Prasetyo',          buyer_phone:'085678901234', buyer_addr:'Jl. Ahmad Yani No.15, Semarang, Jawa Tengah 50136',              item:'Pakan Burung Murai 1kg x5',           weight:'5 kg',  courier:'SAP',      tracking:'JP0054972184ID', order_date:'2024-10-24 11:00', label_status:'ready', printed_at:null, package_id:'PKG-TT-00005', shop:'Adisatya ITC TikTok',    shop_id:'7094827361058394112', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00005.pdf' },
+    { id:'TK-2024102400006', platform:'tiktok',  buyer:'Fitri Handayani',       buyer_phone:'086789012345', buyer_addr:'Jl. Pemuda No.33, Yogyakarta, DI Yogyakarta 55161',              item:'Pakan Kelinci Premium 5kg x2',        weight:'10 kg', courier:'JNE',      tracking:'JP0063083295ID', order_date:'2024-10-24 11:15', label_status:'printed', printed_at:'2024-10-24 14:10', package_id:'PKG-TK-00006', shop:'Pakan Ayam Bebek Store', shop_id:'7183746291038475264', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TK-00006.pdf' },
+    { id:'TK-2024102400007', platform:'tiktok',  buyer:'Gunawan Halim',         buyer_phone:'087890123456', buyer_addr:'Jl. Imam Bonjol No.7, Malang, Jawa Timur 65112',                 item:'Pakan Ikan Mas Koi 3kg x1',           weight:'3 kg',  courier:'Ninja',    tracking:'JP0071194306ID', order_date:'2024-10-24 11:40', label_status:'ready', printed_at:null, package_id:'PKG-TK-00007', shop:'Pakan Ayam Bebek Store', shop_id:'7183746291038475264', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TK-00007.pdf' },
+    { id:'SP-2024102400008', platform:'shopee',  buyer:'Hendra Wijaya',         buyer_phone:'088901234567', buyer_addr:'Jl. Sultan Agung No.99, Bekasi, Jawa Barat 17112',               item:'Pakan Ayam Petelur 50kg x1',          weight:'50 kg', courier:'J&T',      tracking:'SP0080205417ID', order_date:'2024-10-24 12:00', label_status:'ready', printed_at:null, package_id:'PKG-SP-00008', shop:'Shopee Official Store',  shop_id:'SP-1234567',          api_ref:'pdf_url:https://shopee.cdn/label/SP-2024102400008.pdf' },
+    { id:'SP-2024102400009', platform:'shopee',  buyer:'Indah Permata',         buyer_phone:'089012345678', buyer_addr:'Jl. Raya Cikarang No.2, Bekasi, Jawa Barat 17550',               item:'Pakan Kambing Etawa 20kg x2',         weight:'40 kg', courier:'Lion',     tracking:'SP0099316528ID', order_date:'2024-10-24 12:20', label_status:'printed', printed_at:'2024-10-24 15:00', package_id:'PKG-SP-00009', shop:'Shopee Official Store',  shop_id:'SP-1234567',          api_ref:'pdf_url:https://shopee.cdn/label/SP-2024102400009.pdf' },
+    { id:'SP-2024102400010', platform:'shopee',  buyer:'Joko Susilo',           buyer_phone:'081122334455', buyer_addr:'Jl. Raya Serpong No.5, Tangerang Selatan, Banten 15310',         item:'Suplemen Ternak Combo x10',           weight:'8 kg',  courier:'SiCepat',  tracking:'SP0108427639ID', order_date:'2024-10-24 13:00', label_status:'ready', printed_at:null, package_id:'PKG-SP-00010', shop:'Shopee Official Store',  shop_id:'SP-1234567',          api_ref:'pdf_url:https://shopee.cdn/label/SP-2024102400010.pdf' },
+    { id:'TT-2024102400011', platform:'tiktok',  buyer:'Kartini Wulandari',     buyer_phone:'082233445566', buyer_addr:'Jl. Veteran No.12, Tangerang, Banten 15001',                     item:'Kandang Ayam Portable x1',            weight:'7 kg',  courier:'JNE',      tracking:'JP0117538740ID', order_date:'2024-10-24 13:15', label_status:'ready', printed_at:null, package_id:'PKG-TT-00011', shop:'Pakan Ayam Official',    shop_id:'7201938475610234881', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00011.pdf' },
+    { id:'TT-2024102400012', platform:'tiktok',  buyer:'Lukman Hakim',          buyer_phone:'083344556677', buyer_addr:'Jl. Sudirman No.1, Jakarta Pusat, DKI Jakarta 10220',            item:'Pakan Ayam Broiler Finisher 10kg x5', weight:'50 kg', courier:'Anteraja', tracking:'JP0126649851ID', order_date:'2024-10-24 13:45', label_status:'printed', printed_at:'2024-10-24 15:20', package_id:'PKG-TT-00012', shop:'Pakan Ayam Official',    shop_id:'7201938475610234881', api_ref:'doc_url:https://tiktok.cdn/label/PKG-TT-00012.pdf' },
+  ];
+
+  var PLATFORM_API = {
+    tiktok: {
+      endpoint: 'POST /fulfillment/202309/packages/shipping_document',
+      method: 'POST',
+      key_param: 'package_id  (1 package per call)',
+      returns: 'PDF binary blob → stored in local DB',
+      bar_color: 'bg-gray-800',
+    },
+    shopee: {
+      endpoint: 'POST /api/v2/logistics/get_shipping_document',
+      method: 'POST',
+      key_param: 'order_sn[]  (batch up to 50)',
+      returns: 'PDF URL → download & store in local DB',
+      bar_color: 'bg-orange-400',
+    },
+  };
+
+  var selectedIds = new Set();
+  var filteredOrders = MOCK_ORDERS.slice();
+  var currentPage = 1;
+  var PAGE_SIZE = 10;
+  var previewOrderId = null;
+
+  function platformBadge(p) {
+    if (p === 'tiktok')  return '<span class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-900 text-white">TikTok</span>';
+    if (p === 'shopee')  return '<span class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200">Shopee</span>';
+    return p;
+  }
+
+  function labelBadge(s, printed_at) {
+    if (s === 'pending') return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span>Pending</span>';
+    if (s === 'ready')   return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>Ready</span>';
+    if (s === 'printed') return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-50 text-primary-700 border border-primary-200"><i class="fa-solid fa-print text-[8px]"></i>Printed</span>' + (printed_at ? '<br><span class="text-[10px] text-gray-400">' + printed_at + '</span>' : '');
+    return s;
+  }
+
+  function updateStats() {
+    document.getElementById('stat-ready').textContent    = MOCK_ORDERS.filter(function(o) { return o.label_status === 'ready'; }).length;
+    document.getElementById('stat-printed').textContent  = MOCK_ORDERS.filter(function(o) { return o.label_status === 'printed'; }).length;
+    document.getElementById('stat-selected').textContent = selectedIds.size;
+    document.getElementById('selected-count').textContent = selectedIds.size;
+    document.getElementById('btn-print').disabled = selectedIds.size === 0;
+    document.getElementById('bulk-hint').textContent = selectedIds.size > 0 ? selectedIds.size + ' order' + (selectedIds.size > 1 ? 's' : '') + ' selected' : '';
+  }
+
+  function renderTable() {
+    var start = (currentPage - 1) * PAGE_SIZE;
+    var page  = filteredOrders.slice(start, start + PAGE_SIZE);
+    var tbody = document.getElementById('order-table-body');
+    document.getElementById('empty-state').classList.toggle('hidden', filteredOrders.length > 0);
+    if (filteredOrders.length === 0) { tbody.innerHTML = ''; }
+    else {
+      tbody.innerHTML = page.map(function(o) {
+        var rowCls   = 'order-row transition-colors' + (selectedIds.has(o.id) ? ' selected' : '');
+        var tracking = o.tracking ? '<span class="font-mono text-xs text-gray-700 bg-surface-100 px-2 py-0.5 rounded">' + o.tracking + '</span>' : '<span class="text-xs text-gray-400 italic">—</span>';
+        var action = (o.label_status === 'ready' || o.label_status === 'printed')
+          ? '<button onclick="openPreview(\'' + o.id + '\')" class="text-xs font-semibold text-primary-600 hover:underline">Preview</button>'
+          : '<span class="text-xs text-gray-400">—</span>';
+        return '<tr class="' + rowCls + '" id="row-' + o.id + '">'
+          + '<td class="px-4 py-3.5 text-center"><input type="checkbox" ' + (selectedIds.has(o.id) ? 'checked' : '') + ' onchange="toggleRow(\'' + o.id + '\', this)" class="w-4 h-4 rounded text-primary-500 focus:ring-primary-300"></td>'
+          + '<td class="px-4 py-3.5"><span class="font-mono text-xs font-semibold text-gray-800">' + o.id + '</span><br><span class="text-[10px] text-gray-400">' + o.package_id + '</span></td>'
+          + '<td class="px-4 py-3.5">' + platformBadge(o.platform) + '<br><span class="text-[10px] text-gray-400">' + o.shop + '</span></td>'
+          + '<td class="px-4 py-3.5"><span class="text-sm font-semibold text-gray-800">' + o.buyer + '</span><br><span class="text-[10px] text-gray-400">' + o.item + '</span></td>'
+          + '<td class="px-4 py-3.5"><span class="text-xs font-semibold text-gray-700">' + o.courier + '</span><br><span class="text-[10px] text-gray-400">' + o.weight + '</span></td>'
+          + '<td class="px-4 py-3.5">' + tracking + '</td>'
+          + '<td class="px-4 py-3.5">' + labelBadge(o.label_status, o.printed_at) + '</td>'
+          + '<td class="px-4 py-3.5 text-right">' + action + '</td>'
+          + '</tr>';
+      }).join('');
+    }
+    var total = filteredOrders.length;
+    document.getElementById('pagination-info').textContent = total === 0 ? '' : 'Showing ' + (start + 1) + '–' + Math.min(start + PAGE_SIZE, total) + ' of ' + total;
+    document.getElementById('result-count').textContent = total + ' result' + (total !== 1 ? 's' : '');
+    var ctrl = document.getElementById('pagination-controls');
+    ctrl.innerHTML = '';
+    for (var p = 1; p <= Math.ceil(total / PAGE_SIZE); p++) {
+      var btn = document.createElement('button');
+      btn.textContent = p;
+      btn.className = 'w-8 h-8 rounded-lg text-xs font-semibold transition ' + (p === currentPage ? 'bg-primary-500 text-white' : 'text-gray-500 bg-surface-100 hover:bg-surface-200');
+      btn.onclick = (function(pg) { return function() { currentPage = pg; renderTable(); }; })(p);
+      ctrl.appendChild(btn);
+    }
+    var allSel = page.length > 0 && page.every(function(o) { return selectedIds.has(o.id); });
+    document.getElementById('select-all').checked = allSel && page.length > 0;
+    document.getElementById('select-all').indeterminate = !allSel && page.some(function(o) { return selectedIds.has(o.id); });
+    updateStats();
+  }
+
+  function toggleRow(id, cb) {
+    if (cb.checked) selectedIds.add(id); else selectedIds.delete(id);
+    var row = document.getElementById('row-' + id);
+    if (row) row.classList.toggle('selected', cb.checked);
+    updateStats();
+    var page = filteredOrders.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+    var allSel = page.every(function(o) { return selectedIds.has(o.id); });
+    document.getElementById('select-all').checked = allSel;
+    document.getElementById('select-all').indeterminate = !allSel && page.some(function(o) { return selectedIds.has(o.id); });
+  }
+
+  function toggleSelectAll(cb) {
+    filteredOrders.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE).forEach(function(o) {
+      if (cb.checked) selectedIds.add(o.id); else selectedIds.delete(o.id);
+    });
+    renderTable();
+  }
+
+  function selectReadyOnly() {
+    filteredOrders.forEach(function(o) { if (o.label_status === 'ready') selectedIds.add(o.id); });
+    renderTable();
+  }
+
+  function deselectAll() { selectedIds.clear(); renderTable(); }
+
+  function applyFilters() {
+    var q        = document.getElementById('search-input').value.toLowerCase();
+    var pl       = document.getElementById('filter-platform').value;
+    var lb       = document.getElementById('filter-label').value;
+    var co       = document.getElementById('filter-courier').value;
+    var dateFrom = document.getElementById('filter-date-from').value; // 'YYYY-MM-DD'
+    var dateTo   = document.getElementById('filter-date-to').value;   // 'YYYY-MM-DD'
+    filteredOrders = MOCK_ORDERS.filter(function(o) {
+      var orderDay = o.order_date.substring(0, 10); // 'YYYY-MM-DD'
+      return (!q || o.id.toLowerCase().includes(q) || o.buyer.toLowerCase().includes(q) || (o.tracking && o.tracking.toLowerCase().includes(q)) || o.shop.toLowerCase().includes(q))
+        && (!pl || o.platform === pl)
+        && (!lb || o.label_status === lb)
+        && (!co || o.courier === co)
+        && (!dateFrom || orderDay >= dateFrom)
+        && (!dateTo   || orderDay <= dateTo);
+    });
+    currentPage = 1;
+    renderTable();
+  }
+
+  function clearFilters() {
+    ['search-input','filter-platform','filter-label','filter-courier','filter-date-from','filter-date-to'].forEach(function(id) { document.getElementById(id).value = ''; });
+    applyFilters();
+  }
+
+  function generateBarcodePath(code) {
+    var widths = [1,1,2,1,3,1,2,1,1,2,3,1,1,2,1,1,2,1,3,1,1,1,2,1,2,3,1,1,1,2,1];
+    var bars = []; var x = 5; var toggle = true;
+    for (var j = 0; j < widths.length; j++) {
+      if (toggle) bars.push('<rect x="' + x + '" y="2" width="' + widths[j] + '" height="36" fill="#000"/>');
+      x += widths[j] + 1; toggle = !toggle;
+    }
+    return bars.join('');
+  }
+
+  function buildLabelHTML(o) {
+    var pName = o.platform === 'tiktok' ? 'TikTok / Tokopedia' : 'Shopee';
+    var storedNote = (o.api_ref && o.api_ref.startsWith('pdf_url:')) ? 'Shopee PDF (url)' : 'TikTok PDF (blob)';
+    return '<div class="print-label space-y-3 text-xs" id="label-' + o.id + '">'
+      + '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #d1d5db;padding-bottom:6px;margin-bottom:4px">'
+      + '<div style="font-weight:800;font-size:14pt">' + o.courier + '</div>'
+      + '<div style="font-size:8pt;font-weight:700;color:#6b7280;border:1px solid #d1d5db;padding:2px 6px;border-radius:4px">' + pName + '</div>'
+      + '</div>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px">'
+      + '<div><div style="font-size:7pt;font-weight:700;color:#9ca3af;text-transform:uppercase">From</div><div style="font-weight:700">' + o.shop + '</div><div style="color:#6b7280;font-size:8pt">ID: ' + o.shop_id + '</div></div>'
+      + '<div><div style="font-size:7pt;font-weight:700;color:#9ca3af;text-transform:uppercase">To</div><div style="font-weight:700">' + o.buyer + '</div><div style="color:#6b7280">' + o.buyer_phone + '</div><div style="color:#6b7280;font-size:8pt;line-height:1.3;margin-top:2px">' + o.buyer_addr + '</div></div>'
+      + '</div>'
+      + '<div style="border-top:1px solid #d1d5db;padding-top:4px;margin-bottom:4px"><div style="font-size:7pt;font-weight:700;color:#9ca3af;text-transform:uppercase">Items</div><div style="font-weight:600">' + o.item + '</div><div style="color:#6b7280">Weight: ' + o.weight + '</div></div>'
+      + '<div style="border-top:1px solid #d1d5db;padding-top:4px"><svg viewBox="0 0 220 40" style="width:100%;height:36px">' + generateBarcodePath(o.tracking || o.id) + '</svg><div style="text-align:center;font-family:monospace;font-weight:700;margin-top:2px">' + (o.tracking || o.id) + '</div></div>'
+      + '<div style="border-top:1px solid #d1d5db;padding-top:4px;display:flex;justify-content:space-between;font-size:8pt;color:#9ca3af"><span>Order: ' + o.id + '</span><span>' + o.package_id + '</span><span>' + storedNote + '</span></div>'
+      + '</div>';
+  }
+
+  function openPreview(id) {
+    var o = MOCK_ORDERS.find(function(x) { return x.id === id; });
+    if (!o) return;
+    previewOrderId = id;
+    document.getElementById('preview-subtitle').textContent = o.id + ' · ' + o.buyer;
+    document.getElementById('preview-label-content').innerHTML = buildLabelHTML(o);
+    document.getElementById('previewModal').classList.remove('hidden');
+  }
+
+  function closePreview() { document.getElementById('previewModal').classList.add('hidden'); previewOrderId = null; }
+
+  function printSingle() {
+    if (!previewOrderId) return;
+    var o = MOCK_ORDERS.find(function(x) { return x.id === previewOrderId; });
+    if (!o) return;
+    var area = document.getElementById('print-area');
+    area.innerHTML = buildLabelHTML(o);
+    area.classList.remove('hidden');
+    window.print();
+    area.classList.add('hidden');
+    markPrinted([o.id]);
+    closePreview();
+  }
+
+  function printSelected() {
+    var toPrint = MOCK_ORDERS.filter(function(o) { return selectedIds.has(o.id) && (o.label_status === 'ready' || o.label_status === 'printed'); });
+    if (toPrint.length === 0) { alert('No printable labels selected. Select orders with Ready status.'); return; }
+    var area = document.getElementById('print-area');
+    area.innerHTML = toPrint.map(buildLabelHTML).join('');
+    area.classList.remove('hidden');
+    window.print();
+    area.classList.add('hidden');
+    markPrinted(toPrint.map(function(o) { return o.id; }));
+  }
+
+  function markPrinted(ids) {
+    var now = new Date();
+    var ts  = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    ids.forEach(function(id) {
+      var o = MOCK_ORDERS.find(function(x) { return x.id === id; });
+      if (o && o.label_status === 'ready') { o.label_status = 'printed'; o.printed_at = ts; }
+    });
+    renderTable();
+    updateStats();
+  }
+
+  function toggleFetchMenu() { document.getElementById('fetch-menu').classList.toggle('hidden'); }
+
+  function startFetch(platformFilter) {
+    document.getElementById('fetch-menu').classList.add('hidden');
+    // Simulate re-fetching: all matching platform orders get refreshed (new tracking, status → ready)
+    var toFetch = MOCK_ORDERS.filter(function(o) {
+      return platformFilter === 'tiktok' ? o.platform === 'tiktok' : o.platform === 'shopee';
+    });
+
+    var conf = PLATFORM_API[platformFilter];
+    var icon = document.getElementById('fetch-platform-icon');
+    icon.className = 'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ' + (platformFilter === 'shopee' ? 'bg-orange-500' : 'bg-gray-900');
+    icon.innerHTML = '<i class="fa-solid fa-rotate text-white spin"></i>';
+
+    var platformLabel = platformFilter === 'shopee' ? 'Shopee' : 'TikTok / Tokopedia';
+    document.getElementById('fetch-title').textContent    = 'Fetching from ' + platformLabel + '…';
+    document.getElementById('fetch-subtitle').textContent = toFetch.length + ' order' + (toFetch.length > 1 ? 's' : '') + ' to process';
+    document.getElementById('fetch-endpoint').textContent  = conf.endpoint;
+    document.getElementById('fetch-method').textContent    = conf.method;
+    document.getElementById('fetch-key-param').textContent = conf.key_param;
+    document.getElementById('fetch-returns').textContent   = conf.returns;
+
+    var bar = document.getElementById('fetch-progress-bar');
+    bar.className = 'h-2 rounded-full transition-all duration-300 ' + conf.bar_color;
+    bar.style.width = '0%';
+    document.getElementById('fetch-log').innerHTML = '';
+    document.getElementById('fetch-progress-text').textContent = '0 / ' + toFetch.length + ' processed';
+    document.getElementById('fetch-current-order').textContent = '';
+    document.getElementById('fetch-done-actions').classList.add('hidden');
+    document.getElementById('fetchModal').classList.remove('hidden');
+
+    var done = 0; var total = toFetch.length;
+    function processNext() {
+      if (done >= total) {
+        bar.style.width = '100%';
+        document.getElementById('fetch-title').textContent    = 'Done! All labels fetched.';
+        document.getElementById('fetch-subtitle').textContent = total + ' label' + (total > 1 ? 's' : '') + ' saved to local DB.';
+        document.getElementById('fetch-current-order').textContent = '';
+        icon.innerHTML = '<i class="fa-solid fa-circle-check text-white text-xl"></i>';
+        icon.className = 'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-emerald-500';
+        document.getElementById('fetch-done-actions').classList.remove('hidden');
+        renderTable(); updateStats(); return;
+      }
+      var o = toFetch[done];
+      document.getElementById('fetch-current-order').textContent = o.id;
+      var delay = platformFilter === 'shopee' ? 450 : 700;
+      setTimeout(function() {
+        done++;
+        o.label_status = 'ready';
+        o.tracking = (platformFilter === 'shopee' ? 'SP' : 'JP') + Math.floor(Math.random() * 9999999999).toString().padStart(10,'0') + 'ID';
+        o.api_ref  = platformFilter === 'shopee' ? 'pdf_url:https://shopee.cdn/label/' + o.id + '.pdf' : 'doc_url:https://tiktok.cdn/label/' + o.package_id + '.pdf';
+        o.printed_at = null;
+        addLog((platformFilter === 'shopee' ? '🟠' : '⬛') + ' ' + o.id + ' → ' + (platformFilter === 'shopee' ? 'PDF url' : 'PDF blob') + ' refreshed | ' + o.tracking, 'text-emerald-700');
+        bar.style.width = Math.round((done / total) * 100) + '%';
+        document.getElementById('fetch-progress-text').textContent = done + ' / ' + total + ' processed';
+        processNext();
+      }, delay);
+    }
+    processNext();
+  }
+
+  function addLog(msg, cls) {
+    var log = document.getElementById('fetch-log');
+    var el  = document.createElement('div');
+    el.className = 'font-mono text-[10px] ' + (cls || 'text-gray-500');
+    el.textContent = msg;
+    log.appendChild(el);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function closeFetchModal() { document.getElementById('fetchModal').classList.add('hidden'); }
+
+  function toggleDropdown(name) {
+    var dd = document.getElementById(name + '-dropdown');
+    var ar = document.getElementById(name + '-arrow');
+    if (!dd) return;
+    var open = dd.classList.contains('open');
+    dd.classList.toggle('open', !open);
+    if (ar) { ar.classList.toggle('fa-chevron-down', open); ar.classList.toggle('fa-chevron-up', !open); }
+  }
+
+  function toggleProfileDropdown() { document.getElementById('profile-dropdown').classList.toggle('hidden'); }
+
+  document.getElementById('previewModal').addEventListener('click', function(e) { if (e.target === this) closePreview(); });
+  document.getElementById('fetchModal').addEventListener('click', function(e) { if (e.target === this) closeFetchModal(); });
+  document.addEventListener('click', function(e) {
+    var menu = document.getElementById('fetch-menu');
+    if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !document.getElementById('btn-fetch').contains(e.target))
+      menu.classList.add('hidden');
+  });
+
+  applyFilters();
+  updateStats();
+</script>
+</body>
+</html>
