@@ -1,1205 +1,871 @@
 <!doctype html>
 <html lang="en" class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seller Integration - Tracking Center</title>
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
-            colors: {
-              primary: {
-                50: "#f0f7ff",
-                100: "#e0effe",
-                200: "#bae0fd",
-                300: "#7cc8fb",
-                400: "#36aaf5",
-                500: "#0c8ee6",
-                600: "#0070c4",
-                700: "#01599f",
-                800: "#064b83",
-                900: "#0b3f6d",
-              },
-              surface: {
-                50: "#fafbfc",
-                100: "#f4f6f8",
-                200: "#e9ecef",
-                300: "#dee2e6",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Integration - Tracking Center</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
+          colors: {
+            primary: {
+              50: "#f0f7ff",
+              100: "#e0effe",
+              200: "#bae0fd",
+              300: "#7cc8fb",
+              400: "#36aaf5",
+              500: "#0c8ee6",
+              600: "#0070c4",
+              700: "#01599f",
+              800: "#064b83",
+              900: "#0b3f6d",
+            },
+            surface: {
+              50: "#fafbfc",
+              100: "#f4f6f8",
+              200: "#e9ecef",
+              300: "#dee2e6",
             },
           },
         },
-      };
-    </script>
-    <style>
-      * {
-        font-family: "Plus Jakarta Sans", sans-serif;
+      },
+    };
+  </script>
+  <style>
+    * {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    .sidebar-item:hover {
+      background: rgba(12, 142, 230, 0.08);
+    }
+
+    .sidebar-item.active {
+      background: rgba(12, 142, 230, 0.12);
+      color: #0c8ee6;
+    }
+
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .dropdown-content.open {
+      max-height: 600px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f4f6f8;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c9d0d8;
+      border-radius: 10px;
+    }
+
+    .card-hover {
+      transition: all 0.25s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
       }
-      .sidebar-item:hover {
-        background: rgba(12, 142, 230, 0.08);
+
+      50% {
+        opacity: 0.4;
       }
-      .sidebar-item.active {
-        background: rgba(12, 142, 230, 0.12);
-        color: #0c8ee6;
-      }
-      .dropdown-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-      }
-      .dropdown-content.open {
-        max-height: 600px;
-      }
-      ::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f4f6f8;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #c9d0d8;
-        border-radius: 10px;
-      }
-      .card-hover {
-        transition: all 0.25s ease;
-      }
-      .card-hover:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
-      }
-      .status-pulse {
-        animation: pulse 2s infinite;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.4;
-        }
-      }
-      .shipment-row:hover {
-        background: #fafbfc;
-      }
-      .progress-step {
-        position: relative;
-      }
-      .progress-step:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 100%;
-        width: 100%;
-        height: 2px;
-        background: #e9ecef;
-        transform: translateY(-50%);
-      }
-      .progress-step.done:not(:last-child)::after {
-        background: #10b981;
-      }
-      .progress-step.active-step:not(:last-child)::after {
-        background: linear-gradient(90deg, #0c8ee6 50%, #e9ecef 50%);
-      }
-    </style>
-  </head>
-  <body class="h-full bg-surface-100">
-    <div class="flex h-full">
-      <!-- SIDEBAR -->
-      <aside
-        class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
-      >
-        <div class="p-6 border-b border-surface-200">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30"
-            >
-              <svg
-                class="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <div>
-              <h1 class="font-bold text-gray-900 text-lg leading-tight">
-                Seller Integration
-              </h1>
-              <span
-                class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide"
-                >ADMIN</span
-              >
-            </div>
+    }
+
+    .shipment-row:hover {
+      background: #fafbfc;
+    }
+
+    .progress-step {
+      position: relative;
+    }
+
+    .progress-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      width: 100%;
+      height: 2px;
+      background: #e9ecef;
+      transform: translateY(-50%);
+    }
+
+    .progress-step.done:not(:last-child)::after {
+      background: #10b981;
+    }
+
+    .progress-step.active-step:not(:last-child)::after {
+      background: linear-gradient(90deg, #0c8ee6 50%, #e9ecef 50%);
+    }
+  </style>
+</head>
+
+<body class="h-full bg-surface-100">
+  <div class="flex h-full">
+    <!-- SIDEBAR -->
+    <aside
+      class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
+      <div class="p-6 border-b border-surface-200">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
-        </div>
-                <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
-
-          <a href="../dashboard.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-home w-5"></i>Dashboard
-          </a>
-
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
-
           <div>
-            <button onclick="toggleDropdown('orders')" class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-cart-shopping w-5"></i>Orders
-              </div>
-              <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
-            </button>
-            <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-              <a href="../data/orders/all-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All Orders</a>
-              <a href="../data/orders/to-confirm-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting Confirmation</a>
-              <a href="../data/orders/to-pack-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready to Pack</a>
-              <a href="../data/orders/packed-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed Orders</a>
-              <a href="../data/orders/returned-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned Orders</a>
-              <a href="../data/orders/shopee-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
-              <a href="../data/orders/tiktok-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
-            </div>
-          </div>
-
-          <a href="../data/data-upload.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-upload w-5"></i>Data Upload
-          </a>
-
-          <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp; Logistics</div>
-
-          <a href="../shipping/print-label.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
-          </a>
-          <a href="../shipping/resi-checker.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-barcode w-5"></i>Resi Checker
-          </a>
-          <a href="../shipping/tracking-center.html" class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
-            <i class="fa-solid fa-truck w-5"></i>Tracking Center
-          </a>
-
-          <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
-
-          <a href="../analystics/product.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-chart-line w-5"></i>Product Performance
-          </a>
-
-        </nav>
-        <div class="p-4 border-t border-surface-200">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow"
-            >
-              AM
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-gray-800 truncate">
-                Admin Master
-              </p>
-              <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
-            </div>
-            <a
-              href="../../login.html"
-              class="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
-              title="Logout"
-            >
-              <i class="fa-solid fa-right-from-bracket text-sm"></i>
-            </a>
+            <h1 class="font-bold text-gray-900 text-lg leading-tight">
+              Seller Integration
+            </h1>
+            <span
+              class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide">ADMIN</span>
           </div>
         </div>
-      </aside>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
 
-      <!-- MAIN -->
-      <main class="flex-1 overflow-y-auto">
-        <!-- HEADER -->
-        <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
-          <div
-            class="flex items-center justify-between px-8 py-3 border-b border-surface-100"
-          >
-            <nav class="flex items-center gap-2 text-sm text-slate-500">
-              <span>Shipping &amp; Logistics</span>
-              <svg
-                class="w-4 h-4 text-slate-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-              <span class="text-slate-900 font-semibold">Tracking Center</span>
-            </nav>
+        <a href="../dashboard.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-home w-5"></i>Dashboard
+        </a>
+
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
+
+        <div>
+          <button onclick="toggleDropdown('orders')"
+            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
             <div class="flex items-center gap-3">
-              <div class="relative">
-                <input
-                  type="text"
-                  placeholder="Search shipment, seller…"
-                  class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
-                />
-                <svg
-                  class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <button
-                class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all"
-              >
-                <svg
-                  class="w-5 h-5 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-                <span
-                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
-                  >5</span
-                >
-              </button>
-              <div class="relative">
-                <button
-                  onclick="toggleProfileDropdown()"
-                  class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
-                >
-                  <div
-                    class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow"
-                  >
-                    A
-                  </div>
-                  <div class="text-left">
-                    <p class="text-sm font-semibold text-gray-900 leading-none">
-                      Admin
-                    </p>
-                    <p class="text-[11px] text-primary-600 mt-0.5">
-                      Admin
-                    </p>
-                  </div>
-                  <svg
-                    class="w-3 h-3 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="profile-dropdown"
-                  class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20"
-                >
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
-                    ><i class="fa-solid fa-user w-4"></i>My Profile</a
-                  >
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
-                    ><i class="fa-solid fa-gear w-4"></i>Settings</a
-                  >
-                  <hr class="my-1 border-surface-200" />
-                  <a
-                    href="../../login.html"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                    ><i class="fa-solid fa-right-from-bracket w-4"></i>Sign
-                    Out</a
-                  >
-                </div>
-              </div>
+              <i class="fa-solid fa-cart-shopping w-5"></i>Orders
             </div>
+            <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+          </button>
+          <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+            <a href="../data/orders/all-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All
+              Orders</a>
+            <a href="../data/orders/to-confirm-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting
+              Confirmation</a>
+            <a href="../data/orders/to-pack-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready
+              to Pack</a>
+            <a href="../data/orders/packed-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed
+              Orders</a>
+            <a href="../data/orders/returned-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned
+              Orders</a>
+            <a href="../data/orders/shopee-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+            <a href="../data/orders/tiktok-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
           </div>
-        </header>
+        </div>
 
-        <div class="p-8 space-y-6">
-          <!-- PAGE TITLE -->
-          <div class="flex items-start justify-between flex-wrap gap-4">
-            <div>
-              <h2
-                class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5"
-              >
-                <span
-                  class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0"
-                >
-                  <i class="fa-solid fa-truck text-white text-sm"></i>
-                </span>
-                Tracking Center
-              </h2>
-              <p class="text-slate-500 text-sm mt-1">
-                Monitor pengiriman real-time dari semua seller dan marketplace
-              </p>
-            </div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <div
-                class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2"
-              >
-                <span
-                  class="w-2 h-2 bg-emerald-500 rounded-full status-pulse"
-                ></span>
-                <span class="text-xs font-semibold text-emerald-700"
-                  >Live Tracking Active</span
-                >
-              </div>
-              <button
-                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all"
-              >
-                <i class="fa-solid fa-file-export text-gray-500"></i>Export
-                Report
-              </button>
-            </div>
-          </div>
+        <a href="../data/data-upload.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-upload w-5"></i>Data Upload
+        </a>
 
-          <!-- STAT CARDS -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-            <div
-              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Total Shipments</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center"
-                >
-                  <i
-                    class="fa-solid fa-boxes-stacked text-primary-500 text-sm"
-                  ></i>
-                </div>
-              </div>
-              <p class="text-2xl font-extrabold text-gray-900">8,432</p>
-              <p class="text-[10px] text-gray-400 mt-1">This month</p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >In Transit</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-truck-fast text-blue-500 text-sm"></i>
-                </div>
-              </div>
-              <p class="text-2xl font-extrabold text-blue-600">1,247</p>
-              <p class="text-[10px] text-blue-500 mt-1 font-medium">
-                Currently moving
-              </p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Delivered</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"
-                >
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-500 text-sm"
-                  ></i>
-                </div>
-              </div>
-              <p class="text-2xl font-extrabold text-emerald-600">6,891</p>
-              <p class="text-[10px] text-emerald-500 mt-1 font-medium">
-                81.7% success rate
-              </p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Delayed</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-clock text-amber-500 text-sm"></i>
-                </div>
-              </div>
-              <p class="text-2xl font-extrabold text-amber-600">186</p>
-              <p class="text-[10px] text-amber-500 mt-1 font-medium">
-                Over SLA threshold
-              </p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Returned</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-rotate-left text-red-500 text-sm"></i>
-                </div>
-              </div>
-              <p class="text-2xl font-extrabold text-red-500">94</p>
-              <p class="text-[10px] text-red-500 mt-1 font-medium">
-                Needs attention
-              </p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Avg Delivery</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-gauge-high text-violet-500 text-sm"></i>
-                </div>
-              </div>
-              <p class="text-2xl font-extrabold text-violet-600">
-                2.4<span class="text-sm font-bold text-gray-400 ml-0.5"
-                  >days</span
-                >
-              </p>
-              <p class="text-[10px] text-gray-400 mt-1">Across all couriers</p>
-            </div>
-          </div>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp;
+          Logistics</div>
 
-          <!-- COURIER PERFORMANCE -->
-          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div
-              class="xl:col-span-2 bg-white rounded-2xl border border-surface-200 p-6"
-            >
-              <div class="flex items-center justify-between mb-5">
-                <div>
-                  <h3
-                    class="text-sm font-bold text-gray-800 flex items-center gap-2"
-                  >
-                    <i class="fa-solid fa-chart-bar text-primary-500"></i>
-                    Courier Performance
-                  </h3>
-                  <p class="text-xs text-gray-400 mt-0.5">
-                    Delivery success rate by courier this month
-                  </p>
-                </div>
-                <select
-                  class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400"
-                >
-                  <option>This Month</option>
-                  <option>Last 7 Days</option>
-                  <option>Last 30 Days</option>
-                </select>
-              </div>
-              <div class="space-y-4">
-                <div>
-                  <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-bold text-gray-700">JNE</span>
-                      <span class="text-[10px] text-gray-400"
-                        >2,341 shipments</span
-                      >
-                    </div>
-                    <span class="text-xs font-bold text-emerald-600"
-                      >94.2%</span
-                    >
-                  </div>
-                  <div class="w-full bg-surface-100 rounded-full h-2.5">
-                    <div
-                      class="bg-emerald-500 h-full rounded-full transition-all"
-                      style="width: 94.2%"
-                    ></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-bold text-gray-700"
-                        >J&T Express</span
-                      >
-                      <span class="text-[10px] text-gray-400"
-                        >1,987 shipments</span
-                      >
-                    </div>
-                    <span class="text-xs font-bold text-emerald-600"
-                      >92.8%</span
-                    >
-                  </div>
-                  <div class="w-full bg-surface-100 rounded-full h-2.5">
-                    <div
-                      class="bg-emerald-500 h-full rounded-full transition-all"
-                      style="width: 92.8%"
-                    ></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-bold text-gray-700"
-                        >SiCepat</span
-                      >
-                      <span class="text-[10px] text-gray-400"
-                        >1,654 shipments</span
-                      >
-                    </div>
-                    <span class="text-xs font-bold text-emerald-600"
-                      >91.5%</span
-                    >
-                  </div>
-                  <div class="w-full bg-surface-100 rounded-full h-2.5">
-                    <div
-                      class="bg-emerald-500 h-full rounded-full transition-all"
-                      style="width: 91.5%"
-                    ></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-bold text-gray-700"
-                        >Anteraja</span
-                      >
-                      <span class="text-[10px] text-gray-400"
-                        >1,230 shipments</span
-                      >
-                    </div>
-                    <span class="text-xs font-bold text-amber-600">88.4%</span>
-                  </div>
-                  <div class="w-full bg-surface-100 rounded-full h-2.5">
-                    <div
-                      class="bg-amber-400 h-full rounded-full transition-all"
-                      style="width: 88.4%"
-                    ></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-bold text-gray-700"
-                        >Ninja Xpress</span
-                      >
-                      <span class="text-[10px] text-gray-400"
-                        >876 shipments</span
-                      >
-                    </div>
-                    <span class="text-xs font-bold text-emerald-600"
-                      >90.1%</span
-                    >
-                  </div>
-                  <div class="w-full bg-surface-100 rounded-full h-2.5">
-                    <div
-                      class="bg-emerald-500 h-full rounded-full transition-all"
-                      style="width: 90.1%"
-                    ></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1.5">
-                    <div class="flex items-center gap-2">
-                      <span class="text-xs font-bold text-gray-700"
-                        >Pos Indonesia</span
-                      >
-                      <span class="text-[10px] text-gray-400"
-                        >344 shipments</span
-                      >
-                    </div>
-                    <span class="text-xs font-bold text-red-500">78.6%</span>
-                  </div>
-                  <div class="w-full bg-surface-100 rounded-full h-2.5">
-                    <div
-                      class="bg-red-400 h-full rounded-full transition-all"
-                      style="width: 78.6%"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <a href="../shipping/print-label.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
+        </a>
+        <a href="../shipping/resi-checker.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-barcode w-5"></i>Resi Checker
+        </a>
+        <a href="../shipping/tracking-center.html"
+          class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
+          <i class="fa-solid fa-truck w-5"></i>Tracking Center
+        </a>
 
-            <!-- Delayed Alerts -->
-            <div class="bg-white rounded-2xl border border-surface-200 p-6">
-              <h3
-                class="text-sm font-bold text-gray-800 flex items-center gap-2 mb-1"
-              >
-                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-                Delayed Shipments
-              </h3>
-              <p class="text-xs text-gray-400 mb-4">
-                Requires immediate attention
-              </p>
-              <div class="space-y-3">
-                <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
-                  <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs font-bold text-amber-800"
-                      >JNE082736451928</span
-                    >
-                    <span
-                      class="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full"
-                      >+3 days</span
-                    >
-                  </div>
-                  <p class="text-[10px] text-amber-700">
-                    Toko Sepatu ID → Surabaya
-                  </p>
-                  <p class="text-[10px] text-amber-500 mt-0.5">
-                    Stuck at Hub JKT-2 since 23 Feb
-                  </p>
-                </div>
-                <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
-                  <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs font-bold text-amber-800"
-                      >JT9182736450</span
-                    >
-                    <span
-                      class="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full"
-                      >+2 days</span
-                    >
-                  </div>
-                  <p class="text-[10px] text-amber-700">
-                    Beauty Fashion → Medan
-                  </p>
-                  <p class="text-[10px] text-amber-500 mt-0.5">
-                    No scan update since 24 Feb
-                  </p>
-                </div>
-                <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
-                  <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs font-bold text-amber-800"
-                      >SP1234567890123</span
-                    >
-                    <span
-                      class="text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded-full"
-                      >+1 day</span
-                    >
-                  </div>
-                  <p class="text-[10px] text-amber-700">
-                    Gadget Empire → Makassar
-                  </p>
-                  <p class="text-[10px] text-amber-500 mt-0.5">
-                    Weather delay — Balikpapan transit
-                  </p>
-                </div>
-                <div class="bg-red-50 rounded-xl p-3 border border-red-100">
-                  <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs font-bold text-red-800"
-                      >ANT0091827364</span
-                    >
-                    <span
-                      class="text-[10px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded-full"
-                      >Failed</span
-                    >
-                  </div>
-                  <p class="text-[10px] text-red-700">Hijab Jaya → Bandung</p>
-                  <p class="text-[10px] text-red-500 mt-0.5">
-                    Address not found — return initiated
-                  </p>
-                </div>
-              </div>
-              <button
-                class="w-full mt-4 text-xs font-bold text-primary-600 hover:text-primary-700 py-2 bg-primary-50 rounded-xl hover:bg-primary-100 transition"
-              >
-                View All 186 Delayed Shipments →
-              </button>
-            </div>
-          </div>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
 
-          <!-- SHIPMENT TABLE -->
+        <a href="../analystics/product.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-chart-line w-5"></i>Product Performance
+        </a>
+
+      </nav>
+      <div class="p-4 border-t border-surface-200">
+        <div class="flex items-center gap-3">
           <div
-            class="bg-white rounded-2xl border border-surface-200 overflow-hidden"
-          >
-            <div
-              class="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-3"
-            >
-              <h3
-                class="text-sm font-bold text-gray-800 flex items-center gap-2"
-              >
-                <i class="fa-solid fa-list text-primary-500"></i>
-                All Shipments
-                <span
-                  class="px-2 py-0.5 text-[11px] font-bold bg-primary-100 text-primary-700 rounded-full"
-                  >8,432</span
-                >
-              </h3>
-              <div class="flex items-center gap-2 flex-wrap">
-                <div class="flex gap-1.5">
-                  <button
-                    class="px-3 py-1.5 bg-surface-100 text-gray-600 rounded-lg text-xs font-semibold"
-                  >
-                    All
-                  </button>
-                  <button
-                    class="px-3 py-1.5 text-blue-600 bg-blue-50 rounded-lg text-xs font-bold"
-                  >
-                    In Transit
-                  </button>
-                  <button
-                    class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                  >
-                    Delivered
-                  </button>
-                  <button
-                    class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                  >
-                    Delayed
-                  </button>
-                  <button
-                    class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                  >
-                    Returned
-                  </button>
+            class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow">
+            AM
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-800 truncate">
+              Admin Master
+            </p>
+            <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
+          </div>
+          <a href="../../login.html" class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-sm"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- HEADER -->
+      <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+        <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
+          <nav class="flex items-center gap-2 text-sm text-slate-500">
+            <span>Shipping &amp; Logistics</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-slate-900 font-semibold">Tracking Center</span>
+          </nav>
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <input type="text" placeholder="Search shipment, seller…"
+                class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
+              <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <button class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
+              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span
+                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+            </button>
+            <div class="relative">
+              <button onclick="toggleProfileDropdown()"
+                class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+                <div
+                  class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow">
+                  A
                 </div>
-                <select
-                  class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400"
-                >
-                  <option>All Couriers</option>
-                  <option>JNE</option>
-                  <option>J&T Express</option>
-                  <option>SiCepat</option>
-                  <option>Anteraja</option>
-                  <option>Ninja Xpress</option>
-                </select>
-                <select
-                  class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400"
-                >
-                  <option>All Marketplaces</option>
-                  <option>Shopee</option>
-                  <option>TikTok Shop</option>
-                  <option>Tokopedia</option>
-                  <option>Lazada</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="bg-surface-50 border-b border-surface-200">
-                    <th
-                      class="text-left px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Tracking No.
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Courier
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Seller
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Route
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Status
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Last Update
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      ETA
-                    </th>
-                    <th class="px-4 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-surface-100">
-                  <tr class="shipment-row transition">
-                    <td class="px-6 py-3.5">
-                      <span class="font-mono text-xs font-bold text-gray-900"
-                        >JNE082736451928</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg"
-                        >JNE</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700">Toko Sepatu ID</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >Shopee</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700"
-                        >Jakarta → Surabaya</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700"
-                        ><span
-                          class="w-1.5 h-1.5 bg-blue-500 rounded-full"
-                        ></span
-                        >In Transit</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-600">Hub Surabaya</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >26 Feb, 08:30</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs font-semibold text-gray-900"
-                        >27 Feb</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <button
-                        class="p-1.5 hover:bg-primary-50 rounded-lg transition"
-                        title="Track"
-                      >
-                        <i
-                          class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr class="shipment-row transition">
-                    <td class="px-6 py-3.5">
-                      <span class="font-mono text-xs font-bold text-gray-900"
-                        >SP1234567890123</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg"
-                        >SiCepat</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700">Gadget Empire</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >Tokopedia</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700"
-                        >Bandung → Makassar</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700"
-                        ><span
-                          class="w-1.5 h-1.5 bg-amber-500 rounded-full"
-                        ></span
-                        >Delayed</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-600"
-                        >Transit Balikpapan</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >25 Feb, 14:20</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs font-semibold text-red-500"
-                        >Overdue</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <button
-                        class="p-1.5 hover:bg-primary-50 rounded-lg transition"
-                        title="Track"
-                      >
-                        <i
-                          class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr class="shipment-row transition">
-                    <td class="px-6 py-3.5">
-                      <span class="font-mono text-xs font-bold text-gray-900"
-                        >JT9182736450</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg"
-                        >J&T</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700">Beauty Fashion</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >TikTok Shop</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700">Jakarta → Medan</span>
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700"
-                        ><span
-                          class="w-1.5 h-1.5 bg-blue-500 rounded-full"
-                        ></span
-                        >In Transit</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-600">Hub Pekanbaru</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >26 Feb, 06:15</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs font-semibold text-gray-900"
-                        >28 Feb</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <button
-                        class="p-1.5 hover:bg-primary-50 rounded-lg transition"
-                        title="Track"
-                      >
-                        <i
-                          class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr class="shipment-row transition bg-emerald-50/30">
-                    <td class="px-6 py-3.5">
-                      <span class="font-mono text-xs font-bold text-gray-900"
-                        >NX7654321098</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg"
-                        >Ninja</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700">Elektronik Murah</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >Shopee</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700"
-                        >Semarang → Yogyakarta</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700"
-                        ><span
-                          class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
-                        ></span
-                        >Delivered</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-600"
-                        >Diterima — Yogyakarta</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >25 Feb, 16:45</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs font-semibold text-emerald-600"
-                        >✓ Done</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <button
-                        class="p-1.5 hover:bg-primary-50 rounded-lg transition"
-                        title="Track"
-                      >
-                        <i
-                          class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr class="shipment-row transition bg-red-50/30">
-                    <td class="px-6 py-3.5">
-                      <span class="font-mono text-xs font-bold text-gray-900"
-                        >ANT0091827364</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg"
-                        >Anteraja</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700">Hijab Jaya</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >Lazada</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-700"
-                        >Jakarta → Bandung</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span
-                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700"
-                        ><span
-                          class="w-1.5 h-1.5 bg-red-500 rounded-full"
-                        ></span
-                        >Returned</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs text-gray-600"
-                        >Address not found</span
-                      ><br /><span class="text-[10px] text-gray-400"
-                        >24 Feb, 11:30</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <span class="text-xs font-semibold text-red-500"
-                        >Returned</span
-                      >
-                    </td>
-                    <td class="px-4 py-3.5">
-                      <button
-                        class="p-1.5 hover:bg-primary-50 rounded-lg transition"
-                        title="Track"
-                      >
-                        <i
-                          class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Pagination -->
-            <div
-              class="px-6 py-4 border-t border-surface-100 flex items-center justify-between"
-            >
-              <p class="text-xs text-gray-500">
-                Showing <span class="font-semibold text-gray-900">1-5</span> of
-                <span class="font-semibold text-gray-900">8,432</span> shipments
-              </p>
-              <div class="flex items-center gap-1">
-                <button
-                  class="px-3 py-1.5 text-gray-400 rounded-lg text-xs font-semibold"
-                  disabled
-                >
-                  Previous
-                </button>
-                <button
-                  class="px-3 py-1.5 bg-primary-500 text-white rounded-lg text-xs font-bold"
-                >
-                  1
-                </button>
-                <button
-                  class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                >
-                  2
-                </button>
-                <button
-                  class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                >
-                  3
-                </button>
-                <span class="px-2 text-gray-400 text-xs">…</span>
-                <button
-                  class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                >
-                  1,687
-                </button>
-                <button
-                  class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold"
-                >
-                  Next
-                </button>
+                <div class="text-left">
+                  <p class="text-sm font-semibold text-gray-900 leading-none">
+                    Admin
+                  </p>
+                  <p class="text-[11px] text-primary-600 mt-0.5">
+                    Admin
+                  </p>
+                </div>
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="profile-dropdown"
+                class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
+                <a href="../my-profile.html"
+                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
+                    class="fa-solid fa-user w-4"></i>My Profile</a>
+                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
+                    class="fa-solid fa-gear w-4"></i>Settings</a>
+                <hr class="my-1 border-surface-200" />
+                <a href="../../login.html"
+                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><i
+                    class="fa-solid fa-right-from-bracket w-4"></i>Sign
+                  Out</a>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </header>
 
-    <script>
-      // Dropdown toggle
-      function toggleDropdown(name) {
-        const dropdown = document.getElementById(name + "-dropdown");
-        const arrow = document.getElementById(name + "-arrow");
-        dropdown.classList.toggle("open");
-        arrow.style.transform = dropdown.classList.contains("open")
-          ? "rotate(180deg)"
-          : "";
-      }
+      <div class="p-8 space-y-6">
+        <!-- PAGE TITLE -->
+        <div class="flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
+              <span
+                class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0">
+                <i class="fa-solid fa-truck text-white text-sm"></i>
+              </span>
+              Tracking Center
+            </h2>
+            <p class="text-slate-500 text-sm mt-1">
+              Monitor pengiriman real-time dari semua seller dan marketplace
+            </p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2">
+              <span class="w-2 h-2 bg-emerald-500 rounded-full status-pulse"></span>
+              <span class="text-xs font-semibold text-emerald-700">Live Tracking Active</span>
+            </div>
+            <button
+              class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
+              <i class="fa-solid fa-file-export text-gray-500"></i>Export
+              Report
+            </button>
+          </div>
+        </div>
 
-      // Profile dropdown
-      function toggleProfileDropdown() {
-        document.getElementById("profile-dropdown").classList.toggle("hidden");
-      }
-      document.addEventListener("click", function (e) {
-        const dp = document.getElementById("profile-dropdown");
-        if (dp && !e.target.closest("[onclick*='toggleProfileDropdown']"))
-          dp.classList.add("hidden");
-      });
-    </script>
-  </body>
+        <!-- STAT CARDS -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+          <div class="bg-white rounded-2xl border border-surface-200 p-5 card-hover">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Shipments</span>
+              <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
+                <i class="fa-solid fa-boxes-stacked text-primary-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-extrabold text-gray-900">8,432</p>
+            <p class="text-[10px] text-gray-400 mt-1">This month</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5 card-hover">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">In Transit</span>
+              <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                <i class="fa-solid fa-truck-fast text-blue-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-extrabold text-blue-600">1,247</p>
+            <p class="text-[10px] text-blue-500 mt-1 font-medium">
+              Currently moving
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5 card-hover">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Delivered</span>
+              <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-extrabold text-emerald-600">6,891</p>
+            <p class="text-[10px] text-emerald-500 mt-1 font-medium">
+              81.7% success rate
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5 card-hover">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Delayed</span>
+              <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                <i class="fa-solid fa-clock text-amber-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-extrabold text-amber-600">186</p>
+            <p class="text-[10px] text-amber-500 mt-1 font-medium">
+              Over SLA threshold
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5 card-hover">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Returned</span>
+              <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+                <i class="fa-solid fa-rotate-left text-red-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-extrabold text-red-500">94</p>
+            <p class="text-[10px] text-red-500 mt-1 font-medium">
+              Needs attention
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5 card-hover">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Avg Delivery</span>
+              <div class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+                <i class="fa-solid fa-gauge-high text-violet-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-2xl font-extrabold text-violet-600">
+              2.4<span class="text-sm font-bold text-gray-400 ml-0.5">days</span>
+            </p>
+            <p class="text-[10px] text-gray-400 mt-1">Across all couriers</p>
+          </div>
+        </div>
+
+        <!-- COURIER PERFORMANCE -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div class="xl:col-span-2 bg-white rounded-2xl border border-surface-200 p-6">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                  <i class="fa-solid fa-chart-bar text-primary-500"></i>
+                  Courier Performance
+                </h3>
+                <p class="text-xs text-gray-400 mt-0.5">
+                  Delivery success rate by courier this month
+                </p>
+              </div>
+              <select
+                class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <option>This Month</option>
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+              </select>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700">JNE</span>
+                    <span class="text-[10px] text-gray-400">2,341 shipments</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-600">94.2%</span>
+                </div>
+                <div class="w-full bg-surface-100 rounded-full h-2.5">
+                  <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: 94.2%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700">J&T Express</span>
+                    <span class="text-[10px] text-gray-400">1,987 shipments</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-600">92.8%</span>
+                </div>
+                <div class="w-full bg-surface-100 rounded-full h-2.5">
+                  <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: 92.8%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700">SiCepat</span>
+                    <span class="text-[10px] text-gray-400">1,654 shipments</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-600">91.5%</span>
+                </div>
+                <div class="w-full bg-surface-100 rounded-full h-2.5">
+                  <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: 91.5%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700">Anteraja</span>
+                    <span class="text-[10px] text-gray-400">1,230 shipments</span>
+                  </div>
+                  <span class="text-xs font-bold text-amber-600">88.4%</span>
+                </div>
+                <div class="w-full bg-surface-100 rounded-full h-2.5">
+                  <div class="bg-amber-400 h-full rounded-full transition-all" style="width: 88.4%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700">Ninja Xpress</span>
+                    <span class="text-[10px] text-gray-400">876 shipments</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-600">90.1%</span>
+                </div>
+                <div class="w-full bg-surface-100 rounded-full h-2.5">
+                  <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: 90.1%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-700">Pos Indonesia</span>
+                    <span class="text-[10px] text-gray-400">344 shipments</span>
+                  </div>
+                  <span class="text-xs font-bold text-red-500">78.6%</span>
+                </div>
+                <div class="w-full bg-surface-100 rounded-full h-2.5">
+                  <div class="bg-red-400 h-full rounded-full transition-all" style="width: 78.6%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delayed Alerts -->
+          <div class="bg-white rounded-2xl border border-surface-200 p-6">
+            <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2 mb-1">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+              Delayed Shipments
+            </h3>
+            <p class="text-xs text-gray-400 mb-4">
+              Requires immediate attention
+            </p>
+            <div class="space-y-3">
+              <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold text-amber-800">JNE082736451928</span>
+                  <span class="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full">+3 days</span>
+                </div>
+                <p class="text-[10px] text-amber-700">
+                  Toko Sepatu ID → Surabaya
+                </p>
+                <p class="text-[10px] text-amber-500 mt-0.5">
+                  Stuck at Hub JKT-2 since 23 Feb
+                </p>
+              </div>
+              <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold text-amber-800">JT9182736450</span>
+                  <span class="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full">+2 days</span>
+                </div>
+                <p class="text-[10px] text-amber-700">
+                  Beauty Fashion → Medan
+                </p>
+                <p class="text-[10px] text-amber-500 mt-0.5">
+                  No scan update since 24 Feb
+                </p>
+              </div>
+              <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold text-amber-800">SP1234567890123</span>
+                  <span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded-full">+1
+                    day</span>
+                </div>
+                <p class="text-[10px] text-amber-700">
+                  Gadget Empire → Makassar
+                </p>
+                <p class="text-[10px] text-amber-500 mt-0.5">
+                  Weather delay — Balikpapan transit
+                </p>
+              </div>
+              <div class="bg-red-50 rounded-xl p-3 border border-red-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold text-red-800">ANT0091827364</span>
+                  <span class="text-[10px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded-full">Failed</span>
+                </div>
+                <p class="text-[10px] text-red-700">Hijab Jaya → Bandung</p>
+                <p class="text-[10px] text-red-500 mt-0.5">
+                  Address not found — return initiated
+                </p>
+              </div>
+            </div>
+            <button
+              class="w-full mt-4 text-xs font-bold text-primary-600 hover:text-primary-700 py-2 bg-primary-50 rounded-xl hover:bg-primary-100 transition">
+              View All 186 Delayed Shipments →
+            </button>
+          </div>
+        </div>
+
+        <!-- SHIPMENT TABLE -->
+        <div class="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-3">
+            <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+              <i class="fa-solid fa-list text-primary-500"></i>
+              All Shipments
+              <span class="px-2 py-0.5 text-[11px] font-bold bg-primary-100 text-primary-700 rounded-full">8,432</span>
+            </h3>
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="flex gap-1.5">
+                <button class="px-3 py-1.5 bg-surface-100 text-gray-600 rounded-lg text-xs font-semibold">
+                  All
+                </button>
+                <button class="px-3 py-1.5 text-blue-600 bg-blue-50 rounded-lg text-xs font-bold">
+                  In Transit
+                </button>
+                <button class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                  Delivered
+                </button>
+                <button class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                  Delayed
+                </button>
+                <button class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                  Returned
+                </button>
+              </div>
+              <select
+                class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <option>All Couriers</option>
+                <option>JNE</option>
+                <option>J&T Express</option>
+                <option>SiCepat</option>
+                <option>Anteraja</option>
+                <option>Ninja Xpress</option>
+              </select>
+              <select
+                class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <option>All Marketplaces</option>
+                <option>Shopee</option>
+                <option>TikTok Shop</option>
+                <option>Tokopedia</option>
+                <option>Lazada</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-surface-50 border-b border-surface-200">
+                  <th class="text-left px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Tracking No.
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Courier
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Seller
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Route
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Last Update
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    ETA
+                  </th>
+                  <th class="px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-surface-100">
+                <tr class="shipment-row transition">
+                  <td class="px-6 py-3.5">
+                    <span class="font-mono text-xs font-bold text-gray-900">JNE082736451928</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg">JNE</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Toko Sepatu ID</span><br /><span
+                      class="text-[10px] text-gray-400">Shopee</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Jakarta → Surabaya</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700"><span
+                        class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>In Transit</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-600">Hub Surabaya</span><br /><span
+                      class="text-[10px] text-gray-400">26 Feb, 08:30</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-gray-900">27 Feb</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <button class="p-1.5 hover:bg-primary-50 rounded-lg transition" title="Track">
+                      <i class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="shipment-row transition">
+                  <td class="px-6 py-3.5">
+                    <span class="font-mono text-xs font-bold text-gray-900">SP1234567890123</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg">SiCepat</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Gadget Empire</span><br /><span
+                      class="text-[10px] text-gray-400">Tokopedia</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Bandung → Makassar</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700"><span
+                        class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>Delayed</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-600">Transit Balikpapan</span><br /><span
+                      class="text-[10px] text-gray-400">25 Feb, 14:20</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-red-500">Overdue</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <button class="p-1.5 hover:bg-primary-50 rounded-lg transition" title="Track">
+                      <i class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="shipment-row transition">
+                  <td class="px-6 py-3.5">
+                    <span class="font-mono text-xs font-bold text-gray-900">JT9182736450</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg">J&T</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Beauty Fashion</span><br /><span
+                      class="text-[10px] text-gray-400">TikTok Shop</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Jakarta → Medan</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700"><span
+                        class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>In Transit</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-600">Hub Pekanbaru</span><br /><span
+                      class="text-[10px] text-gray-400">26 Feb, 06:15</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-gray-900">28 Feb</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <button class="p-1.5 hover:bg-primary-50 rounded-lg transition" title="Track">
+                      <i class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="shipment-row transition bg-emerald-50/30">
+                  <td class="px-6 py-3.5">
+                    <span class="font-mono text-xs font-bold text-gray-900">NX7654321098</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg">Ninja</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Elektronik Murah</span><br /><span
+                      class="text-[10px] text-gray-400">Shopee</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Semarang → Yogyakarta</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700"><span
+                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Delivered</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-600">Diterima — Yogyakarta</span><br /><span
+                      class="text-[10px] text-gray-400">25 Feb, 16:45</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-emerald-600">✓ Done</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <button class="p-1.5 hover:bg-primary-50 rounded-lg transition" title="Track">
+                      <i class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr class="shipment-row transition bg-red-50/30">
+                  <td class="px-6 py-3.5">
+                    <span class="font-mono text-xs font-bold text-gray-900">ANT0091827364</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span
+                      class="text-xs font-semibold text-gray-700 bg-surface-100 px-2 py-1 rounded-lg">Anteraja</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Hijab Jaya</span><br /><span
+                      class="text-[10px] text-gray-400">Lazada</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-700">Jakarta → Bandung</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700"><span
+                        class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Returned</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs text-gray-600">Address not found</span><br /><span
+                      class="text-[10px] text-gray-400">24 Feb, 11:30</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <span class="text-xs font-semibold text-red-500">Returned</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <button class="p-1.5 hover:bg-primary-50 rounded-lg transition" title="Track">
+                      <i class="fa-solid fa-location-dot text-gray-400 hover:text-primary-600 text-xs"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="px-6 py-4 border-t border-surface-100 flex items-center justify-between">
+            <p class="text-xs text-gray-500">
+              Showing <span class="font-semibold text-gray-900">1-5</span> of
+              <span class="font-semibold text-gray-900">8,432</span> shipments
+            </p>
+            <div class="flex items-center gap-1">
+              <button class="px-3 py-1.5 text-gray-400 rounded-lg text-xs font-semibold" disabled>
+                Previous
+              </button>
+              <button class="px-3 py-1.5 bg-primary-500 text-white rounded-lg text-xs font-bold">
+                1
+              </button>
+              <button class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                2
+              </button>
+              <button class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                3
+              </button>
+              <span class="px-2 text-gray-400 text-xs">…</span>
+              <button class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                1,687
+              </button>
+              <button class="px-3 py-1.5 text-gray-600 hover:bg-surface-100 rounded-lg text-xs font-semibold">
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Dropdown toggle
+    function toggleDropdown(name) {
+      const dropdown = document.getElementById(name + "-dropdown");
+      const arrow = document.getElementById(name + "-arrow");
+      dropdown.classList.toggle("open");
+      arrow.style.transform = dropdown.classList.contains("open")
+        ? "rotate(180deg)"
+        : "";
+    }
+
+    // Profile dropdown
+    function toggleProfileDropdown() {
+      document.getElementById("profile-dropdown").classList.toggle("hidden");
+    }
+    document.addEventListener("click", function (e) {
+      const dp = document.getElementById("profile-dropdown");
+      if (dp && !e.target.closest("[onclick*='toggleProfileDropdown']"))
+        dp.classList.add("hidden");
+    });
+  </script>
+</body>
+
 </html>

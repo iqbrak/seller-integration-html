@@ -1,1443 +1,1264 @@
 <!doctype html>
 <html lang="en" class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seller Integration - Resi Checker</title>
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
-            colors: {
-              primary: {
-                50: "#f0f7ff",
-                100: "#e0effe",
-                200: "#bae0fd",
-                300: "#7cc8fb",
-                400: "#36aaf5",
-                500: "#0c8ee6",
-                600: "#0070c4",
-                700: "#01599f",
-                800: "#064b83",
-                900: "#0b3f6d",
-              },
-              surface: {
-                50: "#fafbfc",
-                100: "#f4f6f8",
-                200: "#e9ecef",
-                300: "#dee2e6",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Integration - Resi Checker</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
+          colors: {
+            primary: {
+              50: "#f0f7ff",
+              100: "#e0effe",
+              200: "#bae0fd",
+              300: "#7cc8fb",
+              400: "#36aaf5",
+              500: "#0c8ee6",
+              600: "#0070c4",
+              700: "#01599f",
+              800: "#064b83",
+              900: "#0b3f6d",
+            },
+            surface: {
+              50: "#fafbfc",
+              100: "#f4f6f8",
+              200: "#e9ecef",
+              300: "#dee2e6",
             },
           },
         },
-      };
-    </script>
-    <style>
-      * {
-        font-family: "Plus Jakarta Sans", sans-serif;
-      }
-      .sidebar-item:hover {
-        background: rgba(12, 142, 230, 0.08);
-      }
-      .sidebar-item.active {
-        background: rgba(12, 142, 230, 0.12);
-        color: #0c8ee6;
-      }
-      .dropdown-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-      }
-      .dropdown-content.open {
-        max-height: 600px;
-      }
-      ::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f4f6f8;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #c9d0d8;
-        border-radius: 10px;
-      }
-      .result-row:hover {
-        background: #fafbfc;
-      }
-      .result-row.selected {
-        background: #e0effe;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      .spin {
-        animation: spin 0.8s linear infinite;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .fade-in {
-        animation: fadeIn 0.25s ease both;
-      }
-      .timeline-item:not(:last-child)::before {
-        content: "";
-        position: absolute;
-        left: 11px;
-        top: 28px;
-        bottom: -12px;
-        width: 2px;
-        background: #e9ecef;
-      }
-      .timeline-item.done:not(:last-child)::before {
-        background: #10b981;
-      }
-    </style>
-  </head>
-  <body class="h-full bg-surface-100">
-    <div class="flex h-full">
-      <!-- SIDEBAR -->
-      <aside
-        class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
-      >
-        <div class="p-6 border-b border-surface-200">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30"
-            >
-              <svg
-                class="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <div>
-              <h1 class="font-bold text-gray-900 text-lg leading-tight">
-                Seller Integration
-              </h1>
-              <span
-                class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide"
-                >ADMIN</span
-              >
-            </div>
-          </div>
-        </div>
-                <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+      },
+    };
+  </script>
+  <style>
+    * {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
 
-          <a href="../dashboard.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-home w-5"></i>Dashboard
-          </a>
+    .sidebar-item:hover {
+      background: rgba(12, 142, 230, 0.08);
+    }
 
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
+    .sidebar-item.active {
+      background: rgba(12, 142, 230, 0.12);
+      color: #0c8ee6;
+    }
 
-          <div>
-            <button onclick="toggleDropdown('orders')" class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-cart-shopping w-5"></i>Orders
-              </div>
-              <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
-            </button>
-            <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-              <a href="../data/orders/all-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All Orders</a>
-              <a href="../data/orders/to-confirm-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting Confirmation</a>
-              <a href="../data/orders/to-pack-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready to Pack</a>
-              <a href="../data/orders/packed-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed Orders</a>
-              <a href="../data/orders/returned-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned Orders</a>
-              <a href="../data/orders/shopee-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
-              <a href="../data/orders/tiktok-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
-            </div>
-          </div>
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
 
-          <a href="../data/data-upload.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-upload w-5"></i>Data Upload
-          </a>
+    .dropdown-content.open {
+      max-height: 600px;
+    }
 
-          <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp; Logistics</div>
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
 
-          <a href="../shipping/print-label.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
-          </a>
-          <a href="../shipping/resi-checker.html" class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
-            <i class="fa-solid fa-barcode w-5"></i>Resi Checker
-          </a>
-          <a href="../shipping/tracking-center.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-truck w-5"></i>Tracking Center
-          </a>
+    ::-webkit-scrollbar-track {
+      background: #f4f6f8;
+    }
 
-          <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
+    ::-webkit-scrollbar-thumb {
+      background: #c9d0d8;
+      border-radius: 10px;
+    }
 
-          <a href="../analystics/product.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <i class="fa-solid fa-chart-line w-5"></i>Product Performance
-          </a>
+    .result-row:hover {
+      background: #fafbfc;
+    }
 
-        </nav>
-        <div class="p-4 border-t border-surface-200">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow"
-            >
-              AM
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-gray-800 truncate">
-                Admin Master
-              </p>
-              <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
-            </div>
-            <button
-              class="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
-              title="Logout"
-            >
-              <i class="fa-solid fa-right-from-bracket text-sm"></i>
-            </button>
-          </div>
-        </div>
-      </aside>
+    .result-row.selected {
+      background: #e0effe;
+    }
 
-      <!-- MAIN -->
-      <main class="flex-1 overflow-y-auto">
-        <!-- HEADER -->
-        <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spin {
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.25s ease both;
+    }
+
+    .timeline-item:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 28px;
+      bottom: -12px;
+      width: 2px;
+      background: #e9ecef;
+    }
+
+    .timeline-item.done:not(:last-child)::before {
+      background: #10b981;
+    }
+  </style>
+</head>
+
+<body class="h-full bg-surface-100">
+  <div class="flex h-full">
+    <!-- SIDEBAR -->
+    <aside
+      class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
+      <div class="p-6 border-b border-surface-200">
+        <div class="flex items-center gap-3">
           <div
-            class="flex items-center justify-between px-8 py-3 border-b border-surface-100"
-          >
-            <nav class="flex items-center gap-2 text-sm text-slate-500">
-              <span>Shipping &amp; Logistics</span>
-              <svg
-                class="w-4 h-4 text-slate-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-              <span class="text-slate-900 font-semibold">Resi Checker</span>
-            </nav>
+            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="font-bold text-gray-900 text-lg leading-tight">
+              Seller Integration
+            </h1>
+            <span
+              class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide">ADMIN</span>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+
+        <a href="../dashboard.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-home w-5"></i>Dashboard
+        </a>
+
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
+
+        <div>
+          <button onclick="toggleDropdown('orders')"
+            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
             <div class="flex items-center gap-3">
-              <div class="relative">
-                <input
-                  type="text"
-                  placeholder="Search resi, buyer…"
-                  id="header-search"
-                  class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
-                />
-                <svg
-                  class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <button
-                class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all"
-              >
-                <svg
-                  class="w-5 h-5 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-                <span
-                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
-                  >5</span
-                >
-              </button>
-              <div class="relative">
-                <button
-                  onclick="toggleProfileDropdown()"
-                  class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
-                >
-                  <div
-                    class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow"
-                  >
-                    A
-                  </div>
-                  <div class="text-left">
-                    <p class="text-sm font-semibold text-gray-900 leading-none">
-                      Admin
-                    </p>
-                    <p class="text-[11px] text-primary-600 mt-0.5">
-                      Admin
-                    </p>
-                  </div>
-                  <svg
-                    class="w-3 h-3 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="profile-dropdown"
-                  class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20"
-                >
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
-                    ><i class="fa-solid fa-user w-4"></i>My Profile</a
-                  >
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
-                    ><i class="fa-solid fa-gear w-4"></i>Settings</a
-                  >
-                  <hr class="my-1 border-surface-200" />
-                  <a
-                    href="../../login.html"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                    ><i class="fa-solid fa-right-from-bracket w-4"></i>Sign
-                    Out</a
-                  >
-                </div>
-              </div>
+              <i class="fa-solid fa-cart-shopping w-5"></i>Orders
             </div>
+            <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+          </button>
+          <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+            <a href="../data/orders/all-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All
+              Orders</a>
+            <a href="../data/orders/to-confirm-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting
+              Confirmation</a>
+            <a href="../data/orders/to-pack-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready
+              to Pack</a>
+            <a href="../data/orders/packed-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed
+              Orders</a>
+            <a href="../data/orders/returned-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned
+              Orders</a>
+            <a href="../data/orders/shopee-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+            <a href="../data/orders/tiktok-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
           </div>
-        </header>
+        </div>
 
-        <div class="p-8 space-y-6">
-          <!-- PAGE TITLE -->
-          <div class="flex items-start justify-between flex-wrap gap-4">
-            <div>
-              <h2
-                class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5"
-              >
-                <span
-                  class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0"
-                >
-                  <i class="fa-solid fa-barcode text-white text-sm"></i>
-                </span>
-                Resi Checker
-              </h2>
-              <p class="text-slate-500 text-sm mt-1">
-                Cek status dan histori pengiriman resi dari berbagai kurir
-                sekaligus
-              </p>
-            </div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <button
-                onclick="exportResults()"
-                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all"
-              >
-                <i class="fa-solid fa-file-export text-gray-500"></i>Export CSV
-              </button>
-              <button
-                onclick="clearAll()"
-                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all"
-              >
-                <i class="fa-solid fa-trash text-gray-500"></i>Clear All
-              </button>
-            </div>
-          </div>
+        <a href="../data/data-upload.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-upload w-5"></i>Data Upload
+        </a>
 
-          <!-- STAT CARDS -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="bg-white rounded-2xl border border-surface-200 p-5">
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Dicek Hari Ini</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center"
-                >
-                  <i
-                    class="fa-solid fa-magnifying-glass text-primary-500 text-sm"
-                  ></i>
-                </div>
-              </div>
-              <p
-                class="text-3xl font-extrabold text-primary-600"
-                id="stat-total"
-              >
-                0
-              </p>
-              <p class="text-xs text-gray-400 mt-1">
-                Total resi dicek sesi ini
-              </p>
-            </div>
-            <div class="bg-white rounded-2xl border border-surface-200 p-5">
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Terkirim</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"
-                >
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-500 text-sm"
-                  ></i>
-                </div>
-              </div>
-              <p
-                class="text-3xl font-extrabold text-emerald-600"
-                id="stat-delivered"
-              >
-                0
-              </p>
-              <p class="text-xs text-gray-400 mt-1">
-                Paket sudah diterima penerima
-              </p>
-            </div>
-            <div class="bg-white rounded-2xl border border-surface-200 p-5">
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Bermasalah</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-circle-xmark text-red-500 text-sm"></i>
-                </div>
-              </div>
-              <p class="text-3xl font-extrabold text-red-500" id="stat-problem">
-                0
-              </p>
-              <p class="text-xs text-gray-400 mt-1">
-                Tidak ditemukan / dikembalikan
-              </p>
-            </div>
-          </div>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp;
+          Logistics</div>
 
-          <!-- INPUT PANEL -->
-          <div class="bg-white rounded-2xl border border-surface-200 p-6">
-            <h3
-              class="text-sm font-bold text-gray-800 mb-1 flex items-center gap-2"
-            >
-              <i class="fa-solid fa-keyboard text-primary-500"></i>Input Nomor
-              Resi
-            </h3>
-            <p class="text-xs text-gray-400 mb-4">
-              Masukkan hingga 20 nomor resi sekaligus, pisahkan dengan baris
-              baru atau koma
-            </p>
-            <div class="flex gap-4 flex-wrap">
-              <div class="flex-1 min-w-[260px]">
-                <textarea
-                  id="resi-input"
-                  rows="4"
-                  placeholder="Contoh:&#10;JNE001234567890&#10;JT9876543210&#10;SP12345678901234"
-                  class="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all resize-none font-mono placeholder-gray-300"
-                ></textarea>
-              </div>
-              <div class="flex flex-col gap-3 min-w-[180px]">
-                <div>
-                  <label class="text-xs font-semibold text-gray-500 mb-1 block"
-                    >Kurir</label
-                  >
-                  <select
-                    id="kurir-filter"
-                    class="w-full px-3 py-2.5 bg-surface-100 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
-                  >
-                    <option value="auto">Auto Detect</option>
-                    <option value="jne">JNE</option>
-                    <option value="jnt">J&amp;T Express</option>
-                    <option value="sicepat">SiCepat</option>
-                    <option value="anteraja">Anteraja</option>
-                    <option value="ninja">Ninja Xpress</option>
-                    <option value="pos">Pos Indonesia</option>
-                  </select>
-                </div>
-                <button
-                  onclick="checkResi()"
-                  id="btn-check"
-                  class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary-600 text-white text-sm font-bold rounded-xl hover:bg-primary-700 shadow shadow-primary-500/25 transition-all"
-                >
-                  <i class="fa-solid fa-magnifying-glass"></i>Check Resi
-                </button>
-                <button
-                  onclick="clearInput()"
-                  class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-white border border-surface-200 text-gray-600 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all"
-                >
-                  <i class="fa-solid fa-xmark"></i>Clear Input
-                </button>
-              </div>
-            </div>
+        <a href="../shipping/print-label.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
+        </a>
+        <a href="../shipping/resi-checker.html"
+          class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
+          <i class="fa-solid fa-barcode w-5"></i>Resi Checker
+        </a>
+        <a href="../shipping/tracking-center.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-truck w-5"></i>Tracking Center
+        </a>
 
-            <!-- Progress bar (hidden by default) -->
-            <div id="check-progress-wrap" class="hidden mt-4">
-              <div class="flex items-center justify-between mb-1.5">
-                <span
-                  class="text-xs font-semibold text-gray-500"
-                  id="check-progress-label"
-                  >Mengecek resi…</span
-                >
-                <span class="text-xs text-gray-400" id="check-progress-count"
-                  >0 / 0</span
-                >
-              </div>
-              <div
-                class="w-full bg-surface-200 rounded-full h-2 overflow-hidden"
-              >
-                <div
-                  id="check-progress-bar"
-                  class="h-2 bg-primary-500 rounded-full transition-all duration-300"
-                  style="width: 0%"
-                ></div>
-              </div>
-            </div>
-          </div>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
 
-          <!-- RESULTS TABLE -->
+        <a href="../analystics/product.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-chart-line w-5"></i>Product Performance
+        </a>
+
+      </nav>
+      <div class="p-4 border-t border-surface-200">
+        <div class="flex items-center gap-3">
           <div
-            class="bg-white rounded-2xl border border-surface-200 overflow-hidden"
-          >
-            <div
-              class="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-3"
-            >
-              <h3
-                class="text-sm font-bold text-gray-800 flex items-center gap-2"
-              >
-                <i class="fa-solid fa-list text-primary-500"></i>
-                Hasil Pengecekan
-                <span
-                  id="result-count-badge"
-                  class="px-2 py-0.5 text-[11px] font-bold bg-primary-100 text-primary-700 rounded-full"
-                  >0 resi</span
-                >
-              </h3>
-              <div class="flex items-center gap-2 flex-wrap">
-                <div class="relative">
-                  <input
-                    type="text"
-                    id="filter-search"
-                    placeholder="Cari nomor resi…"
-                    oninput="applyTableFilter()"
-                    class="pl-8 pr-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all w-44"
-                  />
-                  <i
-                    class="fa-solid fa-magnifying-glass text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2 text-xs"
-                  ></i>
-                </div>
-                <select
-                  id="filter-kurir"
-                  onchange="applyTableFilter()"
-                  class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
-                >
-                  <option value="">Semua Kurir</option>
-                  <option value="JNE">JNE</option>
-                  <option value="J&T Express">J&amp;T Express</option>
-                  <option value="SiCepat">SiCepat</option>
-                  <option value="Anteraja">Anteraja</option>
-                  <option value="Ninja Xpress">Ninja Xpress</option>
-                  <option value="Pos Indonesia">Pos Indonesia</option>
-                </select>
-                <select
-                  id="filter-status"
-                  onchange="applyTableFilter()"
-                  class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
-                >
-                  <option value="">Semua Status</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="In Transit">In Transit</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Returned">Returned</option>
-                  <option value="Not Found">Not Found</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Empty state -->
-            <div
-              id="empty-state"
-              class="flex flex-col items-center justify-center py-20 text-center"
-            >
-              <div
-                class="w-16 h-16 rounded-2xl bg-surface-100 flex items-center justify-center mb-4"
-              >
-                <i class="fa-solid fa-barcode text-2xl text-gray-300"></i>
-              </div>
-              <p class="text-gray-500 font-semibold text-sm">
-                Belum ada resi yang dicek
-              </p>
-              <p class="text-gray-400 text-xs mt-1">
-                Masukkan nomor resi di atas lalu klik
-                <strong>Check Resi</strong>
-              </p>
-            </div>
-
-            <!-- Table -->
-            <div id="result-table-wrap" class="hidden overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="bg-surface-50 border-b border-surface-200">
-                    <th
-                      class="text-left px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Nomor Resi
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Kurir
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Status
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Posisi Terakhir
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Estimasi Tiba
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Dicek Pada
-                    </th>
-                    <th class="px-4 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody id="result-tbody"></tbody>
-              </table>
-            </div>
+            class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow">
+            AM
           </div>
-        </div>
-        <!-- /p-8 -->
-      </main>
-    </div>
-    <!-- /flex -->
-
-    <!-- DETAIL MODAL -->
-    <div
-      id="detailModal"
-      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-      onclick="closeDetail(event)"
-    >
-      <div
-        class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden"
-        onclick="event.stopPropagation()"
-      >
-        <!-- Modal header -->
-        <div
-          class="flex items-start justify-between p-6 border-b border-surface-200"
-        >
-          <div>
-            <p
-              class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1"
-            >
-              Detail Tracking
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-800 truncate">
+              Admin Master
             </p>
-            <h3
-              class="text-lg font-extrabold text-gray-900 font-mono"
-              id="modal-resi-number"
-            >
-              —
-            </h3>
-            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
-              <span class="text-xs font-semibold text-gray-500" id="modal-kurir"
-                >—</span
-              >
-              <span
-                id="modal-status-badge"
-                class="px-2 py-0.5 text-[11px] font-bold rounded-full"
-                >—</span
-              >
-            </div>
+            <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
           </div>
-          <button
-            onclick="closeModal()"
-            class="p-2 rounded-lg hover:bg-surface-100 text-gray-400 hover:text-gray-600 transition-all mt-1"
-          >
-            <i class="fa-solid fa-xmark text-lg"></i>
-          </button>
-        </div>
-
-        <!-- Receiver info -->
-        <div
-          class="px-6 pt-4 pb-2 bg-surface-50 border-b border-surface-200 flex items-center gap-6 flex-wrap"
-        >
-          <div>
-            <p
-              class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
-            >
-              Penerima
-            </p>
-            <p class="text-sm font-semibold text-gray-800" id="modal-receiver">
-              —
-            </p>
-          </div>
-          <div>
-            <p
-              class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
-            >
-              Tujuan
-            </p>
-            <p
-              class="text-sm font-semibold text-gray-800"
-              id="modal-destination"
-            >
-              —
-            </p>
-          </div>
-          <div>
-            <p
-              class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
-            >
-              Estimasi Tiba
-            </p>
-            <p class="text-sm font-semibold text-gray-800" id="modal-eta">—</p>
-          </div>
-        </div>
-
-        <!-- Timeline -->
-        <div class="p-6 max-h-72 overflow-y-auto">
-          <p
-            class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4"
-          >
-            Histori Perjalanan
-          </p>
-          <div id="modal-timeline" class="space-y-3"></div>
-        </div>
-
-        <!-- Footer -->
-        <div
-          class="px-6 py-4 border-t border-surface-200 flex justify-between items-center gap-3"
-        >
-          <button
-            onclick="recheckSingle()"
-            class="flex items-center gap-2 px-4 py-2 bg-surface-100 border border-surface-200 text-gray-700 text-xs font-semibold rounded-xl hover:bg-surface-200 transition-all"
-          >
-            <i class="fa-solid fa-rotate"></i>Cek Ulang
-          </button>
-          <button
-            onclick="closeModal()"
-            class="px-5 py-2 bg-primary-600 text-white text-xs font-bold rounded-xl hover:bg-primary-700 transition-all"
-          >
-            Tutup
+          <button class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-sm"></i>
           </button>
         </div>
       </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- HEADER -->
+      <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+        <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
+          <nav class="flex items-center gap-2 text-sm text-slate-500">
+            <span>Shipping &amp; Logistics</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-slate-900 font-semibold">Resi Checker</span>
+          </nav>
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <input type="text" placeholder="Search resi, buyer…" id="header-search"
+                class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
+              <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <button class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
+              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span
+                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+            </button>
+            <div class="relative">
+              <button onclick="toggleProfileDropdown()"
+                class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+                <div
+                  class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow">
+                  A
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-semibold text-gray-900 leading-none">
+                    Admin
+                  </p>
+                  <p class="text-[11px] text-primary-600 mt-0.5">
+                    Admin
+                  </p>
+                </div>
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="profile-dropdown"
+                class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
+                <a href="../my-profile.html"
+                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
+                    class="fa-solid fa-user w-4"></i>My Profile</a>a
+                >
+                <hr class="my-1 border-surface-200" />
+                <a href="../../login.html"
+                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><i
+                    class="fa-solid fa-right-from-bracket w-4"></i>Sign
+                  Out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="p-8 space-y-6">
+        <!-- PAGE TITLE -->
+        <div class="flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
+              <span
+                class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0">
+                <i class="fa-solid fa-barcode text-white text-sm"></i>
+              </span>
+              Resi Checker
+            </h2>
+            <p class="text-slate-500 text-sm mt-1">
+              Cek status dan histori pengiriman resi dari berbagai kurir
+              sekaligus
+            </p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="exportResults()"
+              class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
+              <i class="fa-solid fa-file-export text-gray-500"></i>Export CSV
+            </button>
+            <button onclick="clearAll()"
+              class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
+              <i class="fa-solid fa-trash text-gray-500"></i>Clear All
+            </button>
+          </div>
+        </div>
+
+        <!-- STAT CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white rounded-2xl border border-surface-200 p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Dicek Hari Ini</span>
+              <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
+                <i class="fa-solid fa-magnifying-glass text-primary-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-3xl font-extrabold text-primary-600" id="stat-total">
+              0
+            </p>
+            <p class="text-xs text-gray-400 mt-1">
+              Total resi dicek sesi ini
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Terkirim</span>
+              <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-3xl font-extrabold text-emerald-600" id="stat-delivered">
+              0
+            </p>
+            <p class="text-xs text-gray-400 mt-1">
+              Paket sudah diterima penerima
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Bermasalah</span>
+              <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+                <i class="fa-solid fa-circle-xmark text-red-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-3xl font-extrabold text-red-500" id="stat-problem">
+              0
+            </p>
+            <p class="text-xs text-gray-400 mt-1">
+              Tidak ditemukan / dikembalikan
+            </p>
+          </div>
+        </div>
+
+        <!-- INPUT PANEL -->
+        <div class="bg-white rounded-2xl border border-surface-200 p-6">
+          <h3 class="text-sm font-bold text-gray-800 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-keyboard text-primary-500"></i>Input Nomor
+            Resi
+          </h3>
+          <p class="text-xs text-gray-400 mb-4">
+            Masukkan hingga 20 nomor resi sekaligus, pisahkan dengan baris
+            baru atau koma
+          </p>
+          <div class="flex gap-4 flex-wrap">
+            <div class="flex-1 min-w-[260px]">
+              <textarea id="resi-input" rows="4"
+                placeholder="Contoh:&#10;JNE001234567890&#10;JT9876543210&#10;SP12345678901234"
+                class="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all resize-none font-mono placeholder-gray-300"></textarea>
+            </div>
+            <div class="flex flex-col gap-3 min-w-[180px]">
+              <div>
+                <label class="text-xs font-semibold text-gray-500 mb-1 block">Kurir</label>
+                <select id="kurir-filter"
+                  class="w-full px-3 py-2.5 bg-surface-100 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
+                  <option value="auto">Auto Detect</option>
+                  <option value="jne">JNE</option>
+                  <option value="jnt">J&amp;T Express</option>
+                  <option value="sicepat">SiCepat</option>
+                  <option value="anteraja">Anteraja</option>
+                  <option value="ninja">Ninja Xpress</option>
+                  <option value="pos">Pos Indonesia</option>
+                </select>
+              </div>
+              <button onclick="checkResi()" id="btn-check"
+                class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary-600 text-white text-sm font-bold rounded-xl hover:bg-primary-700 shadow shadow-primary-500/25 transition-all">
+                <i class="fa-solid fa-magnifying-glass"></i>Check Resi
+              </button>
+              <button onclick="clearInput()"
+                class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-white border border-surface-200 text-gray-600 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
+                <i class="fa-solid fa-xmark"></i>Clear Input
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress bar (hidden by default) -->
+          <div id="check-progress-wrap" class="hidden mt-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-semibold text-gray-500" id="check-progress-label">Mengecek resi…</span>
+              <span class="text-xs text-gray-400" id="check-progress-count">0 / 0</span>
+            </div>
+            <div class="w-full bg-surface-200 rounded-full h-2 overflow-hidden">
+              <div id="check-progress-bar" class="h-2 bg-primary-500 rounded-full transition-all duration-300"
+                style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULTS TABLE -->
+        <div class="bg-white rounded-2xl border border-surface-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-3">
+            <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+              <i class="fa-solid fa-list text-primary-500"></i>
+              Hasil Pengecekan
+              <span id="result-count-badge"
+                class="px-2 py-0.5 text-[11px] font-bold bg-primary-100 text-primary-700 rounded-full">0 resi</span>
+            </h3>
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="relative">
+                <input type="text" id="filter-search" placeholder="Cari nomor resi…" oninput="applyTableFilter()"
+                  class="pl-8 pr-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all w-44" />
+                <i
+                  class="fa-solid fa-magnifying-glass text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2 text-xs"></i>
+              </div>
+              <select id="filter-kurir" onchange="applyTableFilter()"
+                class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
+                <option value="">Semua Kurir</option>
+                <option value="JNE">JNE</option>
+                <option value="J&T Express">J&amp;T Express</option>
+                <option value="SiCepat">SiCepat</option>
+                <option value="Anteraja">Anteraja</option>
+                <option value="Ninja Xpress">Ninja Xpress</option>
+                <option value="Pos Indonesia">Pos Indonesia</option>
+              </select>
+              <select id="filter-status" onchange="applyTableFilter()"
+                class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
+                <option value="">Semua Status</option>
+                <option value="Delivered">Delivered</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Pending">Pending</option>
+                <option value="Returned">Returned</option>
+                <option value="Not Found">Not Found</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div id="empty-state" class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-surface-100 flex items-center justify-center mb-4">
+              <i class="fa-solid fa-barcode text-2xl text-gray-300"></i>
+            </div>
+            <p class="text-gray-500 font-semibold text-sm">
+              Belum ada resi yang dicek
+            </p>
+            <p class="text-gray-400 text-xs mt-1">
+              Masukkan nomor resi di atas lalu klik
+              <strong>Check Resi</strong>
+            </p>
+          </div>
+
+          <!-- Table -->
+          <div id="result-table-wrap" class="hidden overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-surface-50 border-b border-surface-200">
+                  <th class="text-left px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Nomor Resi
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Kurir
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Posisi Terakhir
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Estimasi Tiba
+                  </th>
+                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Dicek Pada
+                  </th>
+                  <th class="px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody id="result-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- /p-8 -->
+    </main>
+  </div>
+  <!-- /flex -->
+
+  <!-- DETAIL MODAL -->
+  <div id="detailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+    onclick="closeDetail(event)">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden" onclick="event.stopPropagation()">
+      <!-- Modal header -->
+      <div class="flex items-start justify-between p-6 border-b border-surface-200">
+        <div>
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
+            Detail Tracking
+          </p>
+          <h3 class="text-lg font-extrabold text-gray-900 font-mono" id="modal-resi-number">
+            —
+          </h3>
+          <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+            <span class="text-xs font-semibold text-gray-500" id="modal-kurir">—</span>
+            <span id="modal-status-badge" class="px-2 py-0.5 text-[11px] font-bold rounded-full">—</span>
+          </div>
+        </div>
+        <button onclick="closeModal()"
+          class="p-2 rounded-lg hover:bg-surface-100 text-gray-400 hover:text-gray-600 transition-all mt-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Receiver info -->
+      <div class="px-6 pt-4 pb-2 bg-surface-50 border-b border-surface-200 flex items-center gap-6 flex-wrap">
+        <div>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+            Penerima
+          </p>
+          <p class="text-sm font-semibold text-gray-800" id="modal-receiver">
+            —
+          </p>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+            Tujuan
+          </p>
+          <p class="text-sm font-semibold text-gray-800" id="modal-destination">
+            —
+          </p>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+            Estimasi Tiba
+          </p>
+          <p class="text-sm font-semibold text-gray-800" id="modal-eta">—</p>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="p-6 max-h-72 overflow-y-auto">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+          Histori Perjalanan
+        </p>
+        <div id="modal-timeline" class="space-y-3"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-surface-200 flex justify-between items-center gap-3">
+        <button onclick="recheckSingle()"
+          class="flex items-center gap-2 px-4 py-2 bg-surface-100 border border-surface-200 text-gray-700 text-xs font-semibold rounded-xl hover:bg-surface-200 transition-all">
+          <i class="fa-solid fa-rotate"></i>Cek Ulang
+        </button>
+        <button onclick="closeModal()"
+          class="px-5 py-2 bg-primary-600 text-white text-xs font-bold rounded-xl hover:bg-primary-700 transition-all">
+          Tutup
+        </button>
+      </div>
     </div>
+  </div>
 
-    <!-- SCRIPTS -->
-    <script>
-      // ─── Mock Data ───────────────────────────────────────────────────────────────
-      var COURIERS = {
-        jne: {
-          name: "JNE",
-          prefix: ["JNE", "CGK"],
-          color: "bg-red-100 text-red-700",
-        },
-        jnt: {
-          name: "J&T Express",
-          prefix: ["JT", "JP"],
-          color: "bg-yellow-100 text-yellow-700",
-        },
-        sicepat: {
-          name: "SiCepat",
-          prefix: ["SC", "SP"],
-          color: "bg-blue-100 text-blue-700",
-        },
-        anteraja: {
-          name: "Anteraja",
-          prefix: ["ANT", "AN"],
-          color: "bg-purple-100 text-purple-700",
-        },
-        ninja: {
-          name: "Ninja Xpress",
-          prefix: ["NX", "NVJ"],
-          color: "bg-gray-100 text-gray-700",
-        },
-        pos: {
-          name: "Pos Indonesia",
-          prefix: ["POS", "EE"],
-          color: "bg-orange-100 text-orange-700",
-        },
-      };
+  <!-- SCRIPTS -->
+  <script>
+    // ─── Mock Data ───────────────────────────────────────────────────────────────
+    var COURIERS = {
+      jne: {
+        name: "JNE",
+        prefix: ["JNE", "CGK"],
+        color: "bg-red-100 text-red-700",
+      },
+      jnt: {
+        name: "J&T Express",
+        prefix: ["JT", "JP"],
+        color: "bg-yellow-100 text-yellow-700",
+      },
+      sicepat: {
+        name: "SiCepat",
+        prefix: ["SC", "SP"],
+        color: "bg-blue-100 text-blue-700",
+      },
+      anteraja: {
+        name: "Anteraja",
+        prefix: ["ANT", "AN"],
+        color: "bg-purple-100 text-purple-700",
+      },
+      ninja: {
+        name: "Ninja Xpress",
+        prefix: ["NX", "NVJ"],
+        color: "bg-gray-100 text-gray-700",
+      },
+      pos: {
+        name: "Pos Indonesia",
+        prefix: ["POS", "EE"],
+        color: "bg-orange-100 text-orange-700",
+      },
+    };
 
-      var STATUS_STYLES = {
-        Delivered: {
-          badge: "bg-emerald-100 text-emerald-700",
-          icon: "fa-circle-check text-emerald-500",
-        },
-        "In Transit": {
-          badge: "bg-blue-100 text-blue-700",
-          icon: "fa-truck text-blue-500",
-        },
-        Pending: {
-          badge: "bg-yellow-100 text-yellow-700",
-          icon: "fa-clock text-yellow-500",
-        },
-        Returned: {
-          badge: "bg-red-100 text-red-700",
-          icon: "fa-rotate-left text-red-500",
-        },
-        "Not Found": {
-          badge: "bg-gray-100 text-gray-500",
-          icon: "fa-circle-question text-gray-400",
-        },
-      };
+    var STATUS_STYLES = {
+      Delivered: {
+        badge: "bg-emerald-100 text-emerald-700",
+        icon: "fa-circle-check text-emerald-500",
+      },
+      "In Transit": {
+        badge: "bg-blue-100 text-blue-700",
+        icon: "fa-truck text-blue-500",
+      },
+      Pending: {
+        badge: "bg-yellow-100 text-yellow-700",
+        icon: "fa-clock text-yellow-500",
+      },
+      Returned: {
+        badge: "bg-red-100 text-red-700",
+        icon: "fa-rotate-left text-red-500",
+      },
+      "Not Found": {
+        badge: "bg-gray-100 text-gray-500",
+        icon: "fa-circle-question text-gray-400",
+      },
+    };
 
-      var MOCK_TIMELINES = {
-        Delivered: [
-          {
-            label: "Paket Diterima Penerima",
-            sub: "Diterima oleh: BUDI",
-            time: "26 Feb 2026, 14:32",
-            done: true,
-          },
-          {
-            label: "Dalam Pengiriman",
-            sub: "Kurir berangkat dari HUB Jakarta Selatan",
-            time: "26 Feb 2026, 08:15",
-            done: true,
-          },
-          {
-            label: "Tiba di HUB Tujuan",
-            sub: "HUB Jakarta Selatan — siap dikirim",
-            time: "25 Feb 2026, 22:47",
-            done: true,
-          },
-          {
-            label: "Dalam Perjalanan Antar HUB",
-            sub: "Transit di HUB Bandung",
-            time: "25 Feb 2026, 10:03",
-            done: true,
-          },
-          {
-            label: "Paket Diambil Kurir",
-            sub: "Pickup dari penjual oleh kurir",
-            time: "24 Feb 2026, 16:50",
-            done: true,
-          },
-          {
-            label: "Pesanan Dibuat",
-            sub: "Pesanan terdaftar di sistem kurir",
-            time: "24 Feb 2026, 09:00",
-            done: true,
-          },
-        ],
-        "In Transit": [
-          {
-            label: "Dalam Pengiriman",
-            sub: "Kurir menuju alamat penerima",
-            time: "26 Feb 2026, 09:20",
-            done: true,
-          },
-          {
-            label: "Tiba di HUB Tujuan",
-            sub: "HUB Jakarta Pusat",
-            time: "25 Feb 2026, 20:15",
-            done: true,
-          },
-          {
-            label: "Dalam Perjalanan Antar HUB",
-            sub: "Transit Surabaya → Jakarta",
-            time: "25 Feb 2026, 07:40",
-            done: true,
-          },
-          {
-            label: "Paket Diambil Kurir",
-            sub: "Pickup berhasil dari seller",
-            time: "24 Feb 2026, 14:10",
-            done: true,
-          },
-          {
-            label: "Pesanan Dibuat",
-            sub: "Pesanan terdaftar di sistem",
-            time: "24 Feb 2026, 10:30",
-            done: true,
-          },
-        ],
-        Pending: [
-          {
-            label: "Menunggu Pickup",
-            sub: "Belum dijemput kurir — jadwal pickup: hari ini",
-            time: "26 Feb 2026, 08:00",
-            done: false,
-          },
-          {
-            label: "Pesanan Dibuat",
-            sub: "Pesanan terdaftar di sistem kurir",
-            time: "26 Feb 2026, 06:45",
-            done: true,
-          },
-        ],
-        Returned: [
-          {
-            label: "Paket Dikembalikan ke Pengirim",
-            sub: "Gagal terkirim 3x — retur otomatis",
-            time: "25 Feb 2026, 17:00",
-            done: true,
-          },
-          {
-            label: "Percobaan Pengiriman Ke-3",
-            sub: "Penerima tidak ada di tempat",
-            time: "25 Feb 2026, 11:30",
-            done: true,
-          },
-          {
-            label: "Percobaan Pengiriman Ke-2",
-            sub: "Alamat tidak ditemukan",
-            time: "24 Feb 2026, 13:00",
-            done: true,
-          },
-          {
-            label: "Percobaan Pengiriman Ke-1",
-            sub: "Tidak ada yang menerima",
-            time: "23 Feb 2026, 10:15",
-            done: true,
-          },
-          {
-            label: "Tiba di HUB Tujuan",
-            sub: "HUB Bekasi",
-            time: "22 Feb 2026, 18:00",
-            done: true,
-          },
-          {
-            label: "Pesanan Dibuat",
-            sub: "Pesanan terdaftar di sistem",
-            time: "21 Feb 2026, 09:00",
-            done: true,
-          },
-        ],
-        "Not Found": [
-          {
-            label: "Nomor Resi Tidak Ditemukan",
-            sub: "Tidak ada data di sistem kurir yang dipilih",
-            time: "—",
-            done: false,
-          },
-        ],
-      };
+    var MOCK_TIMELINES = {
+      Delivered: [
+        {
+          label: "Paket Diterima Penerima",
+          sub: "Diterima oleh: BUDI",
+          time: "26 Feb 2026, 14:32",
+          done: true,
+        },
+        {
+          label: "Dalam Pengiriman",
+          sub: "Kurir berangkat dari HUB Jakarta Selatan",
+          time: "26 Feb 2026, 08:15",
+          done: true,
+        },
+        {
+          label: "Tiba di HUB Tujuan",
+          sub: "HUB Jakarta Selatan — siap dikirim",
+          time: "25 Feb 2026, 22:47",
+          done: true,
+        },
+        {
+          label: "Dalam Perjalanan Antar HUB",
+          sub: "Transit di HUB Bandung",
+          time: "25 Feb 2026, 10:03",
+          done: true,
+        },
+        {
+          label: "Paket Diambil Kurir",
+          sub: "Pickup dari penjual oleh kurir",
+          time: "24 Feb 2026, 16:50",
+          done: true,
+        },
+        {
+          label: "Pesanan Dibuat",
+          sub: "Pesanan terdaftar di sistem kurir",
+          time: "24 Feb 2026, 09:00",
+          done: true,
+        },
+      ],
+      "In Transit": [
+        {
+          label: "Dalam Pengiriman",
+          sub: "Kurir menuju alamat penerima",
+          time: "26 Feb 2026, 09:20",
+          done: true,
+        },
+        {
+          label: "Tiba di HUB Tujuan",
+          sub: "HUB Jakarta Pusat",
+          time: "25 Feb 2026, 20:15",
+          done: true,
+        },
+        {
+          label: "Dalam Perjalanan Antar HUB",
+          sub: "Transit Surabaya → Jakarta",
+          time: "25 Feb 2026, 07:40",
+          done: true,
+        },
+        {
+          label: "Paket Diambil Kurir",
+          sub: "Pickup berhasil dari seller",
+          time: "24 Feb 2026, 14:10",
+          done: true,
+        },
+        {
+          label: "Pesanan Dibuat",
+          sub: "Pesanan terdaftar di sistem",
+          time: "24 Feb 2026, 10:30",
+          done: true,
+        },
+      ],
+      Pending: [
+        {
+          label: "Menunggu Pickup",
+          sub: "Belum dijemput kurir — jadwal pickup: hari ini",
+          time: "26 Feb 2026, 08:00",
+          done: false,
+        },
+        {
+          label: "Pesanan Dibuat",
+          sub: "Pesanan terdaftar di sistem kurir",
+          time: "26 Feb 2026, 06:45",
+          done: true,
+        },
+      ],
+      Returned: [
+        {
+          label: "Paket Dikembalikan ke Pengirim",
+          sub: "Gagal terkirim 3x — retur otomatis",
+          time: "25 Feb 2026, 17:00",
+          done: true,
+        },
+        {
+          label: "Percobaan Pengiriman Ke-3",
+          sub: "Penerima tidak ada di tempat",
+          time: "25 Feb 2026, 11:30",
+          done: true,
+        },
+        {
+          label: "Percobaan Pengiriman Ke-2",
+          sub: "Alamat tidak ditemukan",
+          time: "24 Feb 2026, 13:00",
+          done: true,
+        },
+        {
+          label: "Percobaan Pengiriman Ke-1",
+          sub: "Tidak ada yang menerima",
+          time: "23 Feb 2026, 10:15",
+          done: true,
+        },
+        {
+          label: "Tiba di HUB Tujuan",
+          sub: "HUB Bekasi",
+          time: "22 Feb 2026, 18:00",
+          done: true,
+        },
+        {
+          label: "Pesanan Dibuat",
+          sub: "Pesanan terdaftar di sistem",
+          time: "21 Feb 2026, 09:00",
+          done: true,
+        },
+      ],
+      "Not Found": [
+        {
+          label: "Nomor Resi Tidak Ditemukan",
+          sub: "Tidak ada data di sistem kurir yang dipilih",
+          time: "—",
+          done: false,
+        },
+      ],
+    };
 
-      var MOCK_NAMES = [
-        "Budi Santoso",
-        "Siti Rahayu",
-        "Ahmad Fauzi",
-        "Dewi Lestari",
-        "Rudi Hartono",
-        "Yanti Kusuma",
-        "Fajar Nugroho",
-        "Maya Indah",
-      ];
-      var MOCK_CITIES = [
-        "Jakarta Selatan",
-        "Bandung",
-        "Surabaya",
-        "Medan",
-        "Bekasi",
-        "Tangerang",
-        "Yogyakarta",
-        "Semarang",
-        "Depok",
-        "Bogor",
-      ];
-      var MOCK_STATUS_POOL = [
-        "Delivered",
-        "Delivered",
-        "In Transit",
-        "In Transit",
-        "Pending",
-        "Returned",
-        "Not Found",
-      ];
+    var MOCK_NAMES = [
+      "Budi Santoso",
+      "Siti Rahayu",
+      "Ahmad Fauzi",
+      "Dewi Lestari",
+      "Rudi Hartono",
+      "Yanti Kusuma",
+      "Fajar Nugroho",
+      "Maya Indah",
+    ];
+    var MOCK_CITIES = [
+      "Jakarta Selatan",
+      "Bandung",
+      "Surabaya",
+      "Medan",
+      "Bekasi",
+      "Tangerang",
+      "Yogyakarta",
+      "Semarang",
+      "Depok",
+      "Bogor",
+    ];
+    var MOCK_STATUS_POOL = [
+      "Delivered",
+      "Delivered",
+      "In Transit",
+      "In Transit",
+      "Pending",
+      "Returned",
+      "Not Found",
+    ];
 
-      var RESI_DB = []; // results stored here
-      var currentDetailId = null;
+    var RESI_DB = []; // results stored here
+    var currentDetailId = null;
 
-      // ─── Detect courier from resi prefix ─────────────────────────────────────────
-      function detectCourier(resi) {
-        var upper = resi.toUpperCase();
-        var keys = Object.keys(COURIERS);
-        for (var i = 0; i < keys.length; i++) {
-          var k = keys[i];
-          var pre = COURIERS[k].prefix;
-          for (var j = 0; j < pre.length; j++) {
-            if (upper.startsWith(pre[j])) return k;
-          }
+    // ─── Detect courier from resi prefix ─────────────────────────────────────────
+    function detectCourier(resi) {
+      var upper = resi.toUpperCase();
+      var keys = Object.keys(COURIERS);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        var pre = COURIERS[k].prefix;
+        for (var j = 0; j < pre.length; j++) {
+          if (upper.startsWith(pre[j])) return k;
         }
-        // fallback round-robin by length
-        var fallbacks = ["jne", "jnt", "sicepat", "anteraja", "ninja", "pos"];
-        return fallbacks[resi.length % fallbacks.length];
       }
+      // fallback round-robin by length
+      var fallbacks = ["jne", "jnt", "sicepat", "anteraja", "ninja", "pos"];
+      return fallbacks[resi.length % fallbacks.length];
+    }
 
-      // ─── Generate mock result for a resi ─────────────────────────────────────────
-      function mockResult(resi, kurirKey) {
-        var status =
-          MOCK_STATUS_POOL[Math.floor(Math.random() * MOCK_STATUS_POOL.length)];
-        var receiver =
-          MOCK_NAMES[Math.floor(Math.random() * MOCK_NAMES.length)];
-        var dest = MOCK_CITIES[Math.floor(Math.random() * MOCK_CITIES.length)];
-        var today = new Date();
-        var eta =
-          status === "Delivered"
+    // ─── Generate mock result for a resi ─────────────────────────────────────────
+    function mockResult(resi, kurirKey) {
+      var status =
+        MOCK_STATUS_POOL[Math.floor(Math.random() * MOCK_STATUS_POOL.length)];
+      var receiver =
+        MOCK_NAMES[Math.floor(Math.random() * MOCK_NAMES.length)];
+      var dest = MOCK_CITIES[Math.floor(Math.random() * MOCK_CITIES.length)];
+      var today = new Date();
+      var eta =
+        status === "Delivered"
+          ? "—"
+          : status === "Not Found"
             ? "—"
+            : formatDate(
+              new Date(
+                today.getTime() +
+                (Math.floor(Math.random() * 3) + 1) * 86400000,
+              ),
+            );
+      var checked = formatDateTime(today);
+      return {
+        id: resi.trim(),
+        kurir: kurirKey,
+        kurirName: COURIERS[kurirKey] ? COURIERS[kurirKey].name : kurirKey,
+        status: status,
+        receiver: receiver,
+        dest: dest,
+        eta: eta,
+        checked: checked,
+        position:
+          status === "Delivered"
+            ? dest + " (diterima)"
             : status === "Not Found"
               ? "—"
-              : formatDate(
-                  new Date(
-                    today.getTime() +
-                      (Math.floor(Math.random() * 3) + 1) * 86400000,
-                  ),
-                );
-        var checked = formatDateTime(today);
-        return {
-          id: resi.trim(),
-          kurir: kurirKey,
-          kurirName: COURIERS[kurirKey] ? COURIERS[kurirKey].name : kurirKey,
-          status: status,
-          receiver: receiver,
-          dest: dest,
-          eta: eta,
-          checked: checked,
-          position:
-            status === "Delivered"
-              ? dest + " (diterima)"
-              : status === "Not Found"
-                ? "—"
-                : status === "Pending"
-                  ? "Menunggu pickup"
-                  : status === "Returned"
-                    ? "Kembali ke pengirim"
-                    : MOCK_CITIES[
-                        Math.floor(Math.random() * MOCK_CITIES.length)
-                      ] + " HUB",
-        };
-      }
-
-      function formatDate(d) {
-        return (
-          d.getDate() +
-          " " +
-          [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "Mei",
-            "Jun",
-            "Jul",
-            "Agu",
-            "Sep",
-            "Okt",
-            "Nov",
-            "Des",
-          ][d.getMonth()] +
-          " " +
-          d.getFullYear()
-        );
-      }
-      function formatDateTime(d) {
-        return (
-          formatDate(d) +
-          ", " +
-          String(d.getHours()).padStart(2, "0") +
-          ":" +
-          String(d.getMinutes()).padStart(2, "0")
-        );
-      }
-
-      // ─── Check Resi ──────────────────────────────────────────────────────────────
-      function checkResi() {
-        var raw = document.getElementById("resi-input").value.trim();
-        var manual = document.getElementById("kurir-filter").value;
-        if (!raw) {
-          alert("Masukkan minimal satu nomor resi.");
-          return;
-        }
-
-        // Parse resi numbers
-        var list = raw
-          .split(/[\n,]+/)
-          .map(function (r) {
-            return r.trim();
-          })
-          .filter(function (r) {
-            return r.length > 0;
-          });
-        if (list.length > 20) {
-          alert("Maksimum 20 nomor resi sekaligus.");
-          return;
-        }
-
-        // Show progress
-        var progressWrap = document.getElementById("check-progress-wrap");
-        var progressBar = document.getElementById("check-progress-bar");
-        var progressLabel = document.getElementById("check-progress-label");
-        var progressCount = document.getElementById("check-progress-count");
-        progressWrap.classList.remove("hidden");
-        progressBar.style.width = "0%";
-        progressLabel.textContent = "Mengecek resi…";
-        document.getElementById("btn-check").disabled = true;
-
-        var total = list.length;
-        var done = 0;
-        var newResults = [];
-
-        function processNext() {
-          if (done >= total) {
-            // Merge: avoid duplicate resi
-            list.forEach(function (r, idx) {
-              var existing = RESI_DB.findIndex(function (x) {
-                return x.id === r.trim();
-              });
-              if (existing >= 0) RESI_DB[existing] = newResults[idx];
-              else RESI_DB.push(newResults[idx]);
-            });
-            progressBar.style.width = "100%";
-            progressLabel.textContent = "Selesai!";
-            progressCount.textContent = total + " / " + total;
-            setTimeout(function () {
-              progressWrap.classList.add("hidden");
-              document.getElementById("btn-check").disabled = false;
-            }, 1200);
-            renderTable();
-            updateStats();
-            return;
-          }
-          var resi = list[done].trim();
-          var kurirKey = manual === "auto" ? detectCourier(resi) : manual;
-          var result = mockResult(resi, kurirKey);
-          newResults.push(result);
-          done++;
-          var pct = Math.round((done / total) * 100);
-          progressBar.style.width = pct + "%";
-          progressCount.textContent = done + " / " + total;
-          setTimeout(processNext, 180 + Math.random() * 120);
-        }
-        processNext();
-      }
-
-      // ─── Render Table ────────────────────────────────────────────────────────────
-      function renderTable(data) {
-        var rows = data || RESI_DB;
-        var tbody = document.getElementById("result-tbody");
-        var empty = document.getElementById("empty-state");
-        var wrap = document.getElementById("result-table-wrap");
-
-        if (rows.length === 0) {
-          empty.classList.remove("hidden");
-          wrap.classList.add("hidden");
-          document.getElementById("result-count-badge").textContent = "0 resi";
-          return;
-        }
-        empty.classList.add("hidden");
-        wrap.classList.remove("hidden");
-        document.getElementById("result-count-badge").textContent =
-          rows.length + " resi";
-
-        tbody.innerHTML = rows
-          .map(function (r, idx) {
-            var st = STATUS_STYLES[r.status] || STATUS_STYLES["Pending"];
-            var ck = COURIERS[r.kurir]
-              ? COURIERS[r.kurir].color
-              : "bg-gray-100 text-gray-600";
-            return (
-              '<tr class="result-row border-b border-surface-100 fade-in" style="animation-delay:' +
-              idx * 30 +
-              'ms">' +
-              '<td class="px-6 py-3.5"><span class="font-mono text-xs font-bold text-gray-800">' +
-              r.id +
-              "</span></td>" +
-              '<td class="px-4 py-3.5"><span class="px-2 py-0.5 text-[11px] font-bold rounded-full ' +
-              ck +
-              '">' +
-              r.kurirName +
-              "</span></td>" +
-              '<td class="px-4 py-3.5"><span class="flex items-center gap-1.5 text-xs font-semibold ' +
-              (st.badge.includes("emerald")
-                ? "text-emerald-700"
-                : st.badge.includes("blue")
-                  ? "text-blue-700"
-                  : st.badge.includes("yellow")
-                    ? "text-yellow-700"
-                    : st.badge.includes("red")
-                      ? "text-red-700"
-                      : "text-gray-500") +
-              '">' +
-              '<i class="fa-solid ' +
-              st.icon.split(" ")[0].replace("fa-solid", "").trim() +
-              " " +
-              st.icon +
-              '"></i>' +
-              r.status +
-              "</span></td>" +
-              '<td class="px-4 py-3.5 text-xs text-gray-500">' +
-              r.position +
-              "</td>" +
-              '<td class="px-4 py-3.5 text-xs text-gray-500">' +
-              r.eta +
-              "</td>" +
-              '<td class="px-4 py-3.5 text-xs text-gray-400">' +
-              r.checked +
-              "</td>" +
-              '<td class="px-4 py-3.5 text-right"><button onclick="openDetail(\'' +
-              r.id +
-              '\')" class="px-3 py-1.5 text-xs font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-all">Detail</button></td>' +
-              "</tr>"
-            );
-          })
-          .join("");
-      }
-
-      // ─── Stats ───────────────────────────────────────────────────────────────────
-      function updateStats() {
-        document.getElementById("stat-total").textContent = RESI_DB.length;
-        document.getElementById("stat-delivered").textContent = RESI_DB.filter(
-          function (r) {
-            return r.status === "Delivered";
-          },
-        ).length;
-        document.getElementById("stat-problem").textContent = RESI_DB.filter(
-          function (r) {
-            return r.status === "Not Found" || r.status === "Returned";
-          },
-        ).length;
-      }
-
-      // ─── Table Filter ────────────────────────────────────────────────────────────
-      function applyTableFilter() {
-        var search = document
-          .getElementById("filter-search")
-          .value.toLowerCase();
-        var kurir = document.getElementById("filter-kurir").value;
-        var status = document.getElementById("filter-status").value;
-        var filtered = RESI_DB.filter(function (r) {
-          return (
-            (!search || r.id.toLowerCase().includes(search)) &&
-            (!kurir || r.kurirName === kurir) &&
-            (!status || r.status === status)
-          );
-        });
-        renderTable(filtered);
-      }
-
-      // ─── Detail Modal ─────────────────────────────────────────────────────────────
-      function openDetail(id) {
-        var r = RESI_DB.find(function (x) {
-          return x.id === id;
-        });
-        if (!r) return;
-        currentDetailId = id;
-        var st = STATUS_STYLES[r.status] || STATUS_STYLES["Pending"];
-        document.getElementById("modal-resi-number").textContent = r.id;
-        document.getElementById("modal-kurir").textContent = r.kurirName;
-        document.getElementById("modal-receiver").textContent = r.receiver;
-        document.getElementById("modal-destination").textContent = r.dest;
-        document.getElementById("modal-eta").textContent = r.eta;
-
-        var badge = document.getElementById("modal-status-badge");
-        badge.textContent = r.status;
-        badge.className =
-          "px-2 py-0.5 text-[11px] font-bold rounded-full " + st.badge;
-
-        // Build timeline
-        var events = MOCK_TIMELINES[r.status] || MOCK_TIMELINES["In Transit"];
-        var timeline = document.getElementById("modal-timeline");
-        timeline.innerHTML = events
-          .map(function (ev, i) {
-            var isLast = i === events.length - 1;
-            return (
-              '<div class="timeline-item relative pl-8 pb-5 ' +
-              (ev.done ? "done" : "") +
-              (isLast ? " pb-0" : "") +
-              '">' +
-              '<div class="absolute left-0 top-0 w-6 h-6 rounded-full flex items-center justify-center border-2 ' +
-              (ev.done
-                ? "bg-emerald-50 border-emerald-400"
-                : "bg-gray-50 border-gray-300") +
-              '">' +
-              '<i class="fa-solid ' +
-              (ev.done
-                ? "fa-check text-emerald-500"
-                : "fa-clock text-gray-400") +
-              ' text-[9px]"></i>' +
-              "</div>" +
-              '<p class="text-sm font-bold text-gray-800 leading-tight">' +
-              ev.label +
-              "</p>" +
-              '<p class="text-xs text-gray-500 mt-0.5">' +
-              ev.sub +
-              "</p>" +
-              '<p class="text-[10px] text-gray-400 mt-1">' +
-              ev.time +
-              "</p>" +
-              "</div>"
-            );
-          })
-          .join("");
-
-        document.getElementById("detailModal").classList.remove("hidden");
-      }
-
-      function closeModal() {
-        document.getElementById("detailModal").classList.add("hidden");
-        currentDetailId = null;
-      }
-
-      function closeDetail(e) {
-        if (e.target === document.getElementById("detailModal")) closeModal();
-      }
-
-      function recheckSingle() {
-        if (!currentDetailId) return;
-        var r = RESI_DB.find(function (x) {
-          return x.id === currentDetailId;
-        });
-        if (!r) return;
-        var newStatus =
-          MOCK_STATUS_POOL[Math.floor(Math.random() * MOCK_STATUS_POOL.length)];
-        r.status = newStatus;
-        r.checked = formatDateTime(new Date());
-        r.position =
-          newStatus === "Delivered"
-            ? r.dest + " (diterima)"
-            : newStatus === "Not Found"
-              ? "—"
-              : newStatus === "Pending"
+              : status === "Pending"
                 ? "Menunggu pickup"
-                : newStatus === "Returned"
+                : status === "Returned"
                   ? "Kembali ke pengirim"
                   : MOCK_CITIES[
-                      Math.floor(Math.random() * MOCK_CITIES.length)
-                    ] + " HUB";
-        closeModal();
-        renderTable();
-        updateStats();
-        setTimeout(function () {
-          openDetail(currentDetailId === null ? r.id : r.id);
-        }, 100);
+                  Math.floor(Math.random() * MOCK_CITIES.length)
+                  ] + " HUB",
+      };
+    }
+
+    function formatDate(d) {
+      return (
+        d.getDate() +
+        " " +
+        [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "Mei",
+          "Jun",
+          "Jul",
+          "Agu",
+          "Sep",
+          "Okt",
+          "Nov",
+          "Des",
+        ][d.getMonth()] +
+        " " +
+        d.getFullYear()
+      );
+    }
+    function formatDateTime(d) {
+      return (
+        formatDate(d) +
+        ", " +
+        String(d.getHours()).padStart(2, "0") +
+        ":" +
+        String(d.getMinutes()).padStart(2, "0")
+      );
+    }
+
+    // ─── Check Resi ──────────────────────────────────────────────────────────────
+    function checkResi() {
+      var raw = document.getElementById("resi-input").value.trim();
+      var manual = document.getElementById("kurir-filter").value;
+      if (!raw) {
+        alert("Masukkan minimal satu nomor resi.");
+        return;
       }
 
-      // ─── Utilities ───────────────────────────────────────────────────────────────
-      function clearInput() {
-        document.getElementById("resi-input").value = "";
-        document.getElementById("kurir-filter").value = "auto";
-      }
-
-      function clearAll() {
-        if (RESI_DB.length === 0) return;
-        if (!confirm("Hapus semua " + RESI_DB.length + " hasil pengecekan?"))
-          return;
-        RESI_DB = [];
-        renderTable();
-        updateStats();
-      }
-
-      function exportResults() {
-        if (RESI_DB.length === 0) {
-          alert("Tidak ada data untuk di-export.");
-          return;
-        }
-        var header = [
-          "Nomor Resi",
-          "Kurir",
-          "Status",
-          "Posisi Terakhir",
-          "Estimasi Tiba",
-          "Dicek Pada",
-        ];
-        var rows = RESI_DB.map(function (r) {
-          return [
-            r.id,
-            r.kurirName,
-            r.status,
-            r.position,
-            r.eta,
-            r.checked,
-          ].join(",");
+      // Parse resi numbers
+      var list = raw
+        .split(/[\n,]+/)
+        .map(function (r) {
+          return r.trim();
+        })
+        .filter(function (r) {
+          return r.length > 0;
         });
-        var csv = [header.join(",")].concat(rows).join("\n");
-        var blob = new Blob([csv], { type: "text/csv" });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url;
-        a.download = "resi-checker-export.csv";
-        a.click();
-        URL.revokeObjectURL(url);
+      if (list.length > 20) {
+        alert("Maksimum 20 nomor resi sekaligus.");
+        return;
       }
 
-      // ─── Sidebar Dropdowns ───────────────────────────────────────────────────────
-      function toggleDropdown(name) {
-        var dd = document.getElementById(name + "-dropdown");
-        var ar = document.getElementById(name + "-arrow");
-        if (!dd) return;
-        var open = dd.classList.contains("open");
-        dd.classList.toggle("open", !open);
-        if (ar) {
-          ar.classList.toggle("fa-chevron-down", open);
-          ar.classList.toggle("fa-chevron-up", !open);
+      // Show progress
+      var progressWrap = document.getElementById("check-progress-wrap");
+      var progressBar = document.getElementById("check-progress-bar");
+      var progressLabel = document.getElementById("check-progress-label");
+      var progressCount = document.getElementById("check-progress-count");
+      progressWrap.classList.remove("hidden");
+      progressBar.style.width = "0%";
+      progressLabel.textContent = "Mengecek resi…";
+      document.getElementById("btn-check").disabled = true;
+
+      var total = list.length;
+      var done = 0;
+      var newResults = [];
+
+      function processNext() {
+        if (done >= total) {
+          // Merge: avoid duplicate resi
+          list.forEach(function (r, idx) {
+            var existing = RESI_DB.findIndex(function (x) {
+              return x.id === r.trim();
+            });
+            if (existing >= 0) RESI_DB[existing] = newResults[idx];
+            else RESI_DB.push(newResults[idx]);
+          });
+          progressBar.style.width = "100%";
+          progressLabel.textContent = "Selesai!";
+          progressCount.textContent = total + " / " + total;
+          setTimeout(function () {
+            progressWrap.classList.add("hidden");
+            document.getElementById("btn-check").disabled = false;
+          }, 1200);
+          renderTable();
+          updateStats();
+          return;
         }
+        var resi = list[done].trim();
+        var kurirKey = manual === "auto" ? detectCourier(resi) : manual;
+        var result = mockResult(resi, kurirKey);
+        newResults.push(result);
+        done++;
+        var pct = Math.round((done / total) * 100);
+        progressBar.style.width = pct + "%";
+        progressCount.textContent = done + " / " + total;
+        setTimeout(processNext, 180 + Math.random() * 120);
       }
+      processNext();
+    }
 
-      function toggleProfileDropdown() {
-        document.getElementById("profile-dropdown").classList.toggle("hidden");
+    // ─── Render Table ────────────────────────────────────────────────────────────
+    function renderTable(data) {
+      var rows = data || RESI_DB;
+      var tbody = document.getElementById("result-tbody");
+      var empty = document.getElementById("empty-state");
+      var wrap = document.getElementById("result-table-wrap");
+
+      if (rows.length === 0) {
+        empty.classList.remove("hidden");
+        wrap.classList.add("hidden");
+        document.getElementById("result-count-badge").textContent = "0 resi";
+        return;
       }
+      empty.classList.add("hidden");
+      wrap.classList.remove("hidden");
+      document.getElementById("result-count-badge").textContent =
+        rows.length + " resi";
 
-      document.addEventListener("click", function (e) {
-        var pd = document.getElementById("profile-dropdown");
-        if (
-          !pd.classList.contains("hidden") &&
-          !pd.contains(e.target) &&
-          !e.target.closest('[onclick="toggleProfileDropdown()"]')
-        ) {
-          pd.classList.add("hidden");
-        }
+      tbody.innerHTML = rows
+        .map(function (r, idx) {
+          var st = STATUS_STYLES[r.status] || STATUS_STYLES["Pending"];
+          var ck = COURIERS[r.kurir]
+            ? COURIERS[r.kurir].color
+            : "bg-gray-100 text-gray-600";
+          return (
+            '<tr class="result-row border-b border-surface-100 fade-in" style="animation-delay:' +
+            idx * 30 +
+            'ms">' +
+            '<td class="px-6 py-3.5"><span class="font-mono text-xs font-bold text-gray-800">' +
+            r.id +
+            "</span></td>" +
+            '<td class="px-4 py-3.5"><span class="px-2 py-0.5 text-[11px] font-bold rounded-full ' +
+            ck +
+            '">' +
+            r.kurirName +
+            "</span></td>" +
+            '<td class="px-4 py-3.5"><span class="flex items-center gap-1.5 text-xs font-semibold ' +
+            (st.badge.includes("emerald")
+              ? "text-emerald-700"
+              : st.badge.includes("blue")
+                ? "text-blue-700"
+                : st.badge.includes("yellow")
+                  ? "text-yellow-700"
+                  : st.badge.includes("red")
+                    ? "text-red-700"
+                    : "text-gray-500") +
+            '">' +
+            '<i class="fa-solid ' +
+            st.icon.split(" ")[0].replace("fa-solid", "").trim() +
+            " " +
+            st.icon +
+            '"></i>' +
+            r.status +
+            "</span></td>" +
+            '<td class="px-4 py-3.5 text-xs text-gray-500">' +
+            r.position +
+            "</td>" +
+            '<td class="px-4 py-3.5 text-xs text-gray-500">' +
+            r.eta +
+            "</td>" +
+            '<td class="px-4 py-3.5 text-xs text-gray-400">' +
+            r.checked +
+            "</td>" +
+            '<td class="px-4 py-3.5 text-right"><button onclick="openDetail(\'' +
+            r.id +
+            '\')" class="px-3 py-1.5 text-xs font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-all">Detail</button></td>' +
+            "</tr>"
+          );
+        })
+        .join("");
+    }
+
+    // ─── Stats ───────────────────────────────────────────────────────────────────
+    function updateStats() {
+      document.getElementById("stat-total").textContent = RESI_DB.length;
+      document.getElementById("stat-delivered").textContent = RESI_DB.filter(
+        function (r) {
+          return r.status === "Delivered";
+        },
+      ).length;
+      document.getElementById("stat-problem").textContent = RESI_DB.filter(
+        function (r) {
+          return r.status === "Not Found" || r.status === "Returned";
+        },
+      ).length;
+    }
+
+    // ─── Table Filter ────────────────────────────────────────────────────────────
+    function applyTableFilter() {
+      var search = document
+        .getElementById("filter-search")
+        .value.toLowerCase();
+      var kurir = document.getElementById("filter-kurir").value;
+      var status = document.getElementById("filter-status").value;
+      var filtered = RESI_DB.filter(function (r) {
+        return (
+          (!search || r.id.toLowerCase().includes(search)) &&
+          (!kurir || r.kurirName === kurir) &&
+          (!status || r.status === status)
+        );
       });
-    </script>
-  </body>
+      renderTable(filtered);
+    }
+
+    // ─── Detail Modal ─────────────────────────────────────────────────────────────
+    function openDetail(id) {
+      var r = RESI_DB.find(function (x) {
+        return x.id === id;
+      });
+      if (!r) return;
+      currentDetailId = id;
+      var st = STATUS_STYLES[r.status] || STATUS_STYLES["Pending"];
+      document.getElementById("modal-resi-number").textContent = r.id;
+      document.getElementById("modal-kurir").textContent = r.kurirName;
+      document.getElementById("modal-receiver").textContent = r.receiver;
+      document.getElementById("modal-destination").textContent = r.dest;
+      document.getElementById("modal-eta").textContent = r.eta;
+
+      var badge = document.getElementById("modal-status-badge");
+      badge.textContent = r.status;
+      badge.className =
+        "px-2 py-0.5 text-[11px] font-bold rounded-full " + st.badge;
+
+      // Build timeline
+      var events = MOCK_TIMELINES[r.status] || MOCK_TIMELINES["In Transit"];
+      var timeline = document.getElementById("modal-timeline");
+      timeline.innerHTML = events
+        .map(function (ev, i) {
+          var isLast = i === events.length - 1;
+          return (
+            '<div class="timeline-item relative pl-8 pb-5 ' +
+            (ev.done ? "done" : "") +
+            (isLast ? " pb-0" : "") +
+            '">' +
+            '<div class="absolute left-0 top-0 w-6 h-6 rounded-full flex items-center justify-center border-2 ' +
+            (ev.done
+              ? "bg-emerald-50 border-emerald-400"
+              : "bg-gray-50 border-gray-300") +
+            '">' +
+            '<i class="fa-solid ' +
+            (ev.done
+              ? "fa-check text-emerald-500"
+              : "fa-clock text-gray-400") +
+            ' text-[9px]"></i>' +
+            "</div>" +
+            '<p class="text-sm font-bold text-gray-800 leading-tight">' +
+            ev.label +
+            "</p>" +
+            '<p class="text-xs text-gray-500 mt-0.5">' +
+            ev.sub +
+            "</p>" +
+            '<p class="text-[10px] text-gray-400 mt-1">' +
+            ev.time +
+            "</p>" +
+            "</div>"
+          );
+        })
+        .join("");
+
+      document.getElementById("detailModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("detailModal").classList.add("hidden");
+      currentDetailId = null;
+    }
+
+    function closeDetail(e) {
+      if (e.target === document.getElementById("detailModal")) closeModal();
+    }
+
+    function recheckSingle() {
+      if (!currentDetailId) return;
+      var r = RESI_DB.find(function (x) {
+        return x.id === currentDetailId;
+      });
+      if (!r) return;
+      var newStatus =
+        MOCK_STATUS_POOL[Math.floor(Math.random() * MOCK_STATUS_POOL.length)];
+      r.status = newStatus;
+      r.checked = formatDateTime(new Date());
+      r.position =
+        newStatus === "Delivered"
+          ? r.dest + " (diterima)"
+          : newStatus === "Not Found"
+            ? "—"
+            : newStatus === "Pending"
+              ? "Menunggu pickup"
+              : newStatus === "Returned"
+                ? "Kembali ke pengirim"
+                : MOCK_CITIES[
+                Math.floor(Math.random() * MOCK_CITIES.length)
+                ] + " HUB";
+      closeModal();
+      renderTable();
+      updateStats();
+      setTimeout(function () {
+        openDetail(currentDetailId === null ? r.id : r.id);
+      }, 100);
+    }
+
+    // ─── Utilities ───────────────────────────────────────────────────────────────
+    function clearInput() {
+      document.getElementById("resi-input").value = "";
+      document.getElementById("kurir-filter").value = "auto";
+    }
+
+    function clearAll() {
+      if (RESI_DB.length === 0) return;
+      if (!confirm("Hapus semua " + RESI_DB.length + " hasil pengecekan?"))
+        return;
+      RESI_DB = [];
+      renderTable();
+      updateStats();
+    }
+
+    function exportResults() {
+      if (RESI_DB.length === 0) {
+        alert("Tidak ada data untuk di-export.");
+        return;
+      }
+      var header = [
+        "Nomor Resi",
+        "Kurir",
+        "Status",
+        "Posisi Terakhir",
+        "Estimasi Tiba",
+        "Dicek Pada",
+      ];
+      var rows = RESI_DB.map(function (r) {
+        return [
+          r.id,
+          r.kurirName,
+          r.status,
+          r.position,
+          r.eta,
+          r.checked,
+        ].join(",");
+      });
+      var csv = [header.join(",")].concat(rows).join("\n");
+      var blob = new Blob([csv], { type: "text/csv" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "resi-checker-export.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ─── Sidebar Dropdowns ───────────────────────────────────────────────────────
+    function toggleDropdown(name) {
+      var dd = document.getElementById(name + "-dropdown");
+      var ar = document.getElementById(name + "-arrow");
+      if (!dd) return;
+      var open = dd.classList.contains("open");
+      dd.classList.toggle("open", !open);
+      if (ar) {
+        ar.classList.toggle("fa-chevron-down", open);
+        ar.classList.toggle("fa-chevron-up", !open);
+      }
+    }
+
+    function toggleProfileDropdown() {
+      document.getElementById("profile-dropdown").classList.toggle("hidden");
+    }
+
+    document.addEventListener("click", function (e) {
+      var pd = document.getElementById("profile-dropdown");
+      if (
+        !pd.classList.contains("hidden") &&
+        !pd.contains(e.target) &&
+        !e.target.closest('[onclick="toggleProfileDropdown()"]')
+      ) {
+        pd.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+
 </html>

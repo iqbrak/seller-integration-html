@@ -1,2109 +1,1686 @@
 <!doctype html>
 <html lang="en" class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seller Integration - User Management</title>
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
-            colors: {
-              primary: {
-                50: "#f0f7ff",
-                100: "#e0effe",
-                200: "#bae0fd",
-                300: "#7cc8fb",
-                400: "#36aaf5",
-                500: "#0c8ee6",
-                600: "#0070c4",
-                700: "#01599f",
-                800: "#064b83",
-                900: "#0b3f6d",
-              },
-              surface: {
-                50: "#fafbfc",
-                100: "#f4f6f8",
-                200: "#e9ecef",
-                300: "#dee2e6",
-              },
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Integration - User Management</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
+          colors: {
+            primary: {
+              50: "#f0f7ff",
+              100: "#e0effe",
+              200: "#bae0fd",
+              300: "#7cc8fb",
+              400: "#36aaf5",
+              500: "#0c8ee6",
+              600: "#0070c4",
+              700: "#01599f",
+              800: "#064b83",
+              900: "#0b3f6d",
+            },
+            surface: {
+              50: "#fafbfc",
+              100: "#f4f6f8",
+              200: "#e9ecef",
+              300: "#dee2e6",
             },
           },
         },
-      };
-    </script>
-    <style>
-      * {
-        font-family: "Plus Jakarta Sans", sans-serif;
-      }
-      .sidebar-item:hover {
-        background: rgba(12, 142, 230, 0.08);
-      }
-      .sidebar-item.active {
-        background: rgba(12, 142, 230, 0.12);
-        color: #0c8ee6;
-      }
-      .dropdown-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-      }
-      .dropdown-content.open {
-        max-height: 600px;
-      }
-      ::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f4f6f8;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #c9d0d8;
-        border-radius: 10px;
-      }
-      .table-row:hover {
-        background: #f0f7ff;
-        cursor: pointer;
-      }
-      .modal-overlay {
-        backdrop-filter: blur(3px);
-      }
-      .avatar-ring {
-        box-shadow:
-          0 0 0 2px #fff,
-          0 0 0 4px #0c8ee6;
-      }
-    </style>
-  </head>
-  <body class="h-full bg-surface-100">
-    <div class="flex h-full">
-      <!-- SIDEBAR -->
-      <aside
-        class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
-      >
-        <div class="p-6 border-b border-surface-200">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30"
-            >
-              <svg
-                class="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <div>
-              <h1 class="font-bold text-gray-900 text-lg leading-tight">
-                Seller Integration
-              </h1>
-              <span
-                class="px-2 py-0.5 text-[10px] font-bold bg-primary-100 text-primary-700 rounded-full uppercase tracking-wide"
-                >SUPERADMIN</span
-              >
-            </div>
-          </div>
-        </div>
-        <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
-          <a
-            href="../dashboard.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-home w-5"></i>Dashboard
-          </a>
-          <div
-            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            Data Management
-          </div>
-          <div>
-            <button
-              onclick="toggleDropdown('orders')"
-              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-cart-shopping w-5"></i>Orders
-              </div>
-              <i
-                id="orders-arrow"
-                class="fa-solid fa-chevron-down text-gray-400"
-              ></i>
-            </button>
-            <div
-              id="orders-dropdown"
-              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
-            >
-              <a
-                href="orders/all-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >All Orders</a
-              >
-              <a
-                href="orders/to-confirm-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Awaiting Confirmation</a
-              >
-              <a
-                href="orders/to-pack-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Ready to Pack</a
-              >
-              <a
-                href="orders/packed-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Packed Orders</a
-              >
-              <a
-                href="orders/returned-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Returned Orders</a
-              >
-              <a
-                href="orders/shopee-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Shopee</a
-              >
-              <a
-                href="orders/tiktok-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >TikTok/Tokopedia</a
-              >
-            </div>
-          </div>
-          <a
-            href="data-upload.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-upload w-5"></i>Data Upload
-          </a>
-          <a
-            href="user.html"
-            class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
-          >
-            <i class="fa-solid fa-users w-5"></i>User Management
-          </a>
-          <div
-            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            Shipping &amp; Logistics
-          </div>
-          <a
-            href="../shipping/print-label.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            ><i class="fa-solid fa-print w-5"></i>Print Shipping Labels</a
-          >
-          <a
-            href="../shipping/resi-checker.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            ><i class="fa-solid fa-barcode w-5"></i>Resi Checker</a
-          >
-          <a
-            href="../shipping/tracking-center.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            ><i class="fa-solid fa-truck w-5"></i>Tracking Center</a
-          >
-          <div
-            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            Analytics &amp; Reports
-          </div>
-          <div>
-            <button
-              onclick="toggleDropdown('reports')"
-              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-chart-pie w-5"></i>Reports
-              </div>
-              <i
-                id="reports-arrow"
-                class="fa-solid fa-chevron-down text-gray-400"
-              ></i>
-            </button>
-            <div
-              id="reports-dropdown"
-              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
-            >
-              <a
-                href="../analytics/reports/sales.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Sales Report</a
-              >
-              <a
-                href="../analytics/reports/revenue.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Revenue Report</a
-              >
-              <a
-                href="../analytics/reports/product.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Product Performance</a
-              >
-            </div>
-          </div>
-          <a
-            href="../analytics/activity-logs.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            ><i class="fa-solid fa-clipboard-list w-5"></i>Activity Logs</a
-          >
-          <div
-            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            System Settings
-          </div>
-          <a
-            href="../system/integration-setup.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            ><i class="fa-solid fa-gear w-5"></i>Integration Setup</a
-          >
-          <div>
-            <button
-              onclick="toggleDropdown('market')"
-              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-store w-5"></i>Market Integration
-              </div>
-              <i
-                id="market-arrow"
-                class="fa-solid fa-chevron-down text-gray-400"
-              ></i>
-            </button>
-            <div
-              id="market-dropdown"
-              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
-            >
-              <a
-                href="../system/market/shopee-market.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Shopee</a
-              >
-              <a
-                href="../system/market/tiktok-market.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >TikTok/Tokopedia</a
-              >
-            </div>
-          </div>
-          <a
-            href="../system/api-documentation.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            ><i class="fa-solid fa-code w-5"></i>API Documentation</a
-          >
-        </nav>
-        <div class="p-4 border-t border-surface-200">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow"
-            >
-              SA
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-gray-800 truncate">
-                Super Admin
-              </p>
-              <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
-            </div>
-            <button
-              class="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
-              title="Logout"
-            >
-              <i class="fa-solid fa-right-from-bracket text-sm"></i>
-            </button>
-          </div>
-        </div>
-      </aside>
+      },
+    };
+  </script>
+  <style>
+    * {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
 
-      <!-- MAIN -->
-      <main class="flex-1 overflow-y-auto">
-        <!-- Header -->
-        <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+    .sidebar-item:hover {
+      background: rgba(12, 142, 230, 0.08);
+    }
+
+    .sidebar-item.active {
+      background: rgba(12, 142, 230, 0.12);
+      color: #0c8ee6;
+    }
+
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .dropdown-content.open {
+      max-height: 600px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f4f6f8;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c9d0d8;
+      border-radius: 10px;
+    }
+
+    .table-row:hover {
+      background: #f0f7ff;
+      cursor: pointer;
+    }
+
+    .modal-overlay {
+      backdrop-filter: blur(3px);
+    }
+
+    .avatar-ring {
+      box-shadow:
+        0 0 0 2px #fff,
+        0 0 0 4px #0c8ee6;
+    }
+  </style>
+</head>
+
+<body class="h-full bg-surface-100">
+  <div class="flex h-full">
+    <!-- SIDEBAR -->
+    <aside
+      class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
+      <div class="p-6 border-b border-surface-200">
+        <div class="flex items-center gap-3">
           <div
-            class="flex items-center justify-between px-8 py-3 border-b border-surface-100"
-          >
-            <nav class="flex items-center gap-2 text-sm text-slate-500">
-              <a
-                href="../dashboard.html"
-                class="hover:text-primary-600 transition"
-                >Dashboard</a
-              >
-              <svg
-                class="w-4 h-4 text-slate-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-              <span class="text-slate-900 font-semibold">User Management</span>
-            </nav>
+            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="font-bold text-gray-900 text-lg leading-tight">
+              Seller Integration
+            </h1>
+            <span
+              class="px-2 py-0.5 text-[10px] font-bold bg-primary-100 text-primary-700 rounded-full uppercase tracking-wide">SUPERADMIN</span>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+        <a href="../dashboard.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-home w-5"></i>Dashboard
+        </a>
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
+          Data Management
+        </div>
+        <div>
+          <button onclick="toggleDropdown('orders')"
+            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
             <div class="flex items-center gap-3">
-              <div class="relative">
-                <input
-                  type="text"
-                  placeholder="Cari pengguna, email…"
-                  class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
-                />
-                <svg
-                  class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
+              <i class="fa-solid fa-cart-shopping w-5"></i>Orders
+            </div>
+            <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+          </button>
+          <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+            <a href="orders/all-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All
+              Orders</a>
+            <a href="orders/to-confirm-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting
+              Confirmation</a>
+            <a href="orders/to-pack-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready
+              to Pack</a>
+            <a href="orders/packed-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed
+              Orders</a>
+            <a href="orders/returned-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned
+              Orders</a>
+            <a href="orders/shopee-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+            <a href="orders/tiktok-orders.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
+          </div>
+        </div>
+        <a href="data-upload.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+          <i class="fa-solid fa-upload w-5"></i>Data Upload
+        </a>
+        <a href="user.html"
+          class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all">
+          <i class="fa-solid fa-users w-5"></i>User Management
+        </a>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
+          Shipping &amp; Logistics
+        </div>
+        <a href="../shipping/print-label.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
+            class="fa-solid fa-print w-5"></i>Print Shipping Labels</a>
+        <a href="../shipping/resi-checker.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
+            class="fa-solid fa-barcode w-5"></i>Resi Checker</a>
+        <a href="../shipping/tracking-center.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
+            class="fa-solid fa-truck w-5"></i>Tracking Center</a>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
+          Analytics &amp; Reports
+        </div>
+        <div>
+          <button onclick="toggleDropdown('reports')"
+            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-chart-pie w-5"></i>Reports
+            </div>
+            <i id="reports-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+          </button>
+          <div id="reports-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+            <a href="../analytics/reports/sales.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Sales
+              Report</a>
+            <a href="../analytics/reports/revenue.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Revenue
+              Report</a>
+            <a href="../analytics/reports/product.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Product
+              Performance</a>
+          </div>
+        </div>
+        <a href="../analytics/activity-logs.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
+            class="fa-solid fa-clipboard-list w-5"></i>Activity Logs</a>
+        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
+          System Settings
+        </div>
+        <a href="../system/integration-setup.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
+            class="fa-solid fa-gear w-5"></i>Integration Setup</a>
+        <div>
+          <button onclick="toggleDropdown('market')"
+            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-store w-5"></i>Market Integration
+            </div>
+            <i id="market-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
+          </button>
+          <div id="market-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
+            <a href="../system/market/shopee-market.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+            <a href="../system/market/tiktok-market.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
+          </div>
+        </div>
+        <a href="../system/api-documentation.html"
+          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
+            class="fa-solid fa-code w-5"></i>API Documentation</a>
+      </nav>
+      <div class="p-4 border-t border-surface-200">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow">
+            SA
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-800 truncate">
+              Super Admin
+            </p>
+            <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
+          </div>
+          <button class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Header -->
+      <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+        <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
+          <nav class="flex items-center gap-2 text-sm text-slate-500">
+            <a href="../dashboard.html" class="hover:text-primary-600 transition">Dashboard</a>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-slate-900 font-semibold">User Management</span>
+          </nav>
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <input type="text" placeholder="Cari pengguna, email…"
+                class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
+              <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <div class="relative group">
+              <button class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
+                <svg class="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition" fill="none"
+                  stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-              </div>
-              <div class="relative group">
-                <button
-                  class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all"
-                >
-                  <svg
-                    class="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    />
-                  </svg>
-                  <span
-                    class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
-                    >5</span
-                  >
-                </button>
                 <span
-                  class="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition pointer-events-none"
-                  >Notifikasi</span
-                >
-              </div>
-              <div class="relative group">
-                <button
-                  class="p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all"
-                >
-                  <svg
-                    class="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8.228 9a3 3 0 115.544 1c0 2-3 2-3 4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </button>
-                <span
-                  class="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition pointer-events-none"
-                  >Pusat Bantuan</span
-                >
-              </div>
-              <div class="relative">
-                <button
-                  onclick="toggleProfileDropdown()"
-                  class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
-                >
-                  <div
-                    class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow"
-                  >
-                    AM
-                  </div>
-                  <div class="text-left">
-                    <p class="text-sm font-semibold text-gray-900 leading-none">
-                      Admin Master
-                    </p>
-                    <p class="text-[11px] text-primary-600 mt-0.5">
-                      Superadmin
-                    </p>
-                  </div>
-                  <svg
-                    class="w-3 h-3 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
+                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+              </button>
+              <span
+                class="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition pointer-events-none">Notifikasi</span>
+            </div>
+            <div class="relative group">
+              <button class="p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
+                <svg class="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition" fill="none"
+                  stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8.228 9a3 3 0 115.544 1c0 2-3 2-3 4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              <span
+                class="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition pointer-events-none">Pusat
+                Bantuan</span>
+            </div>
+            <div class="relative">
+              <button onclick="toggleProfileDropdown()"
+                class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
                 <div
-                  id="profile-dropdown"
-                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20"
-                >
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      /></svg
-                    >Profil Saya
-                  </a>
-                  <a
-                    href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      /></svg
-                    >Pengaturan
-                  </a>
-                  <hr class="my-1 border-surface-200" />
-                  <a
-                    href="../../login.html"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                      /></svg
-                    >Keluar
-                  </a>
+                  class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow">
+                  AM
                 </div>
+                <div class="text-left">
+                  <p class="text-sm font-semibold text-gray-900 leading-none">
+                    Admin Master
+                  </p>
+                  <p class="text-[11px] text-primary-600 mt-0.5">
+                    Superadmin
+                  </p>
+                </div>
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="profile-dropdown"
+                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
+                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>Profil Saya
+                </a>
+                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>Pengaturan
+                </a>
+                <hr class="my-1 border-surface-200" />
+                <a href="../../login.html"
+                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>Keluar
+                </a>
               </div>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <div class="p-8 space-y-6">
-          <!-- Judul halaman + tombol tambah -->
-          <div class="flex items-center justify-between">
-            <div>
-              <h2
-                class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5"
-              >
-                <span
-                  class="w-9 h-9 rounded-xl flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0 bg-gradient-to-br from-primary-500 to-primary-700"
-                >
-                  <i class="fa-solid fa-users text-white text-sm"></i>
-                </span>
-                User Management
-              </h2>
-              <p class="text-slate-500 text-sm mt-1">
-                Kelola akun admin dan superadmin platform
-              </p>
+      <div class="p-8 space-y-6">
+        <!-- Judul halaman + tombol tambah -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
+              <span
+                class="w-9 h-9 rounded-xl flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0 bg-gradient-to-br from-primary-500 to-primary-700">
+                <i class="fa-solid fa-users text-white text-sm"></i>
+              </span>
+              User Management
+            </h2>
+            <p class="text-slate-500 text-sm mt-1">
+              Kelola akun admin dan superadmin platform
+            </p>
+          </div>
+          <button onclick="openFormModal()"
+            class="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-xl bg-primary-600 hover:bg-primary-700 shadow shadow-primary-500/30 transition-all">
+            <i class="fa-solid fa-plus text-xs"></i>Tambah Pengguna
+          </button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Pengguna</span>
+              <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
+                <i class="fa-solid fa-users text-primary-500 text-sm"></i>
+              </div>
             </div>
-            <button
-              onclick="openFormModal()"
-              class="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-xl bg-primary-600 hover:bg-primary-700 shadow shadow-primary-500/30 transition-all"
-            >
-              <i class="fa-solid fa-plus text-xs"></i>Tambah Pengguna
+            <p class="text-3xl font-extrabold text-gray-900" id="stat-total">
+              8
+            </p>
+            <p class="text-xs text-gray-400 mt-1">Semua role</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Pengguna Aktif</span>
+              <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-3xl font-extrabold text-emerald-600" id="stat-active">
+              6
+            </p>
+            <p class="text-xs text-gray-400 mt-1">Status aktif</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Admin</span>
+              <div class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+                <i class="fa-solid fa-user-shield text-violet-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-3xl font-extrabold text-violet-600" id="stat-admin">
+              5
+            </p>
+            <p class="text-xs text-gray-400 mt-1">Role admin</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Superadmin</span>
+              <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                <i class="fa-solid fa-user-tie text-amber-500 text-sm"></i>
+              </div>
+            </div>
+            <p class="text-3xl font-extrabold text-amber-600" id="stat-superadmin">
+              3
+            </p>
+            <p class="text-xs text-gray-400 mt-1">Role superadmin</p>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 flex flex-wrap items-center gap-3">
+          <div class="relative flex-1 min-w-[200px]">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+            <input id="search-input" type="text" placeholder="Cari nama, email, atau username…" oninput="filterTable()"
+              class="w-full pl-8 pr-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
+          </div>
+          <select id="filter-role" onchange="filterTable()"
+            class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
+            <option value="">Semua Role</option>
+            <option value="superadmin">Superadmin</option>
+            <option value="admin">Admin</option>
+          </select>
+          <select id="filter-status" onchange="filterTable()"
+            class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
+            <option value="">Semua Status</option>
+            <option value="active">Aktif</option>
+            <option value="inactive">Nonaktif</option>
+          </select>
+          <button onclick="clearFilters()"
+            class="px-3 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-xl transition">
+            <i class="fa-solid fa-xmark mr-1"></i>Reset
+          </button>
+          <span id="result-count" class="ml-auto text-xs text-gray-400 font-medium"></span>
+        </div>
+
+        <!-- Tabel Pengguna -->
+        <div class="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm min-w-[900px]">
+              <thead>
+                <tr class="border-b border-surface-200 bg-surface-50">
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-10">
+                    <input type="checkbox" id="check-all" onchange="toggleAllCheckbox(this)"
+                      class="rounded border-gray-300 text-primary-600 focus:ring-primary-400" />
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Pengguna
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Login Terakhir
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Dibuat
+                  </th>
+                  <th class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Aksi
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="user-table-body" class="divide-y divide-surface-100">
+                <!-- Baris diisi oleh JS -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Empty state -->
+          <div id="empty-state" class="hidden py-16 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-surface-100 flex items-center justify-center mx-auto mb-3">
+              <i class="fa-solid fa-users-slash text-gray-300 text-xl"></i>
+            </div>
+            <p class="text-sm font-semibold text-gray-500">
+              Tidak ada pengguna ditemukan
+            </p>
+            <p class="text-xs text-gray-400 mt-1">
+              Coba sesuaikan filter pencarian
+            </p>
+          </div>
+          <!-- Pagination -->
+          <div class="flex items-center justify-between px-5 py-3 border-t border-surface-100">
+            <span id="pagination-info" class="text-xs text-gray-400"></span>
+            <div class="flex items-center gap-1" id="pagination-controls"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="border-t border-surface-200 bg-white px-8 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span class="text-xs text-gray-500">Seller Integration Platform
+            <span class="font-semibold text-gray-700">v3.2.1</span></span>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-gray-400">
+          <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>API:
+            Operational</span>
+          <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>DB:
+            Connected</span>
+          <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>Queues: 3
+            pending</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ===== MODAL DETAIL PENGGUNA ===== -->
+  <div id="detailModal"
+    class="fixed inset-0 z-50 hidden modal-overlay bg-black/40 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <!-- Header modal -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shadow avatar-ring"
+            id="modal-avatar-bg">
+            AM
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900 text-sm" id="modal-fullname">
+              —
+            </h3>
+            <p class="text-xs text-gray-400" id="modal-username-label">—</p>
+          </div>
+        </div>
+        <button onclick="closeDetailModal()"
+          class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Tab navigasi -->
+      <div class="flex border-b border-surface-200 px-6">
+        <button onclick="switchTab('info')" id="tab-info"
+          class="tab-btn px-4 py-3 text-sm font-semibold text-primary-600 border-b-2 border-primary-500 -mb-px transition">
+          Info Akun
+        </button>
+        <button onclick="switchTab('permissions')" id="tab-permissions"
+          class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent -mb-px transition">
+          Hak Akses
+        </button>
+        <button onclick="switchTab('history')" id="tab-history"
+          class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent -mb-px transition">
+          Riwayat Login
+        </button>
+        <button onclick="switchTab('stores')" id="tab-stores"
+          class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent -mb-px transition">
+          Toko Terhubung
+        </button>
+      </div>
+
+      <!-- Konten Tab: Info Akun -->
+      <div id="panel-info" class="px-6 py-5 space-y-3 text-sm">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              ID Pengguna
+            </p>
+            <p class="font-mono text-xs text-gray-700 break-all" id="modal-id">
+              —
+            </p>
+          </div>
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Username
+            </p>
+            <p class="text-sm font-semibold text-gray-800" id="modal-username">
+              —
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Email
+            </p>
+            <p class="text-xs text-gray-700" id="modal-email">—</p>
+          </div>
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              No. Telepon
+            </p>
+            <p class="text-xs text-gray-700" id="modal-phone">—</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Role
+            </p>
+            <p id="modal-role-badge">—</p>
+          </div>
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Status
+            </p>
+            <p id="modal-status-badge">—</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Login Terakhir
+            </p>
+            <p class="text-xs text-gray-700" id="modal-last-login">—</p>
+          </div>
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              IP Terakhir
+            </p>
+            <p class="font-mono text-xs text-gray-700" id="modal-last-ip">
+              —
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Dibuat
+            </p>
+            <p class="text-xs text-gray-700" id="modal-created">—</p>
+          </div>
+          <div class="bg-surface-50 rounded-xl p-3">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              Terakhir Diperbarui
+            </p>
+            <p class="text-xs text-gray-700" id="modal-updated">—</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Konten Tab: Hak Akses -->
+      <div id="panel-permissions" class="hidden px-6 py-5 space-y-3 text-sm">
+        <p class="text-xs text-gray-500 mb-3">
+          Hak akses berdasarkan role yang ditetapkan
+        </p>
+        <div id="permissions-list" class="space-y-2"></div>
+      </div>
+
+      <!-- Konten Tab: Riwayat Login -->
+      <div id="panel-history" class="hidden px-6 py-5 text-sm">
+        <p class="text-xs text-gray-500 mb-3">5 sesi login terakhir</p>
+        <div class="space-y-2" id="login-history-list"></div>
+      </div>
+
+      <!-- Konten Tab: Toko Terhubung -->
+      <div id="panel-stores" class="hidden px-6 py-5 text-sm">
+        <p class="text-xs text-gray-500 mb-3">
+          Marketplace yang dapat diakses oleh pengguna ini
+        </p>
+        <div class="space-y-2" id="stores-list"></div>
+      </div>
+
+      <div class="px-6 py-4 border-t border-surface-100 flex justify-between items-center">
+        <button onclick="openEditFromDetail()"
+          class="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 border border-primary-200 rounded-xl transition">
+          <i class="fa-solid fa-pen-to-square text-xs"></i>Edit
+        </button>
+        <div class="flex gap-2">
+          <button id="modal-toggle-btn" onclick="toggleUserStatus()"
+            class="px-4 py-2 text-sm font-semibold rounded-xl transition"></button>
+          <button onclick="closeDetailModal()"
+            class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL TAMBAH / EDIT PENGGUNA ===== -->
+  <div id="formModal" class="fixed inset-0 z-50 hidden modal-overlay bg-black/40 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
+        <div class="flex items-center gap-2.5">
+          <div
+            class="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
+            <i class="fa-solid fa-user-plus text-white text-xs" id="form-modal-icon"></i>
+          </div>
+          <h3 class="font-bold text-gray-900 text-sm" id="form-modal-title">
+            Tambah Pengguna
+          </h3>
+        </div>
+        <button onclick="closeFormModal()"
+          class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="px-6 py-5 space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Nama Lengkap <span
+                class="text-red-500">*</span></label>
+            <input id="form-fullname" type="text" placeholder="Contoh: Budi Santoso"
+              class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Username <span
+                class="text-red-500">*</span></label>
+            <input id="form-username" type="text" placeholder="Contoh: budisantoso"
+              class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Email <span
+              class="text-red-500">*</span></label>
+          <input id="form-email" type="email" placeholder="Contoh: budi@seller.id"
+            class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">No. Telepon</label>
+          <input id="form-phone" type="text" placeholder="Contoh: +62 812-3456-7890"
+            class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Password
+            <span class="text-red-500" id="password-required">*</span></label>
+          <div class="relative">
+            <input id="form-password" type="password" placeholder="Minimal 8 karakter"
+              class="w-full px-3 py-2 pr-10 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
+            <button type="button" onclick="togglePassword()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              <i class="fa-solid fa-eye text-xs" id="pwd-eye-icon"></i>
             </button>
           </div>
-
-          <!-- KPI Cards -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div
-              class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Total Pengguna</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-users text-primary-500 text-sm"></i>
-                </div>
-              </div>
-              <p class="text-3xl font-extrabold text-gray-900" id="stat-total">
-                8
-              </p>
-              <p class="text-xs text-gray-400 mt-1">Semua role</p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Pengguna Aktif</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"
-                >
-                  <i
-                    class="fa-solid fa-circle-check text-emerald-500 text-sm"
-                  ></i>
-                </div>
-              </div>
-              <p
-                class="text-3xl font-extrabold text-emerald-600"
-                id="stat-active"
-              >
-                6
-              </p>
-              <p class="text-xs text-gray-400 mt-1">Status aktif</p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Admin</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center"
-                >
-                  <i
-                    class="fa-solid fa-user-shield text-violet-500 text-sm"
-                  ></i>
-                </div>
-              </div>
-              <p
-                class="text-3xl font-extrabold text-violet-600"
-                id="stat-admin"
-              >
-                5
-              </p>
-              <p class="text-xs text-gray-400 mt-1">Role admin</p>
-            </div>
-            <div
-              class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-xs font-bold text-gray-400 uppercase tracking-wider"
-                  >Superadmin</span
-                >
-                <div
-                  class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center"
-                >
-                  <i class="fa-solid fa-user-tie text-amber-500 text-sm"></i>
-                </div>
-              </div>
-              <p
-                class="text-3xl font-extrabold text-amber-600"
-                id="stat-superadmin"
-              >
-                3
-              </p>
-              <p class="text-xs text-gray-400 mt-1">Role superadmin</p>
-            </div>
-          </div>
-
-          <!-- Filter Bar -->
-          <div
-            class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 flex flex-wrap items-center gap-3"
-          >
-            <div class="relative flex-1 min-w-[200px]">
-              <i
-                class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"
-              ></i>
-              <input
-                id="search-input"
-                type="text"
-                placeholder="Cari nama, email, atau username…"
-                oninput="filterTable()"
-                class="w-full pl-8 pr-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition"
-              />
-            </div>
-            <select
-              id="filter-role"
-              onchange="filterTable()"
-              class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700"
-            >
-              <option value="">Semua Role</option>
+          <p class="text-[11px] text-gray-400 mt-1" id="password-hint">
+            Kosongkan jika tidak ingin mengubah password.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Role <span
+                class="text-red-500">*</span></label>
+            <select id="form-role"
+              class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700">
+              <option value="">Pilih Role</option>
               <option value="superadmin">Superadmin</option>
               <option value="admin">Admin</option>
             </select>
-            <select
-              id="filter-status"
-              onchange="filterTable()"
-              class="px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700"
-            >
-              <option value="">Semua Status</option>
-              <option value="active">Aktif</option>
-              <option value="inactive">Nonaktif</option>
-            </select>
-            <button
-              onclick="clearFilters()"
-              class="px-3 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-xl transition"
-            >
-              <i class="fa-solid fa-xmark mr-1"></i>Reset
-            </button>
-            <span
-              id="result-count"
-              class="ml-auto text-xs text-gray-400 font-medium"
-            ></span>
           </div>
-
-          <!-- Tabel Pengguna -->
-          <div
-            class="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden"
-          >
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm min-w-[900px]">
-                <thead>
-                  <tr class="border-b border-surface-200 bg-surface-50">
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-10"
-                    >
-                      <input
-                        type="checkbox"
-                        id="check-all"
-                        onchange="toggleAllCheckbox(this)"
-                        class="rounded border-gray-300 text-primary-600 focus:ring-primary-400"
-                      />
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Pengguna
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Email
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Role
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Status
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Login Terakhir
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Dibuat
-                    </th>
-                    <th
-                      class="text-left px-5 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
-                    >
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="user-table-body" class="divide-y divide-surface-100">
-                  <!-- Baris diisi oleh JS -->
-                </tbody>
-              </table>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Status</label>
+            <div class="flex items-center gap-3 mt-2.5">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="form-active" class="sr-only peer" checked />
+                <div
+                  class="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500">
+                </div>
+              </label>
+              <span class="text-sm text-gray-600">Aktif</span>
             </div>
-            <!-- Empty state -->
-            <div id="empty-state" class="hidden py-16 text-center">
-              <div
-                class="w-14 h-14 rounded-2xl bg-surface-100 flex items-center justify-center mx-auto mb-3"
-              >
-                <i class="fa-solid fa-users-slash text-gray-300 text-xl"></i>
-              </div>
-              <p class="text-sm font-semibold text-gray-500">
-                Tidak ada pengguna ditemukan
-              </p>
-              <p class="text-xs text-gray-400 mt-1">
-                Coba sesuaikan filter pencarian
-              </p>
-            </div>
-            <!-- Pagination -->
-            <div
-              class="flex items-center justify-between px-5 py-3 border-t border-surface-100"
-            >
-              <span id="pagination-info" class="text-xs text-gray-400"></span>
-              <div
-                class="flex items-center gap-1"
-                id="pagination-controls"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Footer -->
-        <footer
-          class="border-t border-surface-200 bg-white px-8 py-4 flex items-center justify-between"
-        >
-          <div class="flex items-center gap-3">
-            <div
-              class="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center"
-            >
-              <svg
-                class="w-3.5 h-3.5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <span class="text-xs text-gray-500"
-              >Seller Integration Platform
-              <span class="font-semibold text-gray-700">v3.2.1</span></span
-            >
-          </div>
-          <div class="flex items-center gap-4 text-xs text-gray-400">
-            <span class="flex items-center gap-1.5"
-              ><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>API:
-              Operational</span
-            >
-            <span class="flex items-center gap-1.5"
-              ><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>DB:
-              Connected</span
-            >
-            <span class="flex items-center gap-1.5"
-              ><span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span
-              >Queues: 3 pending</span
-            >
-          </div>
-        </footer>
-      </main>
-    </div>
-
-    <!-- ===== MODAL DETAIL PENGGUNA ===== -->
-    <div
-      id="detailModal"
-      class="fixed inset-0 z-50 hidden modal-overlay bg-black/40 flex items-center justify-center p-4"
-    >
-      <div
-        class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
-      >
-        <!-- Header modal -->
-        <div
-          class="flex items-center justify-between px-6 py-4 border-b border-surface-200"
-        >
-          <div class="flex items-center gap-3">
-            <div
-              class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shadow avatar-ring"
-              id="modal-avatar-bg"
-            >
-              AM
-            </div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-sm" id="modal-fullname">
-                —
-              </h3>
-              <p class="text-xs text-gray-400" id="modal-username-label">—</p>
-            </div>
-          </div>
-          <button
-            onclick="closeDetailModal()"
-            class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <!-- Tab navigasi -->
-        <div class="flex border-b border-surface-200 px-6">
-          <button
-            onclick="switchTab('info')"
-            id="tab-info"
-            class="tab-btn px-4 py-3 text-sm font-semibold text-primary-600 border-b-2 border-primary-500 -mb-px transition"
-          >
-            Info Akun
-          </button>
-          <button
-            onclick="switchTab('permissions')"
-            id="tab-permissions"
-            class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent -mb-px transition"
-          >
-            Hak Akses
-          </button>
-          <button
-            onclick="switchTab('history')"
-            id="tab-history"
-            class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent -mb-px transition"
-          >
-            Riwayat Login
-          </button>
-          <button
-            onclick="switchTab('stores')"
-            id="tab-stores"
-            class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent -mb-px transition"
-          >
-            Toko Terhubung
-          </button>
-        </div>
-
-        <!-- Konten Tab: Info Akun -->
-        <div id="panel-info" class="px-6 py-5 space-y-3 text-sm">
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                ID Pengguna
-              </p>
-              <p
-                class="font-mono text-xs text-gray-700 break-all"
-                id="modal-id"
-              >
-                —
-              </p>
-            </div>
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Username
-              </p>
-              <p
-                class="text-sm font-semibold text-gray-800"
-                id="modal-username"
-              >
-                —
-              </p>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Email
-              </p>
-              <p class="text-xs text-gray-700" id="modal-email">—</p>
-            </div>
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                No. Telepon
-              </p>
-              <p class="text-xs text-gray-700" id="modal-phone">—</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Role
-              </p>
-              <p id="modal-role-badge">—</p>
-            </div>
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Status
-              </p>
-              <p id="modal-status-badge">—</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Login Terakhir
-              </p>
-              <p class="text-xs text-gray-700" id="modal-last-login">—</p>
-            </div>
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                IP Terakhir
-              </p>
-              <p class="font-mono text-xs text-gray-700" id="modal-last-ip">
-                —
-              </p>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Dibuat
-              </p>
-              <p class="text-xs text-gray-700" id="modal-created">—</p>
-            </div>
-            <div class="bg-surface-50 rounded-xl p-3">
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1"
-              >
-                Terakhir Diperbarui
-              </p>
-              <p class="text-xs text-gray-700" id="modal-updated">—</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Konten Tab: Hak Akses -->
-        <div id="panel-permissions" class="hidden px-6 py-5 space-y-3 text-sm">
-          <p class="text-xs text-gray-500 mb-3">
-            Hak akses berdasarkan role yang ditetapkan
-          </p>
-          <div id="permissions-list" class="space-y-2"></div>
-        </div>
-
-        <!-- Konten Tab: Riwayat Login -->
-        <div id="panel-history" class="hidden px-6 py-5 text-sm">
-          <p class="text-xs text-gray-500 mb-3">5 sesi login terakhir</p>
-          <div class="space-y-2" id="login-history-list"></div>
-        </div>
-
-        <!-- Konten Tab: Toko Terhubung -->
-        <div id="panel-stores" class="hidden px-6 py-5 text-sm">
-          <p class="text-xs text-gray-500 mb-3">
-            Marketplace yang dapat diakses oleh pengguna ini
-          </p>
-          <div class="space-y-2" id="stores-list"></div>
-        </div>
-
-        <div
-          class="px-6 py-4 border-t border-surface-100 flex justify-between items-center"
-        >
-          <button
-            onclick="openEditFromDetail()"
-            class="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 border border-primary-200 rounded-xl transition"
-          >
-            <i class="fa-solid fa-pen-to-square text-xs"></i>Edit
-          </button>
-          <div class="flex gap-2">
-            <button
-              id="modal-toggle-btn"
-              onclick="toggleUserStatus()"
-              class="px-4 py-2 text-sm font-semibold rounded-xl transition"
-            ></button>
-            <button
-              onclick="closeDetailModal()"
-              class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition"
-            >
-              Tutup
-            </button>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ===== MODAL TAMBAH / EDIT PENGGUNA ===== -->
-    <div
-      id="formModal"
-      class="fixed inset-0 z-50 hidden modal-overlay bg-black/40 flex items-center justify-center p-4"
-    >
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
-        <div
-          class="flex items-center justify-between px-6 py-4 border-b border-surface-200"
-        >
-          <div class="flex items-center gap-2.5">
-            <div
-              class="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700"
-            >
-              <i
-                class="fa-solid fa-user-plus text-white text-xs"
-                id="form-modal-icon"
-              ></i>
-            </div>
-            <h3 class="font-bold text-gray-900 text-sm" id="form-modal-title">
-              Tambah Pengguna
-            </h3>
-          </div>
-          <button
-            onclick="closeFormModal()"
-            class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="px-6 py-5 space-y-4">
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-                >Nama Lengkap <span class="text-red-500">*</span></label
-              >
-              <input
-                id="form-fullname"
-                type="text"
-                placeholder="Contoh: Budi Santoso"
-                class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition"
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-                >Username <span class="text-red-500">*</span></label
-              >
-              <input
-                id="form-username"
-                type="text"
-                placeholder="Contoh: budisantoso"
-                class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition"
-              />
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-              >Email <span class="text-red-500">*</span></label
-            >
-            <input
-              id="form-email"
-              type="email"
-              placeholder="Contoh: budi@seller.id"
-              class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition"
-            />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-              >No. Telepon</label
-            >
-            <input
-              id="form-phone"
-              type="text"
-              placeholder="Contoh: +62 812-3456-7890"
-              class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition"
-            />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-              >Password
-              <span class="text-red-500" id="password-required">*</span></label
-            >
-            <div class="relative">
-              <input
-                id="form-password"
-                type="password"
-                placeholder="Minimal 8 karakter"
-                class="w-full px-3 py-2 pr-10 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition"
-              />
-              <button
-                type="button"
-                onclick="togglePassword()"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <i class="fa-solid fa-eye text-xs" id="pwd-eye-icon"></i>
-              </button>
-            </div>
-            <p class="text-[11px] text-gray-400 mt-1" id="password-hint">
-              Kosongkan jika tidak ingin mengubah password.
-            </p>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-                >Role <span class="text-red-500">*</span></label
-              >
-              <select
-                id="form-role"
-                class="w-full px-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white text-gray-700"
-              >
-                <option value="">Pilih Role</option>
-                <option value="superadmin">Superadmin</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1.5"
-                >Status</label
-              >
-              <div class="flex items-center gap-3 mt-2.5">
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    id="form-active"
-                    class="sr-only peer"
-                    checked
-                  />
-                  <div
-                    class="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500"
-                  ></div>
-                </label>
-                <span class="text-sm text-gray-600">Aktif</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="px-6 py-4 border-t border-surface-100 flex justify-end gap-2"
-        >
-          <button
-            onclick="closeFormModal()"
-            class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition"
-          >
-            Batal
-          </button>
-          <button
-            onclick="saveUser()"
-            class="px-4 py-2 text-sm font-semibold text-white rounded-xl bg-primary-600 hover:bg-primary-700 transition flex items-center gap-2"
-          >
-            <i class="fa-solid fa-floppy-disk text-xs"></i>Simpan
-          </button>
-        </div>
+      <div class="px-6 py-4 border-t border-surface-100 flex justify-end gap-2">
+        <button onclick="closeFormModal()"
+          class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition">
+          Batal
+        </button>
+        <button onclick="saveUser()"
+          class="px-4 py-2 text-sm font-semibold text-white rounded-xl bg-primary-600 hover:bg-primary-700 transition flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk text-xs"></i>Simpan
+        </button>
       </div>
     </div>
+  </div>
 
-    <script>
-      // ── Data mock pengguna ────────────────────────────────────────────────────────
-      var now = new Date("2026-02-26T08:00:00Z");
+  <script>
+    // ── Data mock pengguna ────────────────────────────────────────────────────────
+    var now = new Date("2026-02-26T08:00:00Z");
 
-      function daysAgo(d) {
-        var x = new Date(now);
-        x.setDate(x.getDate() - d);
-        return x.toISOString();
-      }
-      function hoursAgo(h) {
-        var x = new Date(now);
-        x.setHours(x.getHours() - h);
-        return x.toISOString();
-      }
+    function daysAgo(d) {
+      var x = new Date(now);
+      x.setDate(x.getDate() - d);
+      return x.toISOString();
+    }
+    function hoursAgo(h) {
+      var x = new Date(now);
+      x.setHours(x.getHours() - h);
+      return x.toISOString();
+    }
 
-      var USERS = [
-        {
-          id: "usr_001a2b3c4d",
-          fullname: "Admin Master",
-          username: "adminmaster",
-          email: "admin@seller.id",
-          phone: "+62 812-1111-0001",
-          role: "superadmin",
-          is_active: true,
-          last_login: hoursAgo(1),
-          last_ip: "103.82.24.10",
-          created: daysAgo(365),
-          updated: daysAgo(1),
-          login_history: [
-            {
-              time: hoursAgo(1),
-              ip: "103.82.24.10",
-              device: "Chrome / Windows",
-            },
-            {
-              time: hoursAgo(25),
-              ip: "103.82.24.10",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(3),
-              ip: "180.251.11.99",
-              device: "Firefox / MacOS",
-            },
-            {
-              time: daysAgo(7),
-              ip: "103.82.24.10",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(14),
-              ip: "103.82.24.10",
-              device: "Chrome / Android",
-            },
-          ],
-          stores: [
-            "Pakan Ayam (Shopee)",
-            "Pakan Ayam Bebek (Shopee)",
-            "Adisatya ITC (Shopee)",
-          ],
-        },
-        {
-          id: "usr_002e3f4g5h",
-          fullname: "Dewi Rahayu",
-          username: "dewirahayu",
-          email: "dewi@seller.id",
-          phone: "+62 812-2222-0002",
-          role: "superadmin",
-          is_active: true,
-          last_login: hoursAgo(3),
-          last_ip: "202.43.120.55",
-          created: daysAgo(300),
-          updated: daysAgo(5),
-          login_history: [
-            {
-              time: hoursAgo(3),
-              ip: "202.43.120.55",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(2),
-              ip: "202.43.120.55",
-              device: "Safari / iPhone",
-            },
-            {
-              time: daysAgo(5),
-              ip: "202.43.120.55",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(10),
-              ip: "114.121.8.77",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(20),
-              ip: "202.43.120.55",
-              device: "Chrome / Windows",
-            },
-          ],
-          stores: ["Pakan Ayam (Shopee)", "Pakan Ayam Bebek (Shopee)"],
-        },
-        {
-          id: "usr_003i4j5k6l",
-          fullname: "Reza Firmansyah",
-          username: "rezafirman",
-          email: "reza@seller.id",
-          phone: "+62 813-3333-0003",
-          role: "superadmin",
-          is_active: true,
-          last_login: daysAgo(1),
-          last_ip: "36.72.85.14",
-          created: daysAgo(280),
-          updated: daysAgo(10),
-          login_history: [
-            { time: daysAgo(1), ip: "36.72.85.14", device: "Chrome / Windows" },
-            {
-              time: daysAgo(4),
-              ip: "36.72.85.14",
-              device: "Firefox / Windows",
-            },
-            { time: daysAgo(9), ip: "36.72.85.14", device: "Chrome / Windows" },
-            {
-              time: daysAgo(15),
-              ip: "114.5.193.20",
-              device: "Chrome / Android",
-            },
-            {
-              time: daysAgo(22),
-              ip: "36.72.85.14",
-              device: "Chrome / Windows",
-            },
-          ],
-          stores: ["Adisatya ITC (Shopee)"],
-        },
-        {
-          id: "usr_004m5n6o7p",
-          fullname: "Siti Aminah",
-          username: "sitiaminah",
-          email: "siti@seller.id",
-          phone: "+62 815-4444-0004",
-          role: "admin",
-          is_active: true,
-          last_login: hoursAgo(2),
-          last_ip: "125.163.72.8",
-          created: daysAgo(200),
-          updated: daysAgo(3),
-          login_history: [
-            {
-              time: hoursAgo(2),
-              ip: "125.163.72.8",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(1),
-              ip: "125.163.72.8",
-              device: "Chrome / Windows",
-            },
-            { time: daysAgo(4), ip: "125.163.72.8", device: "Edge / Windows" },
-            {
-              time: daysAgo(8),
-              ip: "125.163.72.8",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(15),
-              ip: "103.25.11.44",
-              device: "Safari / iPhone",
-            },
-          ],
-          stores: ["Pakan Ayam (Shopee)"],
-        },
-        {
-          id: "usr_005q6r7s8t",
-          fullname: "Budi Santoso",
-          username: "budisantoso",
-          email: "budi@seller.id",
-          phone: "+62 816-5555-0005",
-          role: "admin",
-          is_active: true,
-          last_login: daysAgo(2),
-          last_ip: "182.1.52.33",
-          created: daysAgo(180),
-          updated: daysAgo(7),
-          login_history: [
-            { time: daysAgo(2), ip: "182.1.52.33", device: "Chrome / Windows" },
-            { time: daysAgo(5), ip: "182.1.52.33", device: "Chrome / Windows" },
-            {
-              time: daysAgo(9),
-              ip: "182.1.52.33",
-              device: "Firefox / Windows",
-            },
-            {
-              time: daysAgo(14),
-              ip: "114.5.77.11",
-              device: "Chrome / Android",
-            },
-            {
-              time: daysAgo(20),
-              ip: "182.1.52.33",
-              device: "Chrome / Windows",
-            },
-          ],
-          stores: ["Pakan Ayam Bebek (Shopee)"],
-        },
-        {
-          id: "usr_006u7v8w9x",
-          fullname: "Andi Prasetyo",
-          username: "andiprasetyo",
-          email: "andi@seller.id",
-          phone: "+62 817-6666-0006",
-          role: "admin",
-          is_active: true,
-          last_login: daysAgo(1),
-          last_ip: "103.22.71.50",
-          created: daysAgo(150),
-          updated: daysAgo(2),
-          login_history: [
-            {
-              time: daysAgo(1),
-              ip: "103.22.71.50",
-              device: "Chrome / Windows",
-            },
-            { time: daysAgo(3), ip: "103.22.71.50", device: "Chrome / MacOS" },
-            { time: daysAgo(6), ip: "103.22.71.50", device: "Safari / MacOS" },
-            {
-              time: daysAgo(11),
-              ip: "103.22.71.50",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(18),
-              ip: "180.252.5.99",
-              device: "Chrome / Android",
-            },
-          ],
-          stores: ["Pakan Ayam (Shopee)", "Adisatya ITC (Shopee)"],
-        },
-        {
-          id: "usr_007y8z9a1b",
-          fullname: "Nina Kurniawati",
-          username: "ninakurnia",
-          email: "nina@seller.id",
-          phone: "+62 818-7777-0007",
-          role: "admin",
-          is_active: false,
-          last_login: daysAgo(45),
-          last_ip: "110.138.200.12",
-          created: daysAgo(120),
-          updated: daysAgo(45),
-          login_history: [
-            {
-              time: daysAgo(45),
-              ip: "110.138.200.12",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(50),
-              ip: "110.138.200.12",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(60),
-              ip: "110.138.200.12",
-              device: "Firefox / Windows",
-            },
-            {
-              time: daysAgo(70),
-              ip: "110.138.200.12",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(80),
-              ip: "110.138.200.12",
-              device: "Chrome / Windows",
-            },
-          ],
-          stores: [],
-        },
-        {
-          id: "usr_008c9d0e1f",
-          fullname: "Hendra Wijaya",
-          username: "hendrawijaya",
-          email: "hendra@seller.id",
-          phone: "+62 819-8888-0008",
-          role: "admin",
-          is_active: false,
-          last_login: daysAgo(90),
-          last_ip: "114.79.8.22",
-          created: daysAgo(250),
-          updated: daysAgo(90),
-          login_history: [
-            {
-              time: daysAgo(90),
-              ip: "114.79.8.22",
-              device: "Chrome / Windows",
-            },
-            { time: daysAgo(95), ip: "114.79.8.22", device: "Edge / Windows" },
-            {
-              time: daysAgo(100),
-              ip: "114.79.8.22",
-              device: "Chrome / Windows",
-            },
-            {
-              time: daysAgo(110),
-              ip: "114.79.8.22",
-              device: "Chrome / Android",
-            },
-            {
-              time: daysAgo(120),
-              ip: "114.79.8.22",
-              device: "Chrome / Windows",
-            },
-          ],
-          stores: [],
-        },
-      ];
+    var USERS = [
+      {
+        id: "usr_001a2b3c4d",
+        fullname: "Admin Master",
+        username: "adminmaster",
+        email: "admin@seller.id",
+        phone: "+62 812-1111-0001",
+        role: "superadmin",
+        is_active: true,
+        last_login: hoursAgo(1),
+        last_ip: "103.82.24.10",
+        created: daysAgo(365),
+        updated: daysAgo(1),
+        login_history: [
+          {
+            time: hoursAgo(1),
+            ip: "103.82.24.10",
+            device: "Chrome / Windows",
+          },
+          {
+            time: hoursAgo(25),
+            ip: "103.82.24.10",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(3),
+            ip: "180.251.11.99",
+            device: "Firefox / MacOS",
+          },
+          {
+            time: daysAgo(7),
+            ip: "103.82.24.10",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(14),
+            ip: "103.82.24.10",
+            device: "Chrome / Android",
+          },
+        ],
+        stores: [
+          "Pakan Ayam (Shopee)",
+          "Pakan Ayam Bebek (Shopee)",
+          "Adisatya ITC (Shopee)",
+        ],
+      },
+      {
+        id: "usr_002e3f4g5h",
+        fullname: "Dewi Rahayu",
+        username: "dewirahayu",
+        email: "dewi@seller.id",
+        phone: "+62 812-2222-0002",
+        role: "superadmin",
+        is_active: true,
+        last_login: hoursAgo(3),
+        last_ip: "202.43.120.55",
+        created: daysAgo(300),
+        updated: daysAgo(5),
+        login_history: [
+          {
+            time: hoursAgo(3),
+            ip: "202.43.120.55",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(2),
+            ip: "202.43.120.55",
+            device: "Safari / iPhone",
+          },
+          {
+            time: daysAgo(5),
+            ip: "202.43.120.55",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(10),
+            ip: "114.121.8.77",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(20),
+            ip: "202.43.120.55",
+            device: "Chrome / Windows",
+          },
+        ],
+        stores: ["Pakan Ayam (Shopee)", "Pakan Ayam Bebek (Shopee)"],
+      },
+      {
+        id: "usr_003i4j5k6l",
+        fullname: "Reza Firmansyah",
+        username: "rezafirman",
+        email: "reza@seller.id",
+        phone: "+62 813-3333-0003",
+        role: "superadmin",
+        is_active: true,
+        last_login: daysAgo(1),
+        last_ip: "36.72.85.14",
+        created: daysAgo(280),
+        updated: daysAgo(10),
+        login_history: [
+          { time: daysAgo(1), ip: "36.72.85.14", device: "Chrome / Windows" },
+          {
+            time: daysAgo(4),
+            ip: "36.72.85.14",
+            device: "Firefox / Windows",
+          },
+          { time: daysAgo(9), ip: "36.72.85.14", device: "Chrome / Windows" },
+          {
+            time: daysAgo(15),
+            ip: "114.5.193.20",
+            device: "Chrome / Android",
+          },
+          {
+            time: daysAgo(22),
+            ip: "36.72.85.14",
+            device: "Chrome / Windows",
+          },
+        ],
+        stores: ["Adisatya ITC (Shopee)"],
+      },
+      {
+        id: "usr_004m5n6o7p",
+        fullname: "Siti Aminah",
+        username: "sitiaminah",
+        email: "siti@seller.id",
+        phone: "+62 815-4444-0004",
+        role: "admin",
+        is_active: true,
+        last_login: hoursAgo(2),
+        last_ip: "125.163.72.8",
+        created: daysAgo(200),
+        updated: daysAgo(3),
+        login_history: [
+          {
+            time: hoursAgo(2),
+            ip: "125.163.72.8",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(1),
+            ip: "125.163.72.8",
+            device: "Chrome / Windows",
+          },
+          { time: daysAgo(4), ip: "125.163.72.8", device: "Edge / Windows" },
+          {
+            time: daysAgo(8),
+            ip: "125.163.72.8",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(15),
+            ip: "103.25.11.44",
+            device: "Safari / iPhone",
+          },
+        ],
+        stores: ["Pakan Ayam (Shopee)"],
+      },
+      {
+        id: "usr_005q6r7s8t",
+        fullname: "Budi Santoso",
+        username: "budisantoso",
+        email: "budi@seller.id",
+        phone: "+62 816-5555-0005",
+        role: "admin",
+        is_active: true,
+        last_login: daysAgo(2),
+        last_ip: "182.1.52.33",
+        created: daysAgo(180),
+        updated: daysAgo(7),
+        login_history: [
+          { time: daysAgo(2), ip: "182.1.52.33", device: "Chrome / Windows" },
+          { time: daysAgo(5), ip: "182.1.52.33", device: "Chrome / Windows" },
+          {
+            time: daysAgo(9),
+            ip: "182.1.52.33",
+            device: "Firefox / Windows",
+          },
+          {
+            time: daysAgo(14),
+            ip: "114.5.77.11",
+            device: "Chrome / Android",
+          },
+          {
+            time: daysAgo(20),
+            ip: "182.1.52.33",
+            device: "Chrome / Windows",
+          },
+        ],
+        stores: ["Pakan Ayam Bebek (Shopee)"],
+      },
+      {
+        id: "usr_006u7v8w9x",
+        fullname: "Andi Prasetyo",
+        username: "andiprasetyo",
+        email: "andi@seller.id",
+        phone: "+62 817-6666-0006",
+        role: "admin",
+        is_active: true,
+        last_login: daysAgo(1),
+        last_ip: "103.22.71.50",
+        created: daysAgo(150),
+        updated: daysAgo(2),
+        login_history: [
+          {
+            time: daysAgo(1),
+            ip: "103.22.71.50",
+            device: "Chrome / Windows",
+          },
+          { time: daysAgo(3), ip: "103.22.71.50", device: "Chrome / MacOS" },
+          { time: daysAgo(6), ip: "103.22.71.50", device: "Safari / MacOS" },
+          {
+            time: daysAgo(11),
+            ip: "103.22.71.50",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(18),
+            ip: "180.252.5.99",
+            device: "Chrome / Android",
+          },
+        ],
+        stores: ["Pakan Ayam (Shopee)", "Adisatya ITC (Shopee)"],
+      },
+      {
+        id: "usr_007y8z9a1b",
+        fullname: "Nina Kurniawati",
+        username: "ninakurnia",
+        email: "nina@seller.id",
+        phone: "+62 818-7777-0007",
+        role: "admin",
+        is_active: false,
+        last_login: daysAgo(45),
+        last_ip: "110.138.200.12",
+        created: daysAgo(120),
+        updated: daysAgo(45),
+        login_history: [
+          {
+            time: daysAgo(45),
+            ip: "110.138.200.12",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(50),
+            ip: "110.138.200.12",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(60),
+            ip: "110.138.200.12",
+            device: "Firefox / Windows",
+          },
+          {
+            time: daysAgo(70),
+            ip: "110.138.200.12",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(80),
+            ip: "110.138.200.12",
+            device: "Chrome / Windows",
+          },
+        ],
+        stores: [],
+      },
+      {
+        id: "usr_008c9d0e1f",
+        fullname: "Hendra Wijaya",
+        username: "hendrawijaya",
+        email: "hendra@seller.id",
+        phone: "+62 819-8888-0008",
+        role: "admin",
+        is_active: false,
+        last_login: daysAgo(90),
+        last_ip: "114.79.8.22",
+        created: daysAgo(250),
+        updated: daysAgo(90),
+        login_history: [
+          {
+            time: daysAgo(90),
+            ip: "114.79.8.22",
+            device: "Chrome / Windows",
+          },
+          { time: daysAgo(95), ip: "114.79.8.22", device: "Edge / Windows" },
+          {
+            time: daysAgo(100),
+            ip: "114.79.8.22",
+            device: "Chrome / Windows",
+          },
+          {
+            time: daysAgo(110),
+            ip: "114.79.8.22",
+            device: "Chrome / Android",
+          },
+          {
+            time: daysAgo(120),
+            ip: "114.79.8.22",
+            device: "Chrome / Windows",
+          },
+        ],
+        stores: [],
+      },
+    ];
 
-      // ── Helpers ──────────────────────────────────────────────────────────────────
-      function fmtDate(iso) {
-        if (!iso) return "—";
-        var d = new Date(iso);
-        return (
-          d.toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }) +
-          ", " +
-          d.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })
-        );
-      }
+    // ── Helpers ──────────────────────────────────────────────────────────────────
+    function fmtDate(iso) {
+      if (!iso) return "—";
+      var d = new Date(iso);
+      return (
+        d.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }) +
+        ", " +
+        d.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })
+      );
+    }
 
-      function timeAgo(iso) {
-        if (!iso) return "—";
-        var diff = (now - new Date(iso)) / 1000;
-        if (diff < 60) return "Baru saja";
-        if (diff < 3600) return Math.floor(diff / 60) + " menit lalu";
-        if (diff < 86400) return Math.floor(diff / 3600) + " jam lalu";
-        return Math.floor(diff / 86400) + " hari lalu";
-      }
+    function timeAgo(iso) {
+      if (!iso) return "—";
+      var diff = (now - new Date(iso)) / 1000;
+      if (diff < 60) return "Baru saja";
+      if (diff < 3600) return Math.floor(diff / 60) + " menit lalu";
+      if (diff < 86400) return Math.floor(diff / 3600) + " jam lalu";
+      return Math.floor(diff / 86400) + " hari lalu";
+    }
 
-      var AVATAR_COLORS = [
-        "bg-gradient-to-br from-primary-400 to-primary-600",
-        "bg-gradient-to-br from-violet-400 to-violet-600",
-        "bg-gradient-to-br from-emerald-400 to-emerald-600",
-        "bg-gradient-to-br from-amber-400 to-amber-600",
-        "bg-gradient-to-br from-rose-400 to-rose-600",
-        "bg-gradient-to-br from-teal-400 to-teal-600",
-        "bg-gradient-to-br from-indigo-400 to-indigo-600",
-        "bg-gradient-to-br from-pink-400 to-pink-600",
-      ];
+    var AVATAR_COLORS = [
+      "bg-gradient-to-br from-primary-400 to-primary-600",
+      "bg-gradient-to-br from-violet-400 to-violet-600",
+      "bg-gradient-to-br from-emerald-400 to-emerald-600",
+      "bg-gradient-to-br from-amber-400 to-amber-600",
+      "bg-gradient-to-br from-rose-400 to-rose-600",
+      "bg-gradient-to-br from-teal-400 to-teal-600",
+      "bg-gradient-to-br from-indigo-400 to-indigo-600",
+      "bg-gradient-to-br from-pink-400 to-pink-600",
+    ];
 
-      function avatarColor(idx) {
-        return AVATAR_COLORS[idx % AVATAR_COLORS.length];
-      }
-      function initials(name) {
-        return name
-          .split(" ")
-          .slice(0, 2)
-          .map(function (w) {
-            return w[0];
+    function avatarColor(idx) {
+      return AVATAR_COLORS[idx % AVATAR_COLORS.length];
+    }
+    function initials(name) {
+      return name
+        .split(" ")
+        .slice(0, 2)
+        .map(function (w) {
+          return w[0];
+        })
+        .join("")
+        .toUpperCase();
+    }
+
+    function roleBadge(role) {
+      if (role === "superadmin")
+        return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-user-tie text-[8px]"></i>Superadmin</span>';
+      return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-50 text-violet-700 border border-violet-200"><i class="fa-solid fa-user-shield text-[8px]"></i>Admin</span>';
+    }
+
+    function statusBadge(is_active) {
+      if (is_active)
+        return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle text-[6px]"></i>Aktif</span>';
+      return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-600 border border-red-200"><i class="fa-solid fa-circle text-[6px]"></i>Nonaktif</span>';
+    }
+
+    var PERMISSIONS = {
+      superadmin: [
+        { label: "Dashboard Platform", icon: "fa-home", granted: true },
+        {
+          label: "Kelola Semua Order",
+          icon: "fa-cart-shopping",
+          granted: true,
+        },
+        { label: "Upload & Monitor Data", icon: "fa-upload", granted: true },
+        { label: "Kelola Pengguna", icon: "fa-users", granted: true },
+        { label: "Cetak Label & Resi", icon: "fa-print", granted: true },
+        { label: "Tracking Pengiriman", icon: "fa-truck", granted: true },
+        { label: "Laporan & Analitik", icon: "fa-chart-pie", granted: true },
+        { label: "Activity Logs", icon: "fa-clipboard-list", granted: true },
+        { label: "Integration Setup", icon: "fa-gear", granted: true },
+        { label: "Market Integration", icon: "fa-store", granted: true },
+        { label: "API Documentation", icon: "fa-code", granted: true },
+      ],
+      admin: [
+        { label: "Dashboard Platform", icon: "fa-home", granted: true },
+        {
+          label: "Kelola Semua Order",
+          icon: "fa-cart-shopping",
+          granted: true,
+        },
+        {
+          label: "Upload Data (Toko Sendiri)",
+          icon: "fa-upload",
+          granted: true,
+        },
+        { label: "Kelola Pengguna", icon: "fa-users", granted: false },
+        { label: "Cetak Label & Resi", icon: "fa-print", granted: true },
+        { label: "Tracking Pengiriman", icon: "fa-truck", granted: true },
+        {
+          label: "Laporan (Toko Sendiri)",
+          icon: "fa-chart-pie",
+          granted: true,
+        },
+        { label: "Activity Logs", icon: "fa-clipboard-list", granted: false },
+        { label: "Integration Setup", icon: "fa-gear", granted: false },
+        { label: "Market Integration", icon: "fa-store", granted: false },
+        { label: "API Documentation", icon: "fa-code", granted: false },
+      ],
+    };
+
+    // ── Pagination ────────────────────────────────────────────────────────────────
+    var PAGE_SIZE = 10;
+    var currentPage = 1;
+    var filteredData = USERS.slice();
+    var selectedUserId = null;
+
+    // ── Render Tabel ──────────────────────────────────────────────────────────────
+    function renderTable() {
+      var start = (currentPage - 1) * PAGE_SIZE;
+      var page = filteredData.slice(start, start + PAGE_SIZE);
+      var tbody = document.getElementById("user-table-body");
+      var empty = document.getElementById("empty-state");
+
+      if (filteredData.length === 0) {
+        tbody.innerHTML = "";
+        empty.classList.remove("hidden");
+      } else {
+        empty.classList.add("hidden");
+        tbody.innerHTML = page
+          .map(function (u, idx) {
+            var colorClass = avatarColor(USERS.indexOf(u));
+            return [
+              '<tr class="table-row transition-colors" onclick="openDetailModal(\'' +
+              u.id +
+              "')\">",
+              '  <td class="px-5 py-3.5" onclick="event.stopPropagation()">',
+              '    <input type="checkbox" data-id="' +
+              u.id +
+              '" class="row-check rounded border-gray-300 text-primary-600 focus:ring-primary-400">',
+              "  </td>",
+              '  <td class="px-5 py-3.5">',
+              '    <div class="flex items-center gap-3">',
+              '      <div class="w-8 h-8 rounded-full ' +
+              colorClass +
+              ' flex items-center justify-center text-white text-xs font-bold flex-shrink-0">' +
+              initials(u.fullname) +
+              "</div>",
+              "      <div>",
+              '        <p class="font-semibold text-gray-900 text-sm leading-tight">' +
+              u.fullname +
+              "</p>",
+              '        <p class="text-[11px] text-gray-400">@' +
+              u.username +
+              "</p>",
+              "      </div>",
+              "    </div>",
+              "  </td>",
+              '  <td class="px-5 py-3.5 text-xs text-gray-600">' +
+              u.email +
+              "</td>",
+              '  <td class="px-5 py-3.5">' + roleBadge(u.role) + "</td>",
+              '  <td class="px-5 py-3.5">' +
+              statusBadge(u.is_active) +
+              "</td>",
+              '  <td class="px-5 py-3.5">',
+              '    <p class="text-xs text-gray-700">' +
+              timeAgo(u.last_login) +
+              "</p>",
+              '    <p class="text-[10px] text-gray-400 mt-0.5">' +
+              fmtDate(u.last_login) +
+              "</p>",
+              "  </td>",
+              '  <td class="px-5 py-3.5 text-xs text-gray-500">' +
+              fmtDate(u.created) +
+              "</td>",
+              '  <td class="px-5 py-3.5" onclick="event.stopPropagation()">',
+              '    <div class="flex items-center gap-1.5">',
+              "      <button onclick=\"openDetailModal('" +
+              u.id +
+              '\')" class="px-2.5 py-1.5 text-[11px] font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 border border-primary-200 rounded-lg transition">Lihat</button>',
+              "      <button onclick=\"openFormModal('" +
+              u.id +
+              '\')" class="px-2.5 py-1.5 text-[11px] font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-lg transition">Edit</button>',
+              "    </div>",
+              "  </td>",
+              "</tr>",
+            ].join("\n");
           })
-          .join("")
-          .toUpperCase();
+          .join("");
       }
 
-      function roleBadge(role) {
-        if (role === "superadmin")
-          return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-user-tie text-[8px]"></i>Superadmin</span>';
-        return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-50 text-violet-700 border border-violet-200"><i class="fa-solid fa-user-shield text-[8px]"></i>Admin</span>';
+      var total = filteredData.length;
+      var showing = Math.min(start + PAGE_SIZE, total);
+      document.getElementById("pagination-info").textContent =
+        total === 0
+          ? ""
+          : "Menampilkan " +
+          (start + 1) +
+          "–" +
+          showing +
+          " dari " +
+          total +
+          " pengguna";
+      document.getElementById("result-count").textContent = total + " hasil";
+
+      var totalPages = Math.ceil(total / PAGE_SIZE);
+      var ctrl = document.getElementById("pagination-controls");
+      ctrl.innerHTML = "";
+      for (var p = 1; p <= totalPages; p++) {
+        var btn = document.createElement("button");
+        btn.textContent = p;
+        btn.className =
+          "w-8 h-8 rounded-lg text-xs font-semibold transition " +
+          (p === currentPage
+            ? "bg-primary-500 text-white"
+            : "text-gray-500 bg-surface-100 hover:bg-surface-200");
+        btn.onclick = (function (pg) {
+          return function () {
+            currentPage = pg;
+            renderTable();
+          };
+        })(p);
+        ctrl.appendChild(btn);
+      }
+    }
+
+    function filterTable() {
+      var q = document.getElementById("search-input").value.toLowerCase();
+      var role = document.getElementById("filter-role").value;
+      var status = document.getElementById("filter-status").value;
+
+      filteredData = USERS.filter(function (u) {
+        var matchQ =
+          !q ||
+          u.fullname.toLowerCase().includes(q) ||
+          u.username.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q);
+        var matchRole = !role || u.role === role;
+        var matchStatus =
+          !status || (status === "active" ? u.is_active : !u.is_active);
+        return matchQ && matchRole && matchStatus;
+      });
+      currentPage = 1;
+      renderTable();
+    }
+
+    function clearFilters() {
+      document.getElementById("search-input").value = "";
+      document.getElementById("filter-role").value = "";
+      document.getElementById("filter-status").value = "";
+      filterTable();
+    }
+
+    function toggleAllCheckbox(master) {
+      document.querySelectorAll(".row-check").forEach(function (cb) {
+        cb.checked = master.checked;
+      });
+    }
+
+    // ── Modal Detail ──────────────────────────────────────────────────────────────
+    var currentDetailUserId = null;
+
+    function openDetailModal(id) {
+      var u = USERS.find(function (x) {
+        return x.id === id;
+      });
+      if (!u) return;
+      currentDetailUserId = id;
+      var colorClass = avatarColor(USERS.indexOf(u));
+
+      // Header
+      var avatarEl = document.getElementById("modal-avatar-bg");
+      avatarEl.textContent = initials(u.fullname);
+      avatarEl.className =
+        "w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shadow avatar-ring " +
+        colorClass;
+      document.getElementById("modal-fullname").textContent = u.fullname;
+      document.getElementById("modal-username-label").textContent =
+        "@" +
+        u.username +
+        " · " +
+        (u.role === "superadmin" ? "Superadmin" : "Admin");
+
+      // Tab info
+      document.getElementById("modal-id").textContent = u.id;
+      document.getElementById("modal-username").textContent = u.username;
+      document.getElementById("modal-email").textContent = u.email;
+      document.getElementById("modal-phone").textContent = u.phone || "—";
+      document.getElementById("modal-role-badge").innerHTML = roleBadge(
+        u.role,
+      );
+      document.getElementById("modal-status-badge").innerHTML = statusBadge(
+        u.is_active,
+      );
+      document.getElementById("modal-last-login").textContent = fmtDate(
+        u.last_login,
+      );
+      document.getElementById("modal-last-ip").textContent = u.last_ip;
+      document.getElementById("modal-created").textContent = fmtDate(
+        u.created,
+      );
+      document.getElementById("modal-updated").textContent = fmtDate(
+        u.updated,
+      );
+
+      // Toggle button
+      var toggleBtn = document.getElementById("modal-toggle-btn");
+      if (u.is_active) {
+        toggleBtn.textContent = "Nonaktifkan";
+        toggleBtn.className =
+          "px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition";
+      } else {
+        toggleBtn.textContent = "Aktifkan";
+        toggleBtn.className =
+          "px-4 py-2 text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition";
       }
 
-      function statusBadge(is_active) {
-        if (is_active)
-          return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle text-[6px]"></i>Aktif</span>';
-        return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-600 border border-red-200"><i class="fa-solid fa-circle text-[6px]"></i>Nonaktif</span>';
+      // Tab permissions
+      var permList = document.getElementById("permissions-list");
+      permList.innerHTML = (PERMISSIONS[u.role] || [])
+        .map(function (p) {
+          return (
+            '<div class="flex items-center justify-between py-2 px-3 rounded-xl ' +
+            (p.granted ? "bg-emerald-50" : "bg-surface-50") +
+            '">' +
+            '<div class="flex items-center gap-2.5">' +
+            '<i class="fa-solid ' +
+            p.icon +
+            " text-xs " +
+            (p.granted ? "text-emerald-500" : "text-gray-300") +
+            ' w-4 text-center"></i>' +
+            '<span class="text-sm ' +
+            (p.granted ? "text-gray-700" : "text-gray-400") +
+            '">' +
+            p.label +
+            "</span>" +
+            "</div>" +
+            '<i class="fa-solid ' +
+            (p.granted
+              ? "fa-circle-check text-emerald-500"
+              : "fa-circle-xmark text-gray-300") +
+            ' text-sm"></i>' +
+            "</div>"
+          );
+        })
+        .join("");
+
+      // Tab riwayat login
+      var histList = document.getElementById("login-history-list");
+      histList.innerHTML = u.login_history
+        .map(function (h, i) {
+          return (
+            '<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-50">' +
+            '<div class="w-7 h-7 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">' +
+            '<span class="text-[10px] font-bold text-primary-600">' +
+            (i + 1) +
+            "</span>" +
+            "</div>" +
+            '<div class="flex-1 min-w-0">' +
+            '<p class="text-xs font-semibold text-gray-800">' +
+            fmtDate(h.time) +
+            "</p>" +
+            '<p class="text-[11px] text-gray-400 truncate">' +
+            h.device +
+            "</p>" +
+            "</div>" +
+            '<span class="font-mono text-[11px] text-gray-500 flex-shrink-0">' +
+            h.ip +
+            "</span>" +
+            "</div>"
+          );
+        })
+        .join("");
+
+      // Tab toko
+      var storesList = document.getElementById("stores-list");
+      if (u.stores.length === 0) {
+        storesList.innerHTML =
+          '<div class="py-6 text-center text-sm text-gray-400"><i class="fa-solid fa-store-slash text-gray-200 text-2xl mb-2 block"></i>Tidak ada toko yang terhubung</div>';
+      } else {
+        storesList.innerHTML = u.stores
+          .map(function (s) {
+            return (
+              '<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-50">' +
+              '<div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center"><i class="fa-solid fa-store text-orange-500 text-sm"></i></div>' +
+              '<span class="text-sm text-gray-700 font-medium">' +
+              s +
+              "</span>" +
+              "</div>"
+            );
+          })
+          .join("");
       }
 
-      var PERMISSIONS = {
-        superadmin: [
-          { label: "Dashboard Platform", icon: "fa-home", granted: true },
-          {
-            label: "Kelola Semua Order",
-            icon: "fa-cart-shopping",
-            granted: true,
-          },
-          { label: "Upload & Monitor Data", icon: "fa-upload", granted: true },
-          { label: "Kelola Pengguna", icon: "fa-users", granted: true },
-          { label: "Cetak Label & Resi", icon: "fa-print", granted: true },
-          { label: "Tracking Pengiriman", icon: "fa-truck", granted: true },
-          { label: "Laporan & Analitik", icon: "fa-chart-pie", granted: true },
-          { label: "Activity Logs", icon: "fa-clipboard-list", granted: true },
-          { label: "Integration Setup", icon: "fa-gear", granted: true },
-          { label: "Market Integration", icon: "fa-store", granted: true },
-          { label: "API Documentation", icon: "fa-code", granted: true },
-        ],
-        admin: [
-          { label: "Dashboard Platform", icon: "fa-home", granted: true },
-          {
-            label: "Kelola Semua Order",
-            icon: "fa-cart-shopping",
-            granted: true,
-          },
-          {
-            label: "Upload Data (Toko Sendiri)",
-            icon: "fa-upload",
-            granted: true,
-          },
-          { label: "Kelola Pengguna", icon: "fa-users", granted: false },
-          { label: "Cetak Label & Resi", icon: "fa-print", granted: true },
-          { label: "Tracking Pengiriman", icon: "fa-truck", granted: true },
-          {
-            label: "Laporan (Toko Sendiri)",
-            icon: "fa-chart-pie",
-            granted: true,
-          },
-          { label: "Activity Logs", icon: "fa-clipboard-list", granted: false },
-          { label: "Integration Setup", icon: "fa-gear", granted: false },
-          { label: "Market Integration", icon: "fa-store", granted: false },
-          { label: "API Documentation", icon: "fa-code", granted: false },
-        ],
-      };
+      switchTab("info");
+      document.getElementById("detailModal").classList.remove("hidden");
+    }
 
-      // ── Pagination ────────────────────────────────────────────────────────────────
-      var PAGE_SIZE = 10;
-      var currentPage = 1;
-      var filteredData = USERS.slice();
-      var selectedUserId = null;
+    function closeDetailModal() {
+      document.getElementById("detailModal").classList.add("hidden");
+      currentDetailUserId = null;
+    }
 
-      // ── Render Tabel ──────────────────────────────────────────────────────────────
-      function renderTable() {
-        var start = (currentPage - 1) * PAGE_SIZE;
-        var page = filteredData.slice(start, start + PAGE_SIZE);
-        var tbody = document.getElementById("user-table-body");
-        var empty = document.getElementById("empty-state");
+    function switchTab(name) {
+      ["info", "permissions", "history", "stores"].forEach(function (t) {
+        document.getElementById("panel-" + t).classList.add("hidden");
+        var btn = document.getElementById("tab-" + t);
+        btn.classList.remove("text-primary-600", "border-primary-500");
+        btn.classList.add("text-gray-500", "border-transparent");
+      });
+      document.getElementById("panel-" + name).classList.remove("hidden");
+      var activeBtn = document.getElementById("tab-" + name);
+      activeBtn.classList.remove("text-gray-500", "border-transparent");
+      activeBtn.classList.add("text-primary-600", "border-primary-500");
+    }
 
-        if (filteredData.length === 0) {
-          tbody.innerHTML = "";
-          empty.classList.remove("hidden");
-        } else {
-          empty.classList.add("hidden");
-          tbody.innerHTML = page
-            .map(function (u, idx) {
-              var colorClass = avatarColor(USERS.indexOf(u));
-              return [
-                '<tr class="table-row transition-colors" onclick="openDetailModal(\'' +
-                  u.id +
-                  "')\">",
-                '  <td class="px-5 py-3.5" onclick="event.stopPropagation()">',
-                '    <input type="checkbox" data-id="' +
-                  u.id +
-                  '" class="row-check rounded border-gray-300 text-primary-600 focus:ring-primary-400">',
-                "  </td>",
-                '  <td class="px-5 py-3.5">',
-                '    <div class="flex items-center gap-3">',
-                '      <div class="w-8 h-8 rounded-full ' +
-                  colorClass +
-                  ' flex items-center justify-center text-white text-xs font-bold flex-shrink-0">' +
-                  initials(u.fullname) +
-                  "</div>",
-                "      <div>",
-                '        <p class="font-semibold text-gray-900 text-sm leading-tight">' +
-                  u.fullname +
-                  "</p>",
-                '        <p class="text-[11px] text-gray-400">@' +
-                  u.username +
-                  "</p>",
-                "      </div>",
-                "    </div>",
-                "  </td>",
-                '  <td class="px-5 py-3.5 text-xs text-gray-600">' +
-                  u.email +
-                  "</td>",
-                '  <td class="px-5 py-3.5">' + roleBadge(u.role) + "</td>",
-                '  <td class="px-5 py-3.5">' +
-                  statusBadge(u.is_active) +
-                  "</td>",
-                '  <td class="px-5 py-3.5">',
-                '    <p class="text-xs text-gray-700">' +
-                  timeAgo(u.last_login) +
-                  "</p>",
-                '    <p class="text-[10px] text-gray-400 mt-0.5">' +
-                  fmtDate(u.last_login) +
-                  "</p>",
-                "  </td>",
-                '  <td class="px-5 py-3.5 text-xs text-gray-500">' +
-                  fmtDate(u.created) +
-                  "</td>",
-                '  <td class="px-5 py-3.5" onclick="event.stopPropagation()">',
-                '    <div class="flex items-center gap-1.5">',
-                "      <button onclick=\"openDetailModal('" +
-                  u.id +
-                  '\')" class="px-2.5 py-1.5 text-[11px] font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 border border-primary-200 rounded-lg transition">Lihat</button>',
-                "      <button onclick=\"openFormModal('" +
-                  u.id +
-                  '\')" class="px-2.5 py-1.5 text-[11px] font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-lg transition">Edit</button>',
-                "    </div>",
-                "  </td>",
-                "</tr>",
-              ].join("\n");
-            })
-            .join("");
-        }
+    function toggleUserStatus() {
+      var u = USERS.find(function (x) {
+        return x.id === currentDetailUserId;
+      });
+      if (!u) return;
+      u.is_active = !u.is_active;
+      u.updated = now.toISOString();
+      openDetailModal(currentDetailUserId);
+      renderTable();
+    }
 
-        var total = filteredData.length;
-        var showing = Math.min(start + PAGE_SIZE, total);
-        document.getElementById("pagination-info").textContent =
-          total === 0
-            ? ""
-            : "Menampilkan " +
-              (start + 1) +
-              "–" +
-              showing +
-              " dari " +
-              total +
-              " pengguna";
-        document.getElementById("result-count").textContent = total + " hasil";
+    function openEditFromDetail() {
+      closeDetailModal();
+      openFormModal(currentDetailUserId);
+    }
 
-        var totalPages = Math.ceil(total / PAGE_SIZE);
-        var ctrl = document.getElementById("pagination-controls");
-        ctrl.innerHTML = "";
-        for (var p = 1; p <= totalPages; p++) {
-          var btn = document.createElement("button");
-          btn.textContent = p;
-          btn.className =
-            "w-8 h-8 rounded-lg text-xs font-semibold transition " +
-            (p === currentPage
-              ? "bg-primary-500 text-white"
-              : "text-gray-500 bg-surface-100 hover:bg-surface-200");
-          btn.onclick = (function (pg) {
-            return function () {
-              currentPage = pg;
-              renderTable();
-            };
-          })(p);
-          ctrl.appendChild(btn);
-        }
-      }
+    // ── Modal Form Tambah/Edit ────────────────────────────────────────────────────
+    var editingUserId = null;
 
-      function filterTable() {
-        var q = document.getElementById("search-input").value.toLowerCase();
-        var role = document.getElementById("filter-role").value;
-        var status = document.getElementById("filter-status").value;
+    function openFormModal(id) {
+      editingUserId = id || null;
+      var isEdit = !!id;
+      document.getElementById("form-modal-title").textContent = isEdit
+        ? "Edit Pengguna"
+        : "Tambah Pengguna";
+      document.getElementById("form-modal-icon").className = isEdit
+        ? "fa-solid fa-pen-to-square text-white text-xs"
+        : "fa-solid fa-user-plus text-white text-xs";
+      document.getElementById("password-required").style.display = isEdit
+        ? "none"
+        : "";
+      document.getElementById("password-hint").style.display = isEdit
+        ? ""
+        : "none";
 
-        filteredData = USERS.filter(function (u) {
-          var matchQ =
-            !q ||
-            u.fullname.toLowerCase().includes(q) ||
-            u.username.toLowerCase().includes(q) ||
-            u.email.toLowerCase().includes(q);
-          var matchRole = !role || u.role === role;
-          var matchStatus =
-            !status || (status === "active" ? u.is_active : !u.is_active);
-          return matchQ && matchRole && matchStatus;
-        });
-        currentPage = 1;
-        renderTable();
-      }
-
-      function clearFilters() {
-        document.getElementById("search-input").value = "";
-        document.getElementById("filter-role").value = "";
-        document.getElementById("filter-status").value = "";
-        filterTable();
-      }
-
-      function toggleAllCheckbox(master) {
-        document.querySelectorAll(".row-check").forEach(function (cb) {
-          cb.checked = master.checked;
-        });
-      }
-
-      // ── Modal Detail ──────────────────────────────────────────────────────────────
-      var currentDetailUserId = null;
-
-      function openDetailModal(id) {
+      if (isEdit) {
         var u = USERS.find(function (x) {
           return x.id === id;
         });
         if (!u) return;
-        currentDetailUserId = id;
-        var colorClass = avatarColor(USERS.indexOf(u));
+        document.getElementById("form-fullname").value = u.fullname;
+        document.getElementById("form-username").value = u.username;
+        document.getElementById("form-email").value = u.email;
+        document.getElementById("form-phone").value = u.phone;
+        document.getElementById("form-password").value = "";
+        document.getElementById("form-role").value = u.role;
+        document.getElementById("form-active").checked = u.is_active;
+      } else {
+        document.getElementById("form-fullname").value = "";
+        document.getElementById("form-username").value = "";
+        document.getElementById("form-email").value = "";
+        document.getElementById("form-phone").value = "";
+        document.getElementById("form-password").value = "";
+        document.getElementById("form-role").value = "";
+        document.getElementById("form-active").checked = true;
+      }
+      document.getElementById("formModal").classList.remove("hidden");
+    }
 
-        // Header
-        var avatarEl = document.getElementById("modal-avatar-bg");
-        avatarEl.textContent = initials(u.fullname);
-        avatarEl.className =
-          "w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shadow avatar-ring " +
-          colorClass;
-        document.getElementById("modal-fullname").textContent = u.fullname;
-        document.getElementById("modal-username-label").textContent =
-          "@" +
-          u.username +
-          " · " +
-          (u.role === "superadmin" ? "Superadmin" : "Admin");
+    function closeFormModal() {
+      document.getElementById("formModal").classList.add("hidden");
+      editingUserId = null;
+    }
 
-        // Tab info
-        document.getElementById("modal-id").textContent = u.id;
-        document.getElementById("modal-username").textContent = u.username;
-        document.getElementById("modal-email").textContent = u.email;
-        document.getElementById("modal-phone").textContent = u.phone || "—";
-        document.getElementById("modal-role-badge").innerHTML = roleBadge(
-          u.role,
-        );
-        document.getElementById("modal-status-badge").innerHTML = statusBadge(
-          u.is_active,
-        );
-        document.getElementById("modal-last-login").textContent = fmtDate(
-          u.last_login,
-        );
-        document.getElementById("modal-last-ip").textContent = u.last_ip;
-        document.getElementById("modal-created").textContent = fmtDate(
-          u.created,
-        );
-        document.getElementById("modal-updated").textContent = fmtDate(
-          u.updated,
-        );
+    function saveUser() {
+      var fullname = document.getElementById("form-fullname").value.trim();
+      var email = document.getElementById("form-email").value.trim();
+      var role = document.getElementById("form-role").value;
 
-        // Toggle button
-        var toggleBtn = document.getElementById("modal-toggle-btn");
-        if (u.is_active) {
-          toggleBtn.textContent = "Nonaktifkan";
-          toggleBtn.className =
-            "px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition";
-        } else {
-          toggleBtn.textContent = "Aktifkan";
-          toggleBtn.className =
-            "px-4 py-2 text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition";
-        }
-
-        // Tab permissions
-        var permList = document.getElementById("permissions-list");
-        permList.innerHTML = (PERMISSIONS[u.role] || [])
-          .map(function (p) {
-            return (
-              '<div class="flex items-center justify-between py-2 px-3 rounded-xl ' +
-              (p.granted ? "bg-emerald-50" : "bg-surface-50") +
-              '">' +
-              '<div class="flex items-center gap-2.5">' +
-              '<i class="fa-solid ' +
-              p.icon +
-              " text-xs " +
-              (p.granted ? "text-emerald-500" : "text-gray-300") +
-              ' w-4 text-center"></i>' +
-              '<span class="text-sm ' +
-              (p.granted ? "text-gray-700" : "text-gray-400") +
-              '">' +
-              p.label +
-              "</span>" +
-              "</div>" +
-              '<i class="fa-solid ' +
-              (p.granted
-                ? "fa-circle-check text-emerald-500"
-                : "fa-circle-xmark text-gray-300") +
-              ' text-sm"></i>' +
-              "</div>"
-            );
-          })
-          .join("");
-
-        // Tab riwayat login
-        var histList = document.getElementById("login-history-list");
-        histList.innerHTML = u.login_history
-          .map(function (h, i) {
-            return (
-              '<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-50">' +
-              '<div class="w-7 h-7 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">' +
-              '<span class="text-[10px] font-bold text-primary-600">' +
-              (i + 1) +
-              "</span>" +
-              "</div>" +
-              '<div class="flex-1 min-w-0">' +
-              '<p class="text-xs font-semibold text-gray-800">' +
-              fmtDate(h.time) +
-              "</p>" +
-              '<p class="text-[11px] text-gray-400 truncate">' +
-              h.device +
-              "</p>" +
-              "</div>" +
-              '<span class="font-mono text-[11px] text-gray-500 flex-shrink-0">' +
-              h.ip +
-              "</span>" +
-              "</div>"
-            );
-          })
-          .join("");
-
-        // Tab toko
-        var storesList = document.getElementById("stores-list");
-        if (u.stores.length === 0) {
-          storesList.innerHTML =
-            '<div class="py-6 text-center text-sm text-gray-400"><i class="fa-solid fa-store-slash text-gray-200 text-2xl mb-2 block"></i>Tidak ada toko yang terhubung</div>';
-        } else {
-          storesList.innerHTML = u.stores
-            .map(function (s) {
-              return (
-                '<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-50">' +
-                '<div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center"><i class="fa-solid fa-store text-orange-500 text-sm"></i></div>' +
-                '<span class="text-sm text-gray-700 font-medium">' +
-                s +
-                "</span>" +
-                "</div>"
-              );
-            })
-            .join("");
-        }
-
-        switchTab("info");
-        document.getElementById("detailModal").classList.remove("hidden");
+      if (!fullname || !email || !role) {
+        alert("Nama, email, dan role wajib diisi.");
+        return;
       }
 
-      function closeDetailModal() {
-        document.getElementById("detailModal").classList.add("hidden");
-        currentDetailUserId = null;
-      }
-
-      function switchTab(name) {
-        ["info", "permissions", "history", "stores"].forEach(function (t) {
-          document.getElementById("panel-" + t).classList.add("hidden");
-          var btn = document.getElementById("tab-" + t);
-          btn.classList.remove("text-primary-600", "border-primary-500");
-          btn.classList.add("text-gray-500", "border-transparent");
-        });
-        document.getElementById("panel-" + name).classList.remove("hidden");
-        var activeBtn = document.getElementById("tab-" + name);
-        activeBtn.classList.remove("text-gray-500", "border-transparent");
-        activeBtn.classList.add("text-primary-600", "border-primary-500");
-      }
-
-      function toggleUserStatus() {
+      if (editingUserId) {
         var u = USERS.find(function (x) {
-          return x.id === currentDetailUserId;
+          return x.id === editingUserId;
         });
-        if (!u) return;
-        u.is_active = !u.is_active;
-        u.updated = now.toISOString();
-        openDetailModal(currentDetailUserId);
-        renderTable();
-      }
-
-      function openEditFromDetail() {
-        closeDetailModal();
-        openFormModal(currentDetailUserId);
-      }
-
-      // ── Modal Form Tambah/Edit ────────────────────────────────────────────────────
-      var editingUserId = null;
-
-      function openFormModal(id) {
-        editingUserId = id || null;
-        var isEdit = !!id;
-        document.getElementById("form-modal-title").textContent = isEdit
-          ? "Edit Pengguna"
-          : "Tambah Pengguna";
-        document.getElementById("form-modal-icon").className = isEdit
-          ? "fa-solid fa-pen-to-square text-white text-xs"
-          : "fa-solid fa-user-plus text-white text-xs";
-        document.getElementById("password-required").style.display = isEdit
-          ? "none"
-          : "";
-        document.getElementById("password-hint").style.display = isEdit
-          ? ""
-          : "none";
-
-        if (isEdit) {
-          var u = USERS.find(function (x) {
-            return x.id === id;
-          });
-          if (!u) return;
-          document.getElementById("form-fullname").value = u.fullname;
-          document.getElementById("form-username").value = u.username;
-          document.getElementById("form-email").value = u.email;
-          document.getElementById("form-phone").value = u.phone;
-          document.getElementById("form-password").value = "";
-          document.getElementById("form-role").value = u.role;
-          document.getElementById("form-active").checked = u.is_active;
-        } else {
-          document.getElementById("form-fullname").value = "";
-          document.getElementById("form-username").value = "";
-          document.getElementById("form-email").value = "";
-          document.getElementById("form-phone").value = "";
-          document.getElementById("form-password").value = "";
-          document.getElementById("form-role").value = "";
-          document.getElementById("form-active").checked = true;
+        if (u) {
+          u.fullname = fullname;
+          u.username =
+            document.getElementById("form-username").value.trim() ||
+            u.username;
+          u.email = email;
+          u.phone = document.getElementById("form-phone").value.trim();
+          u.role = role;
+          u.is_active = document.getElementById("form-active").checked;
+          u.updated = now.toISOString();
         }
-        document.getElementById("formModal").classList.remove("hidden");
-      }
-
-      function closeFormModal() {
-        document.getElementById("formModal").classList.add("hidden");
-        editingUserId = null;
-      }
-
-      function saveUser() {
-        var fullname = document.getElementById("form-fullname").value.trim();
-        var email = document.getElementById("form-email").value.trim();
-        var role = document.getElementById("form-role").value;
-
-        if (!fullname || !email || !role) {
-          alert("Nama, email, dan role wajib diisi.");
-          return;
-        }
-
-        if (editingUserId) {
-          var u = USERS.find(function (x) {
-            return x.id === editingUserId;
-          });
-          if (u) {
-            u.fullname = fullname;
-            u.username =
-              document.getElementById("form-username").value.trim() ||
-              u.username;
-            u.email = email;
-            u.phone = document.getElementById("form-phone").value.trim();
-            u.role = role;
-            u.is_active = document.getElementById("form-active").checked;
-            u.updated = now.toISOString();
-          }
-        } else {
-          USERS.push({
-            id: "usr_" + Math.random().toString(36).substr(2, 10),
-            fullname: fullname,
-            username:
-              document.getElementById("form-username").value.trim() ||
-              fullname.toLowerCase().replace(/\s+/g, ""),
-            email: email,
-            phone: document.getElementById("form-phone").value.trim(),
-            role: role,
-            is_active: document.getElementById("form-active").checked,
-            last_login: null,
-            last_ip: "—",
-            created: now.toISOString(),
-            updated: now.toISOString(),
-            login_history: [],
-            stores: [],
-          });
-        }
-
-        closeFormModal();
-        filteredData = USERS.slice();
-        renderTable();
-      }
-
-      function togglePassword() {
-        var inp = document.getElementById("form-password");
-        var icon = document.getElementById("pwd-eye-icon");
-        if (inp.type === "password") {
-          inp.type = "text";
-          icon.className = "fa-solid fa-eye-slash text-xs";
-        } else {
-          inp.type = "password";
-          icon.className = "fa-solid fa-eye text-xs";
-        }
-      }
-
-      // ── Profile dropdown ──────────────────────────────────────────────────────────
-      function toggleProfileDropdown() {
-        document.getElementById("profile-dropdown").classList.toggle("hidden");
-      }
-
-      // ── Sidebar dropdown ──────────────────────────────────────────────────────────
-      function toggleDropdown(name) {
-        var dropdown = document.getElementById(name + "-dropdown");
-        var arrow = document.getElementById(name + "-arrow");
-        if (!dropdown) return;
-        var isOpen = dropdown.classList.contains("open");
-        dropdown.classList.toggle("open", !isOpen);
-        if (arrow) {
-          arrow.classList.toggle("fa-chevron-down", isOpen);
-          arrow.classList.toggle("fa-chevron-up", !isOpen);
-        }
-      }
-
-      // ── Click-outside untuk tutup modal ──────────────────────────────────────────
-      document
-        .getElementById("detailModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeDetailModal();
+      } else {
+        USERS.push({
+          id: "usr_" + Math.random().toString(36).substr(2, 10),
+          fullname: fullname,
+          username:
+            document.getElementById("form-username").value.trim() ||
+            fullname.toLowerCase().replace(/\s+/g, ""),
+          email: email,
+          phone: document.getElementById("form-phone").value.trim(),
+          role: role,
+          is_active: document.getElementById("form-active").checked,
+          last_login: null,
+          last_ip: "—",
+          created: now.toISOString(),
+          updated: now.toISOString(),
+          login_history: [],
+          stores: [],
         });
-      document
-        .getElementById("formModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeFormModal();
-        });
-      document.addEventListener("click", function (e) {
-        var pd = document.getElementById("profile-dropdown");
-        if (
-          !pd.classList.contains("hidden") &&
-          !e.target.closest(".relative")
-        ) {
-          pd.classList.add("hidden");
-        }
+      }
+
+      closeFormModal();
+      filteredData = USERS.slice();
+      renderTable();
+    }
+
+    function togglePassword() {
+      var inp = document.getElementById("form-password");
+      var icon = document.getElementById("pwd-eye-icon");
+      if (inp.type === "password") {
+        inp.type = "text";
+        icon.className = "fa-solid fa-eye-slash text-xs";
+      } else {
+        inp.type = "password";
+        icon.className = "fa-solid fa-eye text-xs";
+      }
+    }
+
+    // ── Profile dropdown ──────────────────────────────────────────────────────────
+    function toggleProfileDropdown() {
+      document.getElementById("profile-dropdown").classList.toggle("hidden");
+    }
+
+    // ── Sidebar dropdown ──────────────────────────────────────────────────────────
+    function toggleDropdown(name) {
+      var dropdown = document.getElementById(name + "-dropdown");
+      var arrow = document.getElementById(name + "-arrow");
+      if (!dropdown) return;
+      var isOpen = dropdown.classList.contains("open");
+      dropdown.classList.toggle("open", !isOpen);
+      if (arrow) {
+        arrow.classList.toggle("fa-chevron-down", isOpen);
+        arrow.classList.toggle("fa-chevron-up", !isOpen);
+      }
+    }
+
+    // ── Click-outside untuk tutup modal ──────────────────────────────────────────
+    document
+      .getElementById("detailModal")
+      .addEventListener("click", function (e) {
+        if (e.target === this) closeDetailModal();
       });
+    document
+      .getElementById("formModal")
+      .addEventListener("click", function (e) {
+        if (e.target === this) closeFormModal();
+      });
+    document.addEventListener("click", function (e) {
+      var pd = document.getElementById("profile-dropdown");
+      if (
+        !pd.classList.contains("hidden") &&
+        !e.target.closest(".relative")
+      ) {
+        pd.classList.add("hidden");
+      }
+    });
 
-      // ── Init ──────────────────────────────────────────────────────────────────────
-      filterTable();
-    </script>
-  </body>
+    // ── Init ──────────────────────────────────────────────────────────────────────
+    filterTable();
+  </script>
+</body>
+
 </html>
