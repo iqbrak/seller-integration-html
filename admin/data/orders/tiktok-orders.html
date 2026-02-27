@@ -261,252 +261,61 @@
                 Seller Integration
               </h1>
               <span
-                class="px-2 py-0.5 text-[10px] font-bold bg-primary-100 text-primary-700 rounded-full uppercase tracking-wide"
-                >SUPERADMIN</span
+                class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide"
+                >ADMIN</span
               >
             </div>
           </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
-          <!-- Dashboard -->
-          <a
-            href="../../dashboard.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-home w-5"></i>
-            Dashboard
+                <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+
+          <a href="../../dashboard.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <i class="fa-solid fa-home w-5"></i>Dashboard
           </a>
 
-          <!-- Orders Section -->
-          <div
-            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            Data Management
-          </div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
 
           <div>
-            <button
-              onclick="toggleDropdown('orders')"
-              class="sidebar-item active w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            >
+            <button onclick="toggleDropdown('orders')" class="sidebar-item active w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
               <div class="flex items-center gap-3">
-                <i class="fa-solid fa-cart-shopping w-5"></i>
-                Orders
+                <i class="fa-solid fa-cart-shopping w-5"></i>Orders
               </div>
-              <i
-                id="orders-arrow"
-                class="fa-solid fa-chevron-down text-gray-400"
-              ></i>
+              <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
             </button>
-
-            <div
-              id="orders-dropdown"
-              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
-            >
-              <a
-                href="all-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                All Orders
-              </a>
-              <a
-                href="to-confirm-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Awaiting Confirmation
-              </a>
-              <a
-                href="to-pack-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Ready to Pack
-              </a>
-              <a
-                href="packed-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Packed Orders
-              </a>
-              <a
-                href="returned-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Returned Orders
-              </a>
-              <a
-                href="shopee-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Shopee
-              </a>
-              <a
-                href="tiktok-orders.html"
-                class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg"
-              >
-                TikTok/Tokopedia
-              </a>
+            <div id="orders-dropdown" class="dropdown-content open pl-11 space-y-0.5 mt-0.5">
+              <a href="../../data/orders/all-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All Orders</a>
+              <a href="../../data/orders/to-confirm-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting Confirmation</a>
+              <a href="../../data/orders/to-pack-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready to Pack</a>
+              <a href="../../data/orders/packed-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed Orders</a>
+              <a href="../../data/orders/returned-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned Orders</a>
+              <a href="../../data/orders/shopee-orders.html" class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+              <a href="../../data/orders/tiktok-orders.html" class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">TikTok/Tokopedia</a>
             </div>
           </div>
 
-          <!-- Upload -->
-          <a
-            href="../data-upload.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-upload w-5"></i>
-            Data Upload
+          <a href="../../data/data-upload.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <i class="fa-solid fa-upload w-5"></i>Data Upload
           </a>
 
-          <!-- Users -->
-          <a
-            href="../user.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-users w-5"></i>
-            User Management
+          <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp; Logistics</div>
+
+          <a href="../../shipping/print-label.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
+          </a>
+          <a href="../../shipping/resi-checker.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <i class="fa-solid fa-barcode w-5"></i>Resi Checker
+          </a>
+          <a href="../../shipping/tracking-center.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <i class="fa-solid fa-truck w-5"></i>Tracking Center
           </a>
 
-          <!-- Shipment -->
-          <div
-            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            Shipping & Logistics
-          </div>
+          <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
 
-          <a
-            href="../../shipping/print-label.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-print w-5"></i>
-            Print Shipping Labels
+          <a href="../../analystics/product.html" class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
+            <i class="fa-solid fa-chart-line w-5"></i>Product Performance
           </a>
 
-          <a
-            href="../../shipping/resi-checker.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-barcode w-5"></i>
-            Resi Checker
-          </a>
-
-          <a
-            href="../../shipping/tracking-center.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-truck w-5"></i>
-            Tracking Center
-          </a>
-
-          <!-- Analytics -->
-          <div
-            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            Analytics & Reports
-          </div>
-
-          <div>
-            <button
-              onclick="toggleDropdown('reports')"
-              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-chart-pie w-5"></i>
-                Reports
-              </div>
-              <i
-                id="reports-arrow"
-                class="fa-solid fa-chevron-down text-gray-400"
-              ></i>
-            </button>
-
-            <div
-              id="reports-dropdown"
-              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
-            >
-              <a
-                href="../../analytics/reports/sales.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Sales Report
-              </a>
-              <a
-                href="../../analytics/reports/revenue.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Revenue Report
-              </a>
-              <a
-                href="../../analytics/reports/product.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Product Performance
-              </a>
-            </div>
-          </div>
-
-          <a
-            href="../../analytics/activity-logs.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-clipboard-list w-5"></i>
-            Activity Logs
-          </a>
-
-          <!-- System -->
-          <div
-            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
-          >
-            System Settings
-          </div>
-
-          <a
-            href="../../system/integration-setup.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-gear w-5"></i>
-            Integration Setup
-          </a>
-
-          <div>
-            <button
-              onclick="toggleDropdown('market')"
-              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-store w-5"></i>
-                Market Integration
-              </div>
-              <i
-                id="integration-arrow"
-                class="fa-solid fa-chevron-down text-gray-400"
-              ></i>
-            </button>
-
-            <div
-              id="market-dropdown"
-              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
-            >
-              <a
-                href="../../system/market/shopee-market.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Shopee</a
-              >
-              <a
-                href="../../system/market/tiktok-market.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-                >Tiktok/Tokopedia</a
-              >
-            </div>
-          </div>
-
-          <a
-            href="../../system/api-documentation.html"
-            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
-          >
-            <i class="fa-solid fa-code w-5"></i>
-            API Documentation
-          </a>
         </nav>
       </aside>
 
@@ -617,14 +426,14 @@
                   <div
                     class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow"
                   >
-                    AM
+                    A
                   </div>
                   <div class="text-left">
                     <p class="text-sm font-semibold text-gray-900 leading-none">
-                      Admin Master
+                      Admin
                     </p>
                     <p class="text-[11px] text-primary-600 mt-0.5">
-                      Superadmin
+                      Admin
                     </p>
                   </div>
                   <svg
