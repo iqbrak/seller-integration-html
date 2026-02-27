@@ -502,268 +502,297 @@
 
           <!-- MARKETPLACE CONNECTIONS -->
           <div class="bg-white rounded-2xl border border-surface-200 p-6">
-            <h3
-              class="text-sm font-bold text-gray-800 flex items-center gap-2 mb-1"
-            >
-              <i class="fa-solid fa-plug text-primary-500"></i>Marketplace
-              Connections
+            <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2 mb-1">
+              <i class="fa-solid fa-plug text-primary-500"></i>Marketplace Connections
             </h3>
-            <p class="text-xs text-gray-400 mb-5">
-              Status koneksi dan konfigurasi API untuk setiap marketplace
-            </p>
+            <p class="text-xs text-gray-400 mb-5">Status koneksi dan konfigurasi API untuk setiap marketplace</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <!-- Shopee -->
-              <div
-                class="border border-surface-200 rounded-xl p-5 hover:border-primary-200 transition"
-              >
+
+              <!-- SHOPEE -->
+              <div class="border border-surface-200 rounded-xl p-5 hover:border-orange-200 transition">
+                <!-- Header -->
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center"
-                    >
-                      <i class="fa-solid fa-store text-orange-500"></i>
+                    <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <i class="fa-solid fa-store text-orange-500 text-base"></i>
                     </div>
                     <div>
                       <p class="text-sm font-bold text-gray-900">Shopee</p>
-                      <p class="text-[10px] text-gray-400">Partner API v2.0</p>
                     </div>
                   </div>
-                  <div
-                    class="toggle-switch on"
-                    onclick="
-                      this.classList.toggle('on');
-                      this.classList.toggle('off');
-                    "
-                  ></div>
-                </div>
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Status</span
-                    ><span
-                      class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1"
-                      ><span
-                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
-                      ></span
-                      >Connected</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Shop ID</span
-                    ><span class="text-xs font-mono font-bold text-gray-700"
-                      >SHP-284719</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Last Sync</span
-                    ><span class="text-xs text-gray-600"
-                      >26 Feb 2026, 15:30</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Token Expires</span
-                    ><span class="text-xs text-gray-600">14 Mar 2026</span>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>Connected
+                    </span>
+                    <div class="toggle-switch on" onclick="this.classList.toggle('on');this.classList.toggle('off');"></div>
                   </div>
                 </div>
-                <div class="flex gap-2 mt-4">
-                  <button
-                    class="flex-1 text-xs font-semibold text-primary-600 bg-primary-50 py-2 rounded-lg hover:bg-primary-100 transition"
-                  >
-                    Refresh Token</button
-                  ><a
-                    href="market/shopee-market.html"
-                    class="flex-1 text-xs text-center font-semibold text-gray-600 bg-surface-100 py-2 rounded-lg hover:bg-surface-200 transition"
-                    >Configure</a
-                  >
-                </div>
-              </div>
-              <!-- TikTok Shop -->
-              <div
-                class="border border-surface-200 rounded-xl p-5 hover:border-primary-200 transition"
-              >
-                <div class="flex items-center justify-between mb-4">
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center"
-                    >
-                      <i class="fa-brands fa-tiktok text-gray-800"></i>
+
+                <div class="space-y-2.5">
+                  <!-- App credentials — from Shopee Open Platform dashboard, never change -->
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                        Partner ID <span class="text-red-400">*</span>
+                      </label>
+                      <input type="text" value="2847190" placeholder="e.g. 2000000"
+                        class="w-full px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:bg-white transition" />
                     </div>
                     <div>
-                      <p class="text-sm font-bold text-gray-900">TikTok Shop</p>
-                      <p class="text-[10px] text-gray-400">Open API v2.1</p>
+                      <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                        Shop ID <span class="text-red-400">*</span>
+                      </label>
+                      <input type="text" value="284719001" placeholder="e.g. 200000001"
+                        class="w-full px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:bg-white transition" />
                     </div>
                   </div>
-                  <div
-                    class="toggle-switch on"
-                    onclick="
-                      this.classList.toggle('on');
-                      this.classList.toggle('off');
-                    "
-                  ></div>
-                </div>
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Status</span
-                    ><span
-                      class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1"
-                      ><span
-                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
-                      ></span
-                      >Connected</span
-                    >
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      Partner Key <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="shopee-partner-key" value="74686973697361706172746e65726b6579666f7273686f706565617069763230"
+                        placeholder="From your app dashboard on open.shopee.com"
+                        class="w-full px-3 py-2 pr-9 bg-surface-100 border border-surface-200 rounded-lg text-xs font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:bg-white transition" />
+                      <button type="button" onclick="toggleVisibility('shopee-partner-key', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Shop ID</span
-                    ><span class="text-xs font-mono font-bold text-gray-700"
-                      >TTS-901234</span
-                    >
+                  <!-- Tokens — obtained automatically via OAuth, stored here after the flow completes -->
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      Access Token
+                      <span class="ml-1 text-[9px] font-bold text-gray-400 bg-surface-200 px-1.5 py-0.5 rounded-full uppercase tracking-wide">auto-filled</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="shopee-access-token" value="0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d"
+                        disabled
+                        class="w-full px-3 py-2 pr-9 bg-surface-200 border border-surface-200 rounded-lg text-xs font-mono text-gray-400 cursor-not-allowed opacity-75 focus:outline-none" />
+                      <button type="button" onclick="toggleVisibility('shopee-access-token', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Last Sync</span
-                    ><span class="text-xs text-gray-600"
-                      >26 Feb 2026, 15:28</span
-                    >
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      Refresh Token
+                      <span class="ml-1 text-[9px] font-bold text-gray-400 bg-surface-200 px-1.5 py-0.5 rounded-full uppercase tracking-wide">auto-filled</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="shopee-refresh-token" value="f9e8d7c6b5a4938271605f4e3d2c1b0a"
+                        disabled
+                        class="w-full px-3 py-2 pr-9 bg-surface-200 border border-surface-200 rounded-lg text-xs font-mono text-gray-400 cursor-not-allowed opacity-75 focus:outline-none" />
+                      <button type="button" onclick="toggleVisibility('shopee-refresh-token', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Token Expires</span
-                    ><span class="text-xs text-gray-600">20 Mar 2026</span>
-                  </div>
-                </div>
-                <div class="flex gap-2 mt-4">
-                  <button
-                    class="flex-1 text-xs font-semibold text-primary-600 bg-primary-50 py-2 rounded-lg hover:bg-primary-100 transition"
-                  >
-                    Refresh Token</button
-                  ><a
-                    href="market/tiktok-market.html"
-                    class="flex-1 text-xs text-center font-semibold text-gray-600 bg-surface-100 py-2 rounded-lg hover:bg-surface-200 transition"
-                    >Configure</a
-                  >
-                </div>
-              </div>
-              <!-- Tokopedia -->
-              <div
-                class="border border-surface-200 rounded-xl p-5 hover:border-primary-200 transition"
-              >
-                <div class="flex items-center justify-between mb-4">
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center"
-                    >
-                      <i class="fa-solid fa-shop text-emerald-600"></i>
+                  <!-- Config -->
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Environment</label>
+                      <select class="w-full px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 h-[34px]">
+                        <option value="live" selected>Production</option>
+                        <option value="sandbox">Sandbox</option>
+                      </select>
                     </div>
                     <div>
-                      <p class="text-sm font-bold text-gray-900">Tokopedia</p>
-                      <p class="text-[10px] text-gray-400">Seller API v1.5</p>
+                      <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">Region</label>
+                      <select class="w-full px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 h-[34px]">
+                        <option value="ID" selected>Indonesia (ID)</option>
+                        <option value="MY">Malaysia (MY)</option>
+                        <option value="TH">Thailand (TH)</option>
+                        <option value="PH">Philippines (PH)</option>
+                        <option value="SG">Singapore (SG)</option>
+                        <option value="TW">Taiwan (TW)</option>
+                        <option value="VN">Vietnam (VN)</option>
+                      </select>
                     </div>
                   </div>
-                  <div
-                    class="toggle-switch on"
-                    onclick="
-                      this.classList.toggle('on');
-                      this.classList.toggle('off');
-                    "
-                  ></div>
                 </div>
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Status</span
-                    ><span
-                      class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1"
-                      ><span
-                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
-                      ></span
-                      >Connected</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Shop ID</span
-                    ><span class="text-xs font-mono font-bold text-gray-700"
-                      >TKP-567890</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Last Sync</span
-                    ><span class="text-xs text-gray-600"
-                      >26 Feb 2026, 14:55</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Token Expires</span
-                    ><span class="text-xs text-amber-600 font-semibold"
-                      >3 Mar 2026 ⚠️</span
-                    >
-                  </div>
+
+                <!-- Token status -->
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 px-3 bg-orange-50 rounded-lg border border-orange-100 mt-3 mb-3">
+                  <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                    <i class="fa-solid fa-key text-orange-400"></i>
+                    Access token: <span class="font-semibold text-gray-700 ml-1">expires 27 Feb 2026, 19:30</span>
+                    <span class="ml-1 text-[9px] text-emerald-600 font-bold bg-emerald-100 px-1.5 py-0.5 rounded-full">VALID</span>
+                  </span>
+                  <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                    <i class="fa-solid fa-rotate text-orange-400"></i>
+                    Refresh token: <span class="font-semibold text-gray-700 ml-1">expires 29 Mar 2026</span>
+                  </span>
+                  <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                    <i class="fa-solid fa-clock text-orange-400"></i>
+                    Last sync: <span class="font-semibold text-gray-700 ml-1">27 Feb 2026, 15:30</span>
+                  </span>
                 </div>
-                <div class="flex gap-2 mt-4">
-                  <button
-                    class="flex-1 text-xs font-semibold text-amber-600 bg-amber-50 py-2 rounded-lg hover:bg-amber-100 transition"
-                  >
-                    Renew Token ⚠️</button
-                  ><button
-                    class="flex-1 text-xs font-semibold text-gray-600 bg-surface-100 py-2 rounded-lg hover:bg-surface-200 transition"
-                  >
-                    Configure
+
+                <!-- Actions -->
+                <div class="flex gap-2">
+                  <button onclick="testConnection('shopee', this)"
+                    class="flex-1 text-xs font-semibold text-orange-600 bg-orange-50 py-2 rounded-lg hover:bg-orange-100 transition">
+                    <i class="fa-solid fa-plug mr-1"></i>Test Connection
+                  </button>
+                  <button onclick="refreshToken('shopee', this)"
+                    class="flex-1 text-xs font-semibold text-primary-600 bg-primary-50 py-2 rounded-lg hover:bg-primary-100 transition">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i>Refresh Token
+                  </button>
+                  <button onclick="startOAuth('shopee', this)"
+                    class="flex-1 text-xs font-semibold text-gray-600 bg-surface-100 py-2 rounded-lg hover:bg-surface-200 transition">
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i>Re-authorise
                   </button>
                 </div>
               </div>
-              <!-- Lazada -->
-              <div class="border border-red-100 rounded-xl p-5 bg-red-50/30">
+
+              <!-- TIKTOK SHOP + TOKOPEDIA -->
+              <div class="border border-surface-200 rounded-xl p-5 hover:border-gray-300 transition">
+                <!-- Header -->
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center"
-                    >
-                      <i class="fa-solid fa-bag-shopping text-blue-600"></i>
+                    <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <i class="fa-brands fa-tiktok text-gray-800 text-base"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-bold text-gray-900">Lazada</p>
-                      <p class="text-[10px] text-gray-400">
-                        Open Platform v3.0
+                      <p class="text-sm font-bold text-gray-900">
+                        TikTok / Tokopedia
                       </p>
                     </div>
                   </div>
-                  <div
-                    class="toggle-switch off"
-                    onclick="
-                      this.classList.toggle('on');
-                      this.classList.toggle('off');
-                    "
-                  ></div>
-                </div>
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Status</span
-                    ><span
-                      class="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full flex items-center gap-1"
-                      ><span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span
-                      >Disconnected</span
-                    >
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Shop ID</span
-                    ><span class="text-xs font-mono text-gray-400">—</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Last Sync</span
-                    ><span class="text-xs text-gray-400">Never</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-500">Reason</span
-                    ><span class="text-xs text-red-500">Token expired</span>
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>Connected
+                    </span>
+                    <div class="toggle-switch on" onclick="this.classList.toggle('on');this.classList.toggle('off');"></div>
                   </div>
                 </div>
-                <div class="flex gap-2 mt-4">
-                  <button
-                    class="flex-1 text-xs font-semibold text-white bg-primary-600 py-2 rounded-lg hover:bg-primary-700 transition"
-                  >
-                    Reconnect</button
-                  ><button
-                    class="flex-1 text-xs font-semibold text-gray-600 bg-white py-2 rounded-lg hover:bg-surface-100 transition border border-surface-200"
-                  >
-                    Configure
+
+                <!-- TikTok Shop fields -->
+                <div id="fields-tiktok" class="space-y-2.5">
+                  <!-- App credentials — from TikTok Shop Partner Center, never change -->
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                        App Key <span class="text-red-400">*</span>
+                      </label>
+                      <input type="text" value="6cl4m9arbestpaqe" placeholder="From Partner Center"
+                        class="w-full px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:bg-white transition" />
+                    </div>
+                    <div>
+                      <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                        Region <span class="text-red-400">*</span>
+                      </label>
+                      <select class="w-full px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 h-[34px]">
+                        <option value="ID" selected>Indonesia (ID)</option>
+                        <option value="MY">Malaysia (MY)</option>
+                        <option value="TH">Thailand (TH)</option>
+                        <option value="SG">Singapore (SG)</option>
+                        <option value="PH">Philippines (PH)</option>
+                        <option value="VN">Vietnam (VN)</option>
+                        <option value="GB">United Kingdom (GB)</option>
+                        <option value="US">United States (US)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      App Secret <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="tiktok-app-secret" value="d0a8f3b2e1c4957684321abcdef09876"
+                        placeholder="From Partner Center"
+                        class="w-full px-3 py-2 pr-9 bg-surface-100 border border-surface-200 rounded-lg text-xs font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:bg-white transition" />
+                      <button type="button" onclick="toggleVisibility('tiktok-app-secret', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Tokens — auto-filled by the OAuth flow, stored here -->
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      Access Token
+                      <span class="ml-1 text-[9px] font-bold text-gray-400 bg-surface-200 px-1.5 py-0.5 rounded-full uppercase tracking-wide">auto-filled</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="tiktok-access-token" value="TKT_ACT_a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+                        disabled
+                        class="w-full px-3 py-2 pr-9 bg-surface-200 border border-surface-200 rounded-lg text-xs font-mono text-gray-400 cursor-not-allowed opacity-75 focus:outline-none" />
+                      <button type="button" onclick="toggleVisibility('tiktok-access-token', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      Refresh Token
+                      <span class="ml-1 text-[9px] font-bold text-gray-400 bg-surface-200 px-1.5 py-0.5 rounded-full uppercase tracking-wide">auto-filled</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="tiktok-refresh-token" value="TKT_RFT_z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5"
+                        disabled
+                        class="w-full px-3 py-2 pr-9 bg-surface-200 border border-surface-200 rounded-lg text-xs font-mono text-gray-400 cursor-not-allowed opacity-75 focus:outline-none" />
+                      <button type="button" onclick="toggleVisibility('tiktok-refresh-token', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
+                      Shop Cipher
+                      <span class="ml-1 text-[9px] font-bold text-gray-400 bg-surface-200 px-1.5 py-0.5 rounded-full uppercase tracking-wide">auto-filled</span>
+                    </label>
+                    <div class="relative">
+                      <input type="password" id="tiktok-shop-cipher" value="ROW_p1a2r3t4n5e6r7s8h9i0p1c2i3p4h5e6r"
+                        disabled
+                        class="w-full px-3 py-2 pr-9 bg-surface-200 border border-surface-200 rounded-lg text-xs font-mono text-gray-400 cursor-not-allowed opacity-75 focus:outline-none" />
+                      <button type="button" onclick="toggleVisibility('tiktok-shop-cipher', this)"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                        <i class="fa-solid fa-eye text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Token status -->
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 px-3 bg-gray-50 rounded-lg border border-gray-200 mt-1">
+                    <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                      <i class="fa-solid fa-key text-gray-400"></i>
+                      Access token: <span class="font-semibold text-gray-700 ml-1">expires 28 Feb 2026, 09:15</span>
+                      <span class="ml-1 text-[9px] text-emerald-600 font-bold bg-emerald-100 px-1.5 py-0.5 rounded-full">VALID</span>
+                    </span>
+                    <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                      <i class="fa-solid fa-rotate text-gray-400"></i>
+                      Refresh token: <span class="font-semibold text-gray-700 ml-1">expires 29 Mar 2026</span>
+                    </span>
+                    <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                      <i class="fa-solid fa-clock text-gray-400"></i>
+                      Last sync: <span class="font-semibold text-gray-700 ml-1">27 Feb 2026, 15:28</span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-2 mt-3">
+                  <button onclick="testConnection('tiktok', this)"
+                    class="flex-1 text-xs font-semibold text-gray-700 bg-gray-100 py-2 rounded-lg hover:bg-gray-200 transition">
+                    <i class="fa-solid fa-plug mr-1"></i>Test Connection
+                  </button>
+                  <button onclick="refreshToken('tiktok', this)"
+                    class="flex-1 text-xs font-semibold text-primary-600 bg-primary-50 py-2 rounded-lg hover:bg-primary-100 transition">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i>Refresh Token
+                  </button>
+                  <button onclick="startOAuth('tiktok', this)"
+                    class="flex-1 text-xs font-semibold text-gray-600 bg-surface-100 py-2 rounded-lg hover:bg-surface-200 transition">
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i>Re-authorise
                   </button>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -999,6 +1028,60 @@
             b.innerHTML = '<i class="fa-solid fa-save"></i> Save All';
             b.classList.replace("bg-emerald-600", "bg-primary-600");
           }, 1500);
+        }, 800);
+      }
+      function toggleVisibility(fieldId, btn) {
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        const isHidden = input.type === "password";
+        input.type = isHidden ? "text" : "password";
+        const icon = btn.querySelector("i");
+        if (icon) {
+          icon.classList.toggle("fa-eye", !isHidden);
+          icon.classList.toggle("fa-eye-slash", isHidden);
+        }
+      }
+      function testConnection(platform, btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Testing…';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Connected!';
+          btn.classList.add("text-emerald-600", "bg-emerald-50");
+          btn.classList.remove("text-orange-600", "bg-orange-50", "text-gray-700", "bg-gray-100");
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.classList.remove("text-emerald-600", "bg-emerald-50");
+            btn.disabled = false;
+          }, 2000);
+        }, 1200);
+      }
+      function refreshToken(platform, btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Refreshing…';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Token Refreshed!';
+          btn.classList.add("text-emerald-600", "bg-emerald-50");
+          btn.classList.remove("text-primary-600", "bg-primary-50");
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.classList.remove("text-emerald-600", "bg-emerald-50");
+            btn.classList.add("text-primary-600", "bg-primary-50");
+            btn.disabled = false;
+          }, 2000);
+        }, 1200);
+      }
+      function startOAuth(platform, btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Redirecting…';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>OAuth window opened';
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.disabled = false;
+          }, 2500);
         }, 800);
       }
       document.addEventListener("click", function (e) {
