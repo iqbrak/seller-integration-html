@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" class="h-full">
 
 <head>
@@ -282,7 +282,7 @@
           </nav>
           <div class="flex items-center gap-3">
             <div class="relative">
-              <input type="text" placeholder="Search settings…"
+              <input type="text" placeholder="Search settingsâ€¦"
                 class="w-56 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
               <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
@@ -316,7 +316,7 @@
               </button>
               <div id="profile-dropdown"
                 class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
-                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
+                <a href="../my-profile.html" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
                     class="fa-solid fa-user w-4"></i>My Profile</a>
                 <hr class="my-1 border-surface-200" />
                 <a href="../../login.html"
@@ -385,7 +385,7 @@
               </div>
 
               <div class="space-y-2.5">
-                <!-- App credentials — from Shopee Open Platform dashboard, never change -->
+                <!-- App credentials â€” from Shopee Open Platform dashboard, never change -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
@@ -417,7 +417,7 @@
                     </button>
                   </div>
                 </div>
-                <!-- Tokens — obtained automatically via OAuth, stored here after the flow completes -->
+                <!-- Tokens â€” obtained automatically via OAuth, stored here after the flow completes -->
                 <div>
                   <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
                     Access Token
@@ -538,7 +538,7 @@
 
               <!-- TikTok Shop fields -->
               <div id="fields-tiktok" class="space-y-2.5">
-                <!-- App credentials — from TikTok Shop Partner Center, never change -->
+                <!-- App credentials â€” from TikTok Shop Partner Center, never change -->
                 <div class="grid grid-cols-2 gap-2.5">
                   <div>
                     <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
@@ -578,7 +578,7 @@
                     </button>
                   </div>
                 </div>
-                <!-- Tokens — auto-filled by the OAuth flow, stored here -->
+                <!-- Tokens â€” auto-filled by the OAuth flow, stored here -->
                 <div>
                   <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1 block">
                     Access Token
@@ -832,7 +832,7 @@
     }
     function saveAllSettings() {
       const b = event.target.closest("button");
-      b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+      b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Savingâ€¦';
       setTimeout(() => {
         b.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
         b.classList.replace("bg-primary-600", "bg-emerald-600");
@@ -855,7 +855,7 @@
     }
     function testConnection(platform, btn) {
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Testing…';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Testingâ€¦';
       btn.disabled = true;
       setTimeout(() => {
         btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Connected!';
@@ -870,7 +870,7 @@
     }
     function refreshToken(platform, btn) {
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Refreshing…';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Refreshingâ€¦';
       btn.disabled = true;
       setTimeout(() => {
         btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Token Refreshed!';
@@ -886,7 +886,7 @@
     }
     function startOAuth(platform, btn) {
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Redirecting…';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Redirectingâ€¦';
       btn.disabled = true;
       setTimeout(() => {
         btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>OAuth window opened';

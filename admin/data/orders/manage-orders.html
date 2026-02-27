@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seller Integration - Shopee Orders</title>
+  <title>Seller Integration - Dashboard</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -310,24 +310,23 @@
             <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
           </button>
           <div id="orders-dropdown" class="dropdown-content open pl-11 space-y-0.5 mt-0.5">
-            <a href="../../data/orders/all-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All
-              Orders</a>
-            <a href="../../data/orders/to-confirm-orders.html"
+            <a href="../../data/orders/manage-orders.html"
+              class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">All Orders</a>
+            <a href="../../data/orders/confirm-orders.html"
               class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting
               Confirmation</a>
-            <a href="../../data/orders/to-pack-orders.html"
+            <a href="../../data/orders/pack-orders.html"
               class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready
               to Pack</a>
-            <a href="../../data/orders/packed-orders.html"
+            <a href="../../data/orders/shipped-orders.html"
               class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed
               Orders</a>
-            <a href="../../data/orders/returned-orders.html"
+            <a href="../../data/orders/return-orders.html"
               class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned
               Orders</a>
-            <a href="../../data/orders/shopee-orders.html"
-              class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg">Shopee</a>
-            <a href="../../data/orders/tiktok-orders.html"
+            <a href="../../data/orders/shopee-pesanan.html"
+              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
+            <a href="../../data/orders/tiktok-pesanan.html"
               class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
           </div>
         </div>
@@ -340,22 +339,22 @@
         <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp;
           Logistics</div>
 
-        <a href="../../shipping/print-label.html"
+        <a href="../../shipping/cetak-label.html"
           class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
           <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
         </a>
-        <a href="../../shipping/resi-checker.html"
+        <a href="../../shipping/cek-resi.html"
           class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
           <i class="fa-solid fa-barcode w-5"></i>Resi Checker
         </a>
-        <a href="../../shipping/tracking-center.html"
+        <a href="../../shipping/lacak-pengiriman.html"
           class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
           <i class="fa-solid fa-truck w-5"></i>Tracking Center
         </a>
 
         <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
 
-        <a href="../../analystics/product.html"
+        <a href="../../analytics/performa-produk.html"
           class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
           <i class="fa-solid fa-chart-line w-5"></i>Product Performance
         </a>
@@ -459,11 +458,10 @@
                 class="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow shadow-primary-500/30">
                 <i class="fa-solid fa-cart-shopping text-white text-sm"></i>
               </span>
-              Shopee Orders
+              All Orders
             </h2>
             <p class="text-slate-500 text-sm mt-1.5">
-              Orders imported from Shopee for centralized management and
-              tracking
+              Complete order data from all uploaded batches
             </p>
             <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
               <i class="fa-regular fa-clock"></i>
@@ -494,13 +492,12 @@
                 oninput="filterTable()" />
               <i class="fa-solid fa-search text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 text-sm"></i>
             </div>
-            <!-- Platform locked to "Shopee" — not user-changeable -->
-            <div
-              class="flex items-center gap-1.5 px-3 py-2.5 bg-orange-50 border border-orange-200 rounded-xl text-sm font-semibold text-orange-700 select-none"
-              title="Platform filter is fixed for this page">
-              <i class="fa-solid fa-lock text-orange-400 text-xs"></i>
-              Platform: Shopee
-            </div>
+            <select id="filter-platform" onchange="filterTable()"
+              class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]">
+              <option value="">All Platform</option>
+              <option value="shopee">Shopee</option>
+              <option value="tiktok">TikTok / Tokopedia</option>
+            </select>
             <select id="filter-status" onchange="filterTable()"
               class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]">
               <option value="">All Status</option>
@@ -1892,7 +1889,7 @@
       const search = document
         .getElementById("search-input")
         .value.toLowerCase();
-      const platform = "shopee"; // locked for this page
+      const platform = document.getElementById("filter-platform").value;
       const status = document
         .getElementById("filter-status")
         .value.toLowerCase();
@@ -1934,6 +1931,7 @@
     function resetFilter() {
       [
         "search-input",
+        "filter-platform",
         "filter-status",
         "filter-duplicate",
         "filter-date-from",

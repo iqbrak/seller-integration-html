@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" class="h-full">
 
 <head>
@@ -291,7 +291,7 @@
           </nav>
           <div class="flex items-center gap-3">
             <div class="relative">
-              <input type="text" placeholder="Search orders, buyers…"
+              <input type="text" placeholder="Search orders, buyersâ€¦"
                 class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
               <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
@@ -325,7 +325,7 @@
             </button>
             <div id="profile-dropdown"
               class="hidden absolute right-8 top-14 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
-              <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
+              <a href="../my-profile.html" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
                   class="fa-solid fa-user w-4"></i>My Profile</a>
               <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
                   class="fa-solid fa-gear w-4"></i>Settings</a>
@@ -431,7 +431,7 @@
         <div class="bg-white rounded-2xl border border-surface-200 p-4 flex flex-wrap items-center gap-3">
           <div class="relative flex-1 min-w-[200px]">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-            <input id="search-input" type="text" placeholder="Search order ID, tracking no, buyer…"
+            <input id="search-input" type="text" placeholder="Search order ID, tracking no, buyerâ€¦"
               oninput="applyFilters()"
               class="w-full pl-8 pr-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition" />
           </div>
@@ -462,7 +462,7 @@
             <i class="fa-solid fa-calendar-days text-gray-400 text-xs"></i>
             <input id="filter-date-from" type="date" onchange="applyFilters()" title="From date"
               class="text-sm text-gray-700 bg-transparent focus:outline-none w-[130px]" />
-            <span class="text-gray-300 text-xs font-semibold">—</span>
+            <span class="text-gray-300 text-xs font-semibold">â€”</span>
             <input id="filter-date-to" type="date" onchange="applyFilters()" title="To date"
               class="text-sm text-gray-700 bg-transparent focus:outline-none w-[130px]" />
           </div>
@@ -568,7 +568,7 @@
           </div>
           <div>
             <h3 class="font-bold text-gray-900 text-sm">Label Preview</h3>
-            <p class="text-xs text-gray-400" id="preview-subtitle">—</p>
+            <p class="text-xs text-gray-400" id="preview-subtitle">â€”</p>
           </div>
         </div>
         <button onclick="closePreview()"
@@ -604,7 +604,7 @@
         </div>
         <div>
           <h3 class="font-bold text-gray-900 text-base" id="fetch-title">
-            Fetching Labels…
+            Fetching Labelsâ€¦
           </h3>
           <p class="text-xs text-gray-400" id="fetch-subtitle">
             Calling platform API
@@ -876,14 +876,14 @@
         endpoint: "POST /fulfillment/202309/packages/shipping_document",
         method: "POST",
         key_param: "package_id  (1 package per call)",
-        returns: "PDF binary blob → stored in local DB",
+        returns: "PDF binary blob â†’ stored in local DB",
         bar_color: "bg-gray-800",
       },
       shopee: {
         endpoint: "POST /api/v2/logistics/get_shipping_document",
         method: "POST",
         key_param: "order_sn[]  (batch up to 50)",
-        returns: "PDF URL → download & store in local DB",
+        returns: "PDF URL â†’ download & store in local DB",
         bar_color: "bg-orange-400",
       },
     };
@@ -961,13 +961,13 @@
               ? '<span class="font-mono text-xs text-gray-700 bg-surface-100 px-2 py-0.5 rounded">' +
               o.tracking +
               "</span>"
-              : '<span class="text-xs text-gray-400 italic">—</span>';
+              : '<span class="text-xs text-gray-400 italic">â€”</span>';
             var action =
               o.label_status === "ready" || o.label_status === "printed"
                 ? "<button onclick=\"openPreview('" +
                 o.id +
                 '\')" class="text-xs font-semibold text-primary-600 hover:underline">Preview</button>'
-                : '<span class="text-xs text-gray-400">—</span>';
+                : '<span class="text-xs text-gray-400">â€”</span>';
             return (
               '<tr class="' +
               rowCls +
@@ -1019,7 +1019,7 @@
           ? ""
           : "Showing " +
           (start + 1) +
-          "–" +
+          "â€“" +
           Math.min(start + PAGE_SIZE, total) +
           " of " +
           total;
@@ -1224,7 +1224,7 @@
       if (!o) return;
       previewOrderId = id;
       document.getElementById("preview-subtitle").textContent =
-        o.id + " · " + o.buyer;
+        o.id + " Â· " + o.buyer;
       document.getElementById("preview-label-content").innerHTML =
         buildLabelHTML(o);
       document.getElementById("previewModal").classList.remove("hidden");
@@ -1306,7 +1306,7 @@
 
     function startFetch(platformFilter) {
       document.getElementById("fetch-menu").classList.add("hidden");
-      // Simulate re-fetching: all matching platform orders get refreshed (new tracking, status → ready)
+      // Simulate re-fetching: all matching platform orders get refreshed (new tracking, status â†’ ready)
       var toFetch = MOCK_ORDERS.filter(function (o) {
         return platformFilter === "tiktok"
           ? o.platform === "tiktok"
@@ -1323,7 +1323,7 @@
       var platformLabel =
         platformFilter === "shopee" ? "Shopee" : "TikTok / Tokopedia";
       document.getElementById("fetch-title").textContent =
-        "Fetching from " + platformLabel + "…";
+        "Fetching from " + platformLabel + "â€¦";
       document.getElementById("fetch-subtitle").textContent =
         toFetch.length +
         " order" +
@@ -1384,10 +1384,10 @@
               : "doc_url:https://tiktok.cdn/label/" + o.package_id + ".pdf";
           o.printed_at = null;
           addLog(
-            (platformFilter === "shopee" ? "🟠" : "⬛") +
+            (platformFilter === "shopee" ? "ðŸŸ " : "â¬›") +
             " " +
             o.id +
-            " → " +
+            " â†’ " +
             (platformFilter === "shopee" ? "PDF url" : "PDF blob") +
             " refreshed | " +
             o.tracking,

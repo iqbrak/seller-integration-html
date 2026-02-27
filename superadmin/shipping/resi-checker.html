@@ -1,1299 +1,1493 @@
 <!doctype html>
 <html lang="en" class="h-full">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seller Integration - Resi Checker</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
-          colors: {
-            primary: {
-              50: "#f0f7ff",
-              100: "#e0effe",
-              200: "#bae0fd",
-              300: "#7cc8fb",
-              400: "#36aaf5",
-              500: "#0c8ee6",
-              600: "#0070c4",
-              700: "#01599f",
-              800: "#064b83",
-              900: "#0b3f6d",
-            },
-            surface: {
-              50: "#fafbfc",
-              100: "#f4f6f8",
-              200: "#e9ecef",
-              300: "#dee2e6",
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seller Integration - Resi Checker</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
+            colors: {
+              primary: {
+                50: "#f0f7ff",
+                100: "#e0effe",
+                200: "#bae0fd",
+                300: "#7cc8fb",
+                400: "#36aaf5",
+                500: "#0c8ee6",
+                600: "#0070c4",
+                700: "#01599f",
+                800: "#064b83",
+                900: "#0b3f6d",
+              },
+              surface: {
+                50: "#fafbfc",
+                100: "#f4f6f8",
+                200: "#e9ecef",
+                300: "#dee2e6",
+              },
             },
           },
         },
-      },
-    };
-  </script>
-  <style>
-    * {
-      font-family: "Plus Jakarta Sans", sans-serif;
-    }
-
-    .sidebar-item:hover {
-      background: rgba(12, 142, 230, 0.08);
-    }
-
-    .sidebar-item.active {
-      background: rgba(12, 142, 230, 0.12);
-      color: #0c8ee6;
-    }
-
-    .dropdown-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .dropdown-content.open {
-      max-height: 600px;
-    }
-
-    ::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #f4f6f8;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #c9d0d8;
-      border-radius: 10px;
-    }
-
-    .result-row:hover {
-      background: #fafbfc;
-    }
-
-    .result-row.selected {
-      background: #e0effe;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+      };
+    </script>
+    <style>
+      * {
+        font-family: "Plus Jakarta Sans", sans-serif;
       }
-    }
-
-    .spin {
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
+      .sidebar-item:hover {
+        background: rgba(12, 142, 230, 0.08);
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .sidebar-item.active {
+        background: rgba(12, 142, 230, 0.12);
+        color: #0c8ee6;
       }
-    }
+      .dropdown-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      .dropdown-content.open {
+        max-height: 600px;
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f4f6f8;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #c9d0d8;
+        border-radius: 10px;
+      }
+      .view-section {
+        display: none;
+      }
+      .view-section.active {
+        display: block;
+      }
+      .card-hover {
+        transition: all 0.25s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .session-row:hover {
+        background: #fafbfc;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fadeIn 0.25s ease both;
+      }
+    </style>
+  </head>
 
-    .fade-in {
-      animation: fadeIn 0.25s ease both;
-    }
-
-    .timeline-item:not(:last-child)::before {
-      content: "";
-      position: absolute;
-      left: 11px;
-      top: 28px;
-      bottom: -12px;
-      width: 2px;
-      background: #e9ecef;
-    }
-
-    .timeline-item.done:not(:last-child)::before {
-      background: #10b981;
-    }
-  </style>
-</head>
-
-<body class="h-full bg-surface-100">
-  <div class="flex h-full">
-    <!-- SIDEBAR -->
-    <aside
-      class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
-      <div class="p-6 border-b border-surface-200">
-        <div class="flex items-center gap-3">
+  <body class="h-full bg-surface-100">
+    <div class="flex h-full">
+      <!-- SIDEBAR -->
+      <aside
+        class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
+      >
+        <div class="p-6 border-b border-surface-200">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h1 class="font-bold text-gray-900 text-lg leading-tight">
+                Seller Integration
+              </h1>
+              <span
+                class="px-2 py-0.5 text-[10px] font-bold bg-primary-100 text-primary-700 rounded-full uppercase tracking-wide"
+                >SUPERADMIN</span
+              >
+            </div>
+          </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+          <a
+            href="../dashboard.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-home w-5"></i>Dashboard</a
+          >
           <div
-            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            Data Management
           </div>
           <div>
-            <h1 class="font-bold text-gray-900 text-lg leading-tight">
-              Seller Integration
-            </h1>
-            <span
-              class="px-2 py-0.5 text-[10px] font-bold bg-primary-100 text-primary-700 rounded-full uppercase tracking-wide">SUPERADMIN</span>
-          </div>
-        </div>
-      </div>
-      <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
-        <a href="../dashboard.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-home w-5"></i>Dashboard</a>
-        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
-          Data Management
-        </div>
-        <div>
-          <button onclick="toggleDropdown('orders')"
-            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <div class="flex items-center gap-3">
-              <i class="fa-solid fa-cart-shopping w-5"></i>Orders
-            </div>
-            <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
-          </button>
-          <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-            <a href="../data/orders/all-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All
-              Orders</a>
-            <a href="../data/orders/to-confirm-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting
-              Confirmation</a>
-            <a href="../data/orders/to-pack-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready
-              to Pack</a>
-            <a href="../data/orders/packed-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed
-              Orders</a>
-            <a href="../data/orders/returned-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned
-              Orders</a>
-            <a href="../data/orders/shopee-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
-            <a href="../data/orders/tiktok-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
-          </div>
-        </div>
-        <a href="../data/data-upload.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-upload w-5"></i>Data Upload</a>
-        <a href="../data/user.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-users w-5"></i>User Management</a>
-        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
-          Shipping &amp; Logistics
-        </div>
-        <a href="print-label.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-print w-5"></i>Print Shipping Labels</a>
-        <a href="resi-checker.html"
-          class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"><i
-            class="fa-solid fa-barcode w-5"></i>Resi Checker</a>
-        <a href="tracking-center.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-truck w-5"></i>Tracking Center</a>
-        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
-          Analytics &amp; Reports
-        </div>
-        <div>
-          <button onclick="toggleDropdown('reports')"
-            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <div class="flex items-center gap-3">
-              <i class="fa-solid fa-chart-pie w-5"></i>Reports
-            </div>
-            <i id="reports-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
-          </button>
-          <div id="reports-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-            <a href="../analytics/reports/sales.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Sales
-              Report</a>
-            <a href="../analytics/reports/revenue.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Revenue
-              Report</a>
-            <a href="../analytics/reports/product.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Product
-              Performance</a>
-          </div>
-        </div>
-        <a href="../analytics/activity-logs.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-clipboard-list w-5"></i>Activity Logs</a>
-        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
-          System Settings
-        </div>
-        <a href="../system/integration-setup.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-gear w-5"></i>Integration Setup</a>
-        <div>
-          <button onclick="toggleDropdown('market')"
-            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <div class="flex items-center gap-3">
-              <i class="fa-solid fa-store w-5"></i>Market Integration
-            </div>
-            <i id="market-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
-          </button>
-          <div id="market-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-            <a href="../system/market/shopee-market.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
-            <a href="../system/market/tiktok-market.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
-          </div>
-        </div>
-        <a href="../system/api-documentation.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"><i
-            class="fa-solid fa-code w-5"></i>API Documentation</a>
-      </nav>
-      <div class="p-4 border-t border-surface-200">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow">
-            AM
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-gray-800 truncate">
-              Admin Master
-            </p>
-            <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
-          </div>
-          <button class="p-1.5 text-gray-400 hover:text-red-500 transition-colors" title="Logout">
-            <i class="fa-solid fa-right-from-bracket text-sm"></i>
-          </button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="flex-1 overflow-y-auto">
-      <!-- HEADER -->
-      <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
-        <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
-          <nav class="flex items-center gap-2 text-sm text-slate-500">
-            <span>Shipping &amp; Logistics</span>
-            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-            <span class="text-slate-900 font-semibold">Resi Checker</span>
-          </nav>
-          <div class="flex items-center gap-3">
-            <div class="relative">
-              <input type="text" placeholder="Search resi, buyer…" id="header-search"
-                class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
-              <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            <button class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
-              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              <span
-                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+            <button
+              onclick="toggleDropdown('orders')"
+              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            >
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-cart-shopping w-5"></i>Orders
+              </div>
+              <i
+                id="orders-arrow"
+                class="fa-solid fa-chevron-down text-gray-400"
+              ></i>
             </button>
-            <div class="relative">
-              <button onclick="toggleProfileDropdown()"
-                class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
-                <div
-                  class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow">
-                  AM
-                </div>
-                <div class="text-left">
-                  <p class="text-sm font-semibold text-gray-900 leading-none">
-                    Admin Master
-                  </p>
-                  <p class="text-[11px] text-primary-600 mt-0.5">
-                    Superadmin
-                  </p>
-                </div>
-                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            <div
+              id="orders-dropdown"
+              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
+            >
+              <a
+                href="../data/orders/all-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >All Orders</a
+              >
+              <a
+                href="../data/orders/to-confirm-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Awaiting Confirmation</a
+              >
+              <a
+                href="../data/orders/to-pack-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Ready to Pack</a
+              >
+              <a
+                href="../data/orders/packed-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Packed Orders</a
+              >
+              <a
+                href="../data/orders/returned-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Returned Orders</a
+              >
+              <a
+                href="../data/orders/shopee-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Shopee</a
+              >
+              <a
+                href="../data/orders/tiktok-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >TikTok/Tokopedia</a
+              >
+            </div>
+          </div>
+          <a
+            href="../data/data-upload.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-upload w-5"></i>Data Upload</a
+          >
+          <a
+            href="../data/user.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-users w-5"></i>User Management</a
+          >
+          <div
+            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            Shipping &amp; Logistics
+          </div>
+          <a
+            href="print-label.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-print w-5"></i>Print Shipping Labels</a
+          >
+          <a
+            href="resi-checker.html"
+            class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+            ><i class="fa-solid fa-barcode w-5"></i>Resi Checker</a
+          >
+          <a
+            href="tracking-center.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-truck w-5"></i>Tracking Center</a
+          >
+          <div
+            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            Analytics &amp; Reports
+          </div>
+          <div>
+            <button
+              onclick="toggleDropdown('reports')"
+              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            >
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-chart-pie w-5"></i>Reports
+              </div>
+              <i
+                id="reports-arrow"
+                class="fa-solid fa-chevron-down text-gray-400"
+              ></i>
+            </button>
+            <div
+              id="reports-dropdown"
+              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
+            >
+              <a
+                href="../analytics/reports/sales.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Sales Report</a
+              >
+              <a
+                href="../analytics/reports/revenue.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Revenue Report</a
+              >
+              <a
+                href="../analytics/reports/product.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Product Performance</a
+              >
+            </div>
+          </div>
+          <a
+            href="../analytics/activity-logs.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-clipboard-list w-5"></i>Activity Logs</a
+          >
+          <div
+            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            System Settings
+          </div>
+          <a
+            href="../system/integration-setup.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-gear w-5"></i>Integration Setup</a
+          >
+          <div>
+            <button
+              onclick="toggleDropdown('market')"
+              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            >
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-store w-5"></i>Market Integration
+              </div>
+              <i
+                id="market-arrow"
+                class="fa-solid fa-chevron-down text-gray-400"
+              ></i>
+            </button>
+            <div
+              id="market-dropdown"
+              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
+            >
+              <a
+                href="../system/market/shopee-market.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Shopee</a
+              >
+              <a
+                href="../system/market/tiktok-market.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >TikTok/Tokopedia</a
+              >
+            </div>
+          </div>
+          <a
+            href="../system/api-documentation.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-code w-5"></i>API Documentation</a
+          >
+        </nav>
+        <div class="p-4 border-t border-surface-200">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm shadow"
+            >
+              AM
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-800 truncate">
+                Admin Master
+              </p>
+              <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
+            </div>
+            <a
+              href="../../login.html"
+              class="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
+              title="Logout"
+              ><i class="fa-solid fa-right-from-bracket text-sm"></i
+            ></a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 overflow-y-auto">
+        <!-- HEADER BAR -->
+        <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+          <div class="flex items-center justify-between px-8 py-3">
+            <div class="flex items-center gap-2 text-sm text-slate-500">
+              <i class="fa-regular fa-calendar text-slate-400"></i>
+              <span id="header-date" class="font-medium"></span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button
+                class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all"
+              >
+                <svg
+                  class="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
                 </svg>
               </button>
-              <div id="profile-dropdown"
-                class="hidden absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
-                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><i
-                    class="fa-solid fa-user w-4"></i>My Profile</a>
-                <hr class="my-1 border-surface-200" />
-                <a href="../../login.html"
-                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><i
-                    class="fa-solid fa-right-from-bracket w-4"></i>Sign
-                  Out</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div class="p-8 space-y-6">
-        <!-- PAGE TITLE -->
-        <div class="flex items-start justify-between flex-wrap gap-4">
-          <div>
-            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
-              <span
-                class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0">
-                <i class="fa-solid fa-barcode text-white text-sm"></i>
-              </span>
-              Resi Checker
-            </h2>
-            <p class="text-slate-500 text-sm mt-1">
-              Cek status dan histori pengiriman resi dari berbagai kurir
-              sekaligus
-            </p>
-          </div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <button onclick="exportResults()"
-              class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
-              <i class="fa-solid fa-file-export text-gray-500"></i>Export CSV
-            </button>
-            <button onclick="clearAll()"
-              class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
-              <i class="fa-solid fa-trash text-gray-500"></i>Clear All
-            </button>
-          </div>
-        </div>
-
-        <!-- STAT CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-white rounded-2xl border border-surface-200 p-5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Dicek Hari Ini</span>
-              <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
-                <i class="fa-solid fa-magnifying-glass text-primary-500 text-sm"></i>
-              </div>
-            </div>
-            <p class="text-3xl font-extrabold text-primary-600" id="stat-total">
-              0
-            </p>
-            <p class="text-xs text-gray-400 mt-1">
-              Total resi dicek sesi ini
-            </p>
-          </div>
-          <div class="bg-white rounded-2xl border border-surface-200 p-5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Terkirim</span>
-              <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
-              </div>
-            </div>
-            <p class="text-3xl font-extrabold text-emerald-600" id="stat-delivered">
-              0
-            </p>
-            <p class="text-xs text-gray-400 mt-1">
-              Paket sudah diterima penerima
-            </p>
-          </div>
-          <div class="bg-white rounded-2xl border border-surface-200 p-5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Bermasalah</span>
-              <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
-                <i class="fa-solid fa-circle-xmark text-red-500 text-sm"></i>
-              </div>
-            </div>
-            <p class="text-3xl font-extrabold text-red-500" id="stat-problem">
-              0
-            </p>
-            <p class="text-xs text-gray-400 mt-1">
-              Tidak ditemukan / dikembalikan
-            </p>
-          </div>
-        </div>
-
-        <!-- INPUT PANEL -->
-        <div class="bg-white rounded-2xl border border-surface-200 p-6">
-          <h3 class="text-sm font-bold text-gray-800 mb-1 flex items-center gap-2">
-            <i class="fa-solid fa-keyboard text-primary-500"></i>Input Nomor
-            Resi
-          </h3>
-          <p class="text-xs text-gray-400 mb-4">
-            Masukkan hingga 20 nomor resi sekaligus, pisahkan dengan baris
-            baru atau koma
-          </p>
-          <div class="flex gap-4 flex-wrap">
-            <div class="flex-1 min-w-[260px]">
-              <textarea id="resi-input" rows="4"
-                placeholder="Contoh:&#10;JNE001234567890&#10;JT9876543210&#10;SP12345678901234"
-                class="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all resize-none font-mono placeholder-gray-300"></textarea>
-            </div>
-            <div class="flex flex-col gap-3 min-w-[180px]">
-              <div>
-                <label class="text-xs font-semibold text-gray-500 mb-1 block">Kurir</label>
-                <select id="kurir-filter"
-                  class="w-full px-3 py-2.5 bg-surface-100 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
-                  <option value="auto">Auto Detect</option>
-                  <option value="jne">JNE</option>
-                  <option value="jnt">J&amp;T Express</option>
-                  <option value="sicepat">SiCepat</option>
-                  <option value="anteraja">Anteraja</option>
-                  <option value="ninja">Ninja Xpress</option>
-                  <option value="pos">Pos Indonesia</option>
-                </select>
-              </div>
-              <button onclick="checkResi()" id="btn-check"
-                class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary-600 text-white text-sm font-bold rounded-xl hover:bg-primary-700 shadow shadow-primary-500/25 transition-all">
-                <i class="fa-solid fa-magnifying-glass"></i>Check Resi
-              </button>
-              <button onclick="clearInput()"
-                class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-white border border-surface-200 text-gray-600 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all">
-                <i class="fa-solid fa-xmark"></i>Clear Input
-              </button>
-            </div>
-          </div>
-
-          <!-- Progress bar (hidden by default) -->
-          <div id="check-progress-wrap" class="hidden mt-4">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="text-xs font-semibold text-gray-500" id="check-progress-label">Mengecek resi…</span>
-              <span class="text-xs text-gray-400" id="check-progress-count">0 / 0</span>
-            </div>
-            <div class="w-full bg-surface-200 rounded-full h-2 overflow-hidden">
-              <div id="check-progress-bar" class="h-2 bg-primary-500 rounded-full transition-all duration-300"
-                style="width: 0%"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RESULTS TABLE -->
-        <div class="bg-white rounded-2xl border border-surface-200 overflow-hidden">
-          <div class="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-3">
-            <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
-              <i class="fa-solid fa-list text-primary-500"></i>
-              Hasil Pengecekan
-              <span id="result-count-badge"
-                class="px-2 py-0.5 text-[11px] font-bold bg-primary-100 text-primary-700 rounded-full">0 resi</span>
-            </h3>
-            <div class="flex items-center gap-2 flex-wrap">
-              <div class="relative">
-                <input type="text" id="filter-search" placeholder="Cari nomor resi…" oninput="applyTableFilter()"
-                  class="pl-8 pr-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all w-44" />
+              <div
+                class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg"
+              >
+                <div
+                  class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xs shadow"
+                >
+                  AM
+                </div>
+                <span class="text-sm font-semibold text-gray-900">aldi</span>
                 <i
-                  class="fa-solid fa-magnifying-glass text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2 text-xs"></i>
+                  class="fa-solid fa-chevron-down text-gray-400 text-[10px]"
+                ></i>
               </div>
-              <select id="filter-kurir" onchange="applyTableFilter()"
-                class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
-                <option value="">Semua Kurir</option>
-                <option value="JNE">JNE</option>
-                <option value="J&T Express">J&amp;T Express</option>
-                <option value="SiCepat">SiCepat</option>
-                <option value="Anteraja">Anteraja</option>
-                <option value="Ninja Xpress">Ninja Xpress</option>
-                <option value="Pos Indonesia">Pos Indonesia</option>
-              </select>
-              <select id="filter-status" onchange="applyTableFilter()"
-                class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
-                <option value="">Semua Status</option>
-                <option value="Delivered">Delivered</option>
-                <option value="In Transit">In Transit</option>
-                <option value="Pending">Pending</option>
-                <option value="Returned">Returned</option>
-                <option value="Not Found">Not Found</option>
-              </select>
+            </div>
+          </div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- VIEW 1: DASHBOARD -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+          id="view-dashboard"
+          class="view-section active p-8 space-y-6 fade-in"
+        >
+          <!-- Page Title -->
+          <div class="flex items-start justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center"
+              >
+                <i class="fa-solid fa-barcode text-primary-600 text-lg"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-2xl font-extrabold text-gray-900 tracking-tight"
+                >
+                  Resi Checker
+                </h2>
+                <p class="text-slate-500 text-sm mt-0.5">
+                  View resi scanning reports from mobile app.
+                </p>
+              </div>
+            </div>
+            <button
+              onclick="showView('sessions')"
+              class="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white text-sm font-bold rounded-xl hover:bg-primary-700 shadow shadow-primary-500/25 transition-all"
+            >
+              <i class="fa-solid fa-list"></i>View All Sessions
+            </button>
+          </div>
+
+          <!-- Stats Row 1 -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-folder-open text-primary-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">
+                    Total Sessions
+                  </p>
+                  <p class="text-2xl font-extrabold text-gray-900">3</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">Total Resi</p>
+                  <p class="text-2xl font-extrabold text-gray-900">6</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-hashtag text-blue-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">Unique Resi</p>
+                  <p class="text-2xl font-extrabold text-blue-600">6</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center"
+                >
+                  <i
+                    class="fa-solid fa-triangle-exclamation text-amber-500"
+                  ></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">Duplicates</p>
+                  <p class="text-2xl font-extrabold text-gray-900">0</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Empty state -->
-          <div id="empty-state" class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-surface-100 flex items-center justify-center mb-4">
-              <i class="fa-solid fa-barcode text-2xl text-gray-300"></i>
+          <!-- Stats Row 2 -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-calendar-check text-violet-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">
+                    Sessions Today
+                  </p>
+                  <p class="text-2xl font-extrabold text-gray-900">0</p>
+                </div>
+              </div>
             </div>
-            <p class="text-gray-500 font-semibold text-sm">
-              Belum ada resi yang dicek
-            </p>
-            <p class="text-gray-400 text-xs mt-1">
-              Masukkan nomor resi di atas lalu klik
-              <strong>Check Resi</strong>
-            </p>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-clock text-cyan-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">Resi Today</p>
+                  <p class="text-2xl font-extrabold text-gray-900">0</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Table -->
-          <div id="result-table-wrap" class="hidden overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-surface-50 border-b border-surface-200">
-                  <th class="text-left px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Nomor Resi
-                  </th>
-                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Kurir
-                  </th>
-                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Posisi Terakhir
-                  </th>
-                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Estimasi Tiba
-                  </th>
-                  <th class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Dicek Pada
-                  </th>
-                  <th class="px-4 py-3"></th>
-                </tr>
-              </thead>
-              <tbody id="result-tbody"></tbody>
-            </table>
+          <!-- Courier Breakdown + Recent Sessions -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Courier Breakdown -->
+            <div class="bg-white rounded-2xl border border-surface-200 p-6">
+              <h3
+                class="text-sm font-bold text-gray-800 flex items-center gap-2 mb-4"
+              >
+                <i class="fa-solid fa-truck text-gray-500"></i>Courier Breakdown
+              </h3>
+              <div class="space-y-3">
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span
+                      class="text-xs font-bold text-gray-700 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full"
+                      >LAINNYA</span
+                    >
+                    <span class="text-xs font-semibold text-gray-600"
+                      >6 (100%)</span
+                    >
+                  </div>
+                  <div class="w-full bg-surface-100 rounded-full h-2.5">
+                    <div
+                      class="bg-primary-500 h-full rounded-full"
+                      style="width: 100%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Sessions -->
+            <div class="bg-white rounded-2xl border border-surface-200 p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3
+                  class="text-sm font-bold text-gray-800 flex items-center gap-2"
+                >
+                  <i class="fa-regular fa-clock text-gray-500"></i>Recent
+                  Sessions
+                </h3>
+                <button
+                  onclick="showView('sessions')"
+                  class="text-xs font-semibold text-primary-600 border border-primary-200 px-3 py-1.5 rounded-lg hover:bg-primary-50 transition"
+                >
+                  View All
+                </button>
+              </div>
+              <div class="space-y-3">
+                <div
+                  onclick="showSessionDetail(0)"
+                  class="flex items-center justify-between p-3 bg-surface-50 rounded-xl hover:bg-surface-100 cursor-pointer transition"
+                >
+                  <div>
+                    <p class="text-sm font-bold text-gray-900">
+                      Drop Siang 21/2
+                    </p>
+                    <p class="text-[11px] text-gray-400">21 Feb 2026, 13.25</p>
+                  </div>
+                  <span
+                    class="px-2.5 py-1 text-[11px] font-bold bg-emerald-500 text-white rounded-lg"
+                    >1 resi</span
+                  >
+                </div>
+                <div
+                  onclick="showSessionDetail(1)"
+                  class="flex items-center justify-between p-3 bg-surface-50 rounded-xl hover:bg-surface-100 cursor-pointer transition"
+                >
+                  <div>
+                    <p class="text-sm font-bold text-gray-900">
+                      Drop Sore 12/2
+                    </p>
+                    <p class="text-[11px] text-gray-400">12 Feb 2026, 15.26</p>
+                  </div>
+                  <span
+                    class="px-2.5 py-1 text-[11px] font-bold bg-emerald-500 text-white rounded-lg"
+                    >4 resi</span
+                  >
+                </div>
+                <div
+                  onclick="showSessionDetail(2)"
+                  class="flex items-center justify-between p-3 bg-surface-50 rounded-xl hover:bg-surface-100 cursor-pointer transition"
+                >
+                  <div>
+                    <p class="text-sm font-bold text-gray-900">
+                      Drop Malam 11/2
+                    </p>
+                    <p class="text-[11px] text-gray-400">11 Feb 2026, 21.08</p>
+                  </div>
+                  <span
+                    class="px-2.5 py-1 text-[11px] font-bold bg-emerald-500 text-white rounded-lg"
+                    >1 resi</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- /p-8 -->
-    </main>
-  </div>
-  <!-- /flex -->
 
-  <!-- DETAIL MODAL -->
-  <div id="detailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-    onclick="closeDetail(event)">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden" onclick="event.stopPropagation()">
-      <!-- Modal header -->
-      <div class="flex items-start justify-between p-6 border-b border-surface-200">
-        <div>
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
-            Detail Tracking
-          </p>
-          <h3 class="text-lg font-extrabold text-gray-900 font-mono" id="modal-resi-number">
-            —
-          </h3>
-          <div class="flex items-center gap-2 mt-1.5 flex-wrap">
-            <span class="text-xs font-semibold text-gray-500" id="modal-kurir">—</span>
-            <span id="modal-status-badge" class="px-2 py-0.5 text-[11px] font-bold rounded-full">—</span>
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- VIEW 2: ALL SESSIONS -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div id="view-sessions" class="view-section p-8 space-y-6 fade-in">
+          <!-- Breadcrumb + Title -->
+          <div>
+            <div class="flex items-center gap-2 text-sm mb-1">
+              <a
+                onclick="showView('dashboard')"
+                class="text-primary-600 font-semibold hover:underline cursor-pointer"
+                >Resi Checker</a
+              >
+              <span class="text-gray-400">/</span>
+              <span class="text-gray-500 font-medium">Sessions</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center"
+              >
+                <i
+                  class="fa-regular fa-folder-open text-primary-600 text-lg"
+                ></i>
+              </div>
+              <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">
+                All Sessions
+              </h2>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div
+            class="bg-white rounded-2xl border border-surface-200 p-5 flex flex-wrap items-end gap-4"
+          >
+            <div>
+              <label class="text-xs font-semibold text-gray-500 mb-1 block"
+                >From Date</label
+              >
+              <input
+                type="date"
+                value="2026-02-01"
+                class="px-3 py-2.5 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-gray-500 mb-1 block"
+                >To Date</label
+              >
+              <input
+                type="date"
+                value="2026-02-27"
+                class="px-3 py-2.5 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-gray-500 mb-1 block"
+                >Device ID</label
+              >
+              <input
+                type="text"
+                placeholder="Filter by device..."
+                class="px-3 py-2.5 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 w-48"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-gray-500 mb-1 block"
+                >Status</label
+              >
+              <select
+                class="px-3 py-2.5 text-sm border border-surface-200 rounded-xl bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+              >
+                <option>All</option>
+                <option>Active</option>
+                <option>Completed</option>
+              </select>
+            </div>
+            <button
+              class="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white text-sm font-bold rounded-xl hover:bg-primary-700 shadow shadow-primary-500/25 transition-all"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>Filter
+            </button>
+          </div>
+
+          <!-- Sessions Table -->
+          <div
+            class="bg-white rounded-2xl border border-surface-200 overflow-hidden"
+          >
+            <div
+              class="px-6 py-4 border-b border-surface-200 flex items-center justify-between"
+            >
+              <h3
+                class="text-sm font-bold text-gray-800 flex items-center gap-2"
+              >
+                <i class="fa-solid fa-list text-primary-500"></i>Sessions
+              </h3>
+              <span
+                class="px-2.5 py-1 text-[11px] font-bold bg-primary-100 text-primary-700 rounded-full"
+                >3 sessions</span
+              >
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-surface-50 border-b border-surface-200">
+                    <th
+                      class="text-left px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Session Name
+                    </th>
+                    <th
+                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Device
+                    </th>
+                    <th
+                      class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Total Scanned
+                    </th>
+                    <th
+                      class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Unique
+                    </th>
+                    <th
+                      class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Duplicates
+                    </th>
+                    <th
+                      class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Created
+                    </th>
+                    <th
+                      class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-100">
+                  <tr
+                    class="session-row transition cursor-pointer"
+                    onclick="showSessionDetail(0)"
+                  >
+                    <td class="px-6 py-3.5">
+                      <a
+                        class="text-primary-600 font-bold text-sm hover:underline"
+                        >Drop Siang 21/2</a
+                      >
+                    </td>
+                    <td class="px-4 py-3.5">
+                      <span class="text-xs text-gray-700">Redmi 22120RN86G</span
+                      ><br />
+                      <span class="text-[10px] text-emerald-500 font-mono"
+                        >TP1A.220624....</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span class="text-sm font-bold text-gray-900">1</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span
+                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                        >1</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span class="text-sm text-gray-400">-</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span
+                        class="px-2.5 py-1 text-[11px] font-bold bg-emerald-100 text-emerald-700 rounded-full"
+                        >Active</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5">
+                      <span class="text-xs text-gray-600"
+                        >21 Feb 2026, 13.25</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <div class="flex items-center justify-center gap-1.5">
+                        <button
+                          onclick="
+                            event.stopPropagation();
+                            showSessionDetail(0);
+                          "
+                          class="p-2 hover:bg-primary-50 rounded-lg transition"
+                          title="View"
+                        >
+                          <i
+                            class="fa-regular fa-eye text-gray-400 hover:text-primary-600 text-sm"
+                          ></i>
+                        </button>
+                        <button
+                          onclick="event.stopPropagation()"
+                          class="p-2 hover:bg-red-50 rounded-lg transition"
+                          title="Delete"
+                        >
+                          <i
+                            class="fa-regular fa-trash-can text-gray-400 hover:text-red-500 text-sm"
+                          ></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="session-row transition cursor-pointer"
+                    onclick="showSessionDetail(1)"
+                  >
+                    <td class="px-6 py-3.5">
+                      <a
+                        class="text-primary-600 font-bold text-sm hover:underline"
+                        >Drop Sore 12/2</a
+                      >
+                    </td>
+                    <td class="px-4 py-3.5">
+                      <span class="text-xs text-gray-700">Redmi 22120RN86G</span
+                      ><br />
+                      <span class="text-[10px] text-emerald-500 font-mono"
+                        >SP1A.210812....</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span class="text-sm font-bold text-gray-900">4</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span
+                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                        >4</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span class="text-sm text-gray-400">-</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span
+                        class="px-2.5 py-1 text-[11px] font-bold bg-violet-100 text-violet-700 rounded-full"
+                        >Completed</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5">
+                      <span class="text-xs text-gray-600"
+                        >12 Feb 2026, 15.26</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <div class="flex items-center justify-center gap-1.5">
+                        <button
+                          onclick="
+                            event.stopPropagation();
+                            showSessionDetail(1);
+                          "
+                          class="p-2 hover:bg-primary-50 rounded-lg transition"
+                          title="View"
+                        >
+                          <i
+                            class="fa-regular fa-eye text-gray-400 hover:text-primary-600 text-sm"
+                          ></i>
+                        </button>
+                        <button
+                          onclick="event.stopPropagation()"
+                          class="p-2 hover:bg-red-50 rounded-lg transition"
+                          title="Delete"
+                        >
+                          <i
+                            class="fa-regular fa-trash-can text-gray-400 hover:text-red-500 text-sm"
+                          ></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    class="session-row transition cursor-pointer"
+                    onclick="showSessionDetail(2)"
+                  >
+                    <td class="px-6 py-3.5">
+                      <a
+                        class="text-primary-600 font-bold text-sm hover:underline"
+                        >Drop Malam 11/2</a
+                      >
+                    </td>
+                    <td class="px-4 py-3.5">
+                      <span class="text-xs text-gray-700">Redmi 22120RN86G</span
+                      ><br />
+                      <span class="text-[10px] text-emerald-500 font-mono"
+                        >SP1A.210812....</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span class="text-sm font-bold text-gray-900">1</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span
+                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 text-white text-xs font-bold"
+                        >1</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span class="text-sm text-gray-400">-</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <span
+                        class="px-2.5 py-1 text-[11px] font-bold bg-emerald-100 text-emerald-700 rounded-full"
+                        >Active</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5">
+                      <span class="text-xs text-gray-600"
+                        >11 Feb 2026, 21.08</span
+                      >
+                    </td>
+                    <td class="px-4 py-3.5 text-center">
+                      <div class="flex items-center justify-center gap-1.5">
+                        <button
+                          onclick="
+                            event.stopPropagation();
+                            showSessionDetail(2);
+                          "
+                          class="p-2 hover:bg-primary-50 rounded-lg transition"
+                          title="View"
+                        >
+                          <i
+                            class="fa-regular fa-eye text-gray-400 hover:text-primary-600 text-sm"
+                          ></i>
+                        </button>
+                        <button
+                          onclick="event.stopPropagation()"
+                          class="p-2 hover:bg-red-50 rounded-lg transition"
+                          title="Delete"
+                        >
+                          <i
+                            class="fa-regular fa-trash-can text-gray-400 hover:text-red-500 text-sm"
+                          ></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-        <button onclick="closeModal()"
-          class="p-2 rounded-lg hover:bg-surface-100 text-gray-400 hover:text-gray-600 transition-all mt-1">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
 
-      <!-- Receiver info -->
-      <div class="px-6 pt-4 pb-2 bg-surface-50 border-b border-surface-200 flex items-center gap-6 flex-wrap">
-        <div>
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-            Penerima
-          </p>
-          <p class="text-sm font-semibold text-gray-800" id="modal-receiver">
-            —
-          </p>
-        </div>
-        <div>
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-            Tujuan
-          </p>
-          <p class="text-sm font-semibold text-gray-800" id="modal-destination">
-            —
-          </p>
-        </div>
-        <div>
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-            Estimasi Tiba
-          </p>
-          <p class="text-sm font-semibold text-gray-800" id="modal-eta">—</p>
-        </div>
-      </div>
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- VIEW 3: SESSION DETAIL -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div id="view-detail" class="view-section p-8 space-y-6 fade-in">
+          <!-- Breadcrumb + Title -->
+          <div>
+            <div class="flex items-center gap-2 text-sm mb-1">
+              <a
+                onclick="showView('dashboard')"
+                class="text-primary-600 font-semibold hover:underline cursor-pointer"
+                >Resi Checker</a
+              >
+              <span class="text-gray-400">/</span>
+              <a
+                onclick="showView('sessions')"
+                class="text-primary-600 font-semibold hover:underline cursor-pointer"
+                >Sessions</a
+              >
+              <span class="text-gray-400">/</span>
+              <span id="detail-breadcrumb" class="text-gray-500 font-medium"
+                >Drop Siang 21/2</span
+              >
+            </div>
+            <div class="flex items-start justify-between flex-wrap gap-4">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center"
+                >
+                  <i
+                    class="fa-regular fa-file-lines text-primary-600 text-lg"
+                  ></i>
+                </div>
+                <div>
+                  <h2
+                    id="detail-title"
+                    class="text-2xl font-extrabold text-gray-900 tracking-tight"
+                  >
+                    Drop Siang 21/2
+                  </h2>
+                  <p id="detail-meta" class="text-slate-500 text-sm mt-0.5">
+                    Created: 21 Feb 2026, 13.25.35 | Device: Redmi 22120RN86G
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-100 transition-all"
+                >
+                  <i class="fa-regular fa-copy text-gray-500"></i>Copy All Resi
+                </button>
+                <button
+                  class="flex items-center gap-2 px-4 py-2.5 bg-red-500 text-white text-sm font-bold rounded-xl hover:bg-red-600 shadow shadow-red-500/25 transition-all"
+                >
+                  <i class="fa-solid fa-file-export"></i>Export CSV
+                </button>
+              </div>
+            </div>
+          </div>
 
-      <!-- Timeline -->
-      <div class="p-6 max-h-72 overflow-y-auto">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
-          Histori Perjalanan
-        </p>
-        <div id="modal-timeline" class="space-y-3"></div>
-      </div>
+          <!-- Detail Stats -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 text-center card-hover"
+            >
+              <p
+                id="detail-total"
+                class="text-3xl font-extrabold text-gray-900"
+              >
+                1
+              </p>
+              <p class="text-xs text-gray-400 mt-1">Total Scanned</p>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 text-center card-hover"
+            >
+              <p
+                id="detail-unique"
+                class="text-3xl font-extrabold text-emerald-600"
+              >
+                1
+              </p>
+              <p class="text-xs text-gray-400 mt-1">Unique Resi</p>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 text-center card-hover"
+            >
+              <p
+                id="detail-duplicates"
+                class="text-3xl font-extrabold text-red-500"
+              >
+                0
+              </p>
+              <p class="text-xs text-gray-400 mt-1">Duplicates</p>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 text-center card-hover"
+            >
+              <span
+                id="detail-status"
+                class="px-3 py-1.5 text-sm font-bold bg-emerald-500 text-white rounded-full"
+                >Active</span
+              >
+              <p class="text-xs text-gray-400 mt-2">Status</p>
+            </div>
+          </div>
 
-      <!-- Footer -->
-      <div class="px-6 py-4 border-t border-surface-200 flex justify-between items-center gap-3">
-        <button onclick="recheckSingle()"
-          class="flex items-center gap-2 px-4 py-2 bg-surface-100 border border-surface-200 text-gray-700 text-xs font-semibold rounded-xl hover:bg-surface-200 transition-all">
-          <i class="fa-solid fa-rotate"></i>Cek Ulang
-        </button>
-        <button onclick="closeModal()"
-          class="px-5 py-2 bg-primary-600 text-white text-xs font-bold rounded-xl hover:bg-primary-700 transition-all">
-          Tutup
-        </button>
-      </div>
+          <!-- Courier Breakdown + Scanned Resi -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Courier Breakdown -->
+            <div class="bg-white rounded-2xl border border-surface-200 p-6">
+              <h3
+                class="text-sm font-bold text-gray-800 flex items-center gap-2 mb-4"
+              >
+                <i class="fa-solid fa-truck text-gray-500"></i>Courier Breakdown
+              </h3>
+              <div id="detail-couriers" class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span
+                    class="text-xs font-bold bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full"
+                    >LAINNYA</span
+                  >
+                  <span class="text-xs font-semibold text-gray-600"
+                    >1 (100%)</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Scanned Resi Table -->
+            <div
+              class="lg:col-span-2 bg-white rounded-2xl border border-surface-200 overflow-hidden"
+            >
+              <div
+                class="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-3"
+              >
+                <h3
+                  class="text-sm font-bold text-gray-800 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-list text-primary-500"></i>Scanned Resi
+                </h3>
+                <div class="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Search resi..."
+                    class="pl-3 pr-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all w-36"
+                  />
+                  <select
+                    class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none"
+                  >
+                    <option>All Couriers</option>
+                    <option>JNE</option>
+                    <option>J&T</option>
+                    <option>SiCepat</option>
+                    <option>LAINNYA</option>
+                  </select>
+                  <select
+                    class="px-3 py-2 bg-surface-100 border border-surface-200 rounded-lg text-xs text-gray-700 focus:outline-none"
+                  >
+                    <option>All</option>
+                    <option>1x</option>
+                    <option>2x+</option>
+                  </select>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="bg-surface-50 border-b border-surface-200">
+                      <th
+                        class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-10"
+                      >
+                        #
+                      </th>
+                      <th
+                        class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                      >
+                        Resi Number
+                      </th>
+                      <th
+                        class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                      >
+                        Courier
+                      </th>
+                      <th
+                        class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                      >
+                        Scans
+                      </th>
+                      <th
+                        class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                      >
+                        Scanned At
+                      </th>
+                      <th
+                        class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                      >
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="detail-resi-table"
+                    class="divide-y divide-surface-100"
+                  >
+                    <tr class="hover:bg-surface-50 transition">
+                      <td class="px-4 py-3 text-center text-xs text-gray-400">
+                        1
+                      </td>
+                      <td class="px-4 py-3">
+                        <span
+                          class="text-xs font-mono font-bold text-primary-600 break-all"
+                          >LPA:1$ecprsp.eastcompeace.com$E525798DFD65427AAE89D4385D1161C2</span
+                        >
+                      </td>
+                      <td class="px-4 py-3 text-center">
+                        <span
+                          class="text-[10px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full"
+                          >LAINNYA</span
+                        >
+                      </td>
+                      <td class="px-4 py-3 text-center">
+                        <span class="text-xs font-semibold text-gray-700"
+                          >1x</span
+                        >
+                      </td>
+                      <td class="px-4 py-3">
+                        <span class="text-xs text-gray-600"
+                          >21 Feb 2026, 13.27.44</span
+                        >
+                      </td>
+                      <td class="px-4 py-3 text-center">
+                        <button
+                          class="p-2 hover:bg-primary-50 rounded-lg transition"
+                          title="Copy Resi"
+                        >
+                          <i
+                            class="fa-regular fa-copy text-gray-400 hover:text-primary-600 text-sm"
+                          ></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                class="px-6 py-3 border-t border-surface-100 text-xs text-gray-400"
+              >
+                <span id="detail-record-count">1 records shown</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer
+          class="border-t border-surface-200 bg-white px-8 py-4 flex items-center justify-between"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center"
+            >
+              <svg
+                class="w-3.5 h-3.5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+            </div>
+            <span class="text-xs text-gray-500"
+              >Seller Integration Platform
+              <span class="font-semibold text-gray-700">v3.2.1</span></span
+            >
+          </div>
+          <div class="flex items-center gap-4 text-xs text-gray-400">
+            <span class="flex items-center gap-1.5"
+              ><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>API:
+              Operational</span
+            >
+            <span class="flex items-center gap-1.5"
+              ><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>DB:
+              Connected</span
+            >
+          </div>
+        </footer>
+      </main>
     </div>
-  </div>
 
-  <!-- SCRIPTS -->
-  <script>
-    // ─── Mock Data ───────────────────────────────────────────────────────────────
-    var COURIERS = {
-      jne: {
-        name: "JNE",
-        prefix: ["JNE", "CGK"],
-        color: "bg-red-100 text-red-700",
-      },
-      jnt: {
-        name: "J&T Express",
-        prefix: ["JT", "JP"],
-        color: "bg-yellow-100 text-yellow-700",
-      },
-      sicepat: {
-        name: "SiCepat",
-        prefix: ["SC", "SP"],
-        color: "bg-blue-100 text-blue-700",
-      },
-      anteraja: {
-        name: "Anteraja",
-        prefix: ["ANT", "AN"],
-        color: "bg-purple-100 text-purple-700",
-      },
-      ninja: {
-        name: "Ninja Xpress",
-        prefix: ["NX", "NVJ"],
-        color: "bg-gray-100 text-gray-700",
-      },
-      pos: {
-        name: "Pos Indonesia",
-        prefix: ["POS", "EE"],
-        color: "bg-orange-100 text-orange-700",
-      },
-    };
-
-    var STATUS_STYLES = {
-      Delivered: {
-        badge: "bg-emerald-100 text-emerald-700",
-        icon: "fa-circle-check text-emerald-500",
-      },
-      "In Transit": {
-        badge: "bg-blue-100 text-blue-700",
-        icon: "fa-truck text-blue-500",
-      },
-      Pending: {
-        badge: "bg-yellow-100 text-yellow-700",
-        icon: "fa-clock text-yellow-500",
-      },
-      Returned: {
-        badge: "bg-red-100 text-red-700",
-        icon: "fa-rotate-left text-red-500",
-      },
-      "Not Found": {
-        badge: "bg-gray-100 text-gray-500",
-        icon: "fa-circle-question text-gray-400",
-      },
-    };
-
-    var MOCK_TIMELINES = {
-      Delivered: [
-        {
-          label: "Paket Diterima Penerima",
-          sub: "Diterima oleh: BUDI",
-          time: "26 Feb 2026, 14:32",
-          done: true,
-        },
-        {
-          label: "Dalam Pengiriman",
-          sub: "Kurir berangkat dari HUB Jakarta Selatan",
-          time: "26 Feb 2026, 08:15",
-          done: true,
-        },
-        {
-          label: "Tiba di HUB Tujuan",
-          sub: "HUB Jakarta Selatan — siap dikirim",
-          time: "25 Feb 2026, 22:47",
-          done: true,
-        },
-        {
-          label: "Dalam Perjalanan Antar HUB",
-          sub: "Transit di HUB Bandung",
-          time: "25 Feb 2026, 10:03",
-          done: true,
-        },
-        {
-          label: "Paket Diambil Kurir",
-          sub: "Pickup dari penjual oleh kurir",
-          time: "24 Feb 2026, 16:50",
-          done: true,
-        },
-        {
-          label: "Pesanan Dibuat",
-          sub: "Pesanan terdaftar di sistem kurir",
-          time: "24 Feb 2026, 09:00",
-          done: true,
-        },
-      ],
-      "In Transit": [
-        {
-          label: "Dalam Pengiriman",
-          sub: "Kurir menuju alamat penerima",
-          time: "26 Feb 2026, 09:20",
-          done: true,
-        },
-        {
-          label: "Tiba di HUB Tujuan",
-          sub: "HUB Jakarta Pusat",
-          time: "25 Feb 2026, 20:15",
-          done: true,
-        },
-        {
-          label: "Dalam Perjalanan Antar HUB",
-          sub: "Transit Surabaya → Jakarta",
-          time: "25 Feb 2026, 07:40",
-          done: true,
-        },
-        {
-          label: "Paket Diambil Kurir",
-          sub: "Pickup berhasil dari seller",
-          time: "24 Feb 2026, 14:10",
-          done: true,
-        },
-        {
-          label: "Pesanan Dibuat",
-          sub: "Pesanan terdaftar di sistem",
-          time: "24 Feb 2026, 10:30",
-          done: true,
-        },
-      ],
-      Pending: [
-        {
-          label: "Menunggu Pickup",
-          sub: "Belum dijemput kurir — jadwal pickup: hari ini",
-          time: "26 Feb 2026, 08:00",
-          done: false,
-        },
-        {
-          label: "Pesanan Dibuat",
-          sub: "Pesanan terdaftar di sistem kurir",
-          time: "26 Feb 2026, 06:45",
-          done: true,
-        },
-      ],
-      Returned: [
-        {
-          label: "Paket Dikembalikan ke Pengirim",
-          sub: "Gagal terkirim 3x — retur otomatis",
-          time: "25 Feb 2026, 17:00",
-          done: true,
-        },
-        {
-          label: "Percobaan Pengiriman Ke-3",
-          sub: "Penerima tidak ada di tempat",
-          time: "25 Feb 2026, 11:30",
-          done: true,
-        },
-        {
-          label: "Percobaan Pengiriman Ke-2",
-          sub: "Alamat tidak ditemukan",
-          time: "24 Feb 2026, 13:00",
-          done: true,
-        },
-        {
-          label: "Percobaan Pengiriman Ke-1",
-          sub: "Tidak ada yang menerima",
-          time: "23 Feb 2026, 10:15",
-          done: true,
-        },
-        {
-          label: "Tiba di HUB Tujuan",
-          sub: "HUB Bekasi",
-          time: "22 Feb 2026, 18:00",
-          done: true,
-        },
-        {
-          label: "Pesanan Dibuat",
-          sub: "Pesanan terdaftar di sistem",
-          time: "21 Feb 2026, 09:00",
-          done: true,
-        },
-      ],
-      "Not Found": [
-        {
-          label: "Nomor Resi Tidak Ditemukan",
-          sub: "Tidak ada data di sistem kurir yang dipilih",
-          time: "—",
-          done: false,
-        },
-      ],
-    };
-
-    var MOCK_NAMES = [
-      "Budi Santoso",
-      "Siti Rahayu",
-      "Ahmad Fauzi",
-      "Dewi Lestari",
-      "Rudi Hartono",
-      "Yanti Kusuma",
-      "Fajar Nugroho",
-      "Maya Indah",
-    ];
-    var MOCK_CITIES = [
-      "Jakarta Selatan",
-      "Bandung",
-      "Surabaya",
-      "Medan",
-      "Bekasi",
-      "Tangerang",
-      "Yogyakarta",
-      "Semarang",
-      "Depok",
-      "Bogor",
-    ];
-    var MOCK_STATUS_POOL = [
-      "Delivered",
-      "Delivered",
-      "In Transit",
-      "In Transit",
-      "Pending",
-      "Returned",
-      "Not Found",
-    ];
-
-    var RESI_DB = []; // results stored here
-    var currentDetailId = null;
-
-    // ─── Detect courier from resi prefix ─────────────────────────────────────────
-    function detectCourier(resi) {
-      var upper = resi.toUpperCase();
-      var keys = Object.keys(COURIERS);
-      for (var i = 0; i < keys.length; i++) {
-        var k = keys[i];
-        var pre = COURIERS[k].prefix;
-        for (var j = 0; j < pre.length; j++) {
-          if (upper.startsWith(pre[j])) return k;
-        }
-      }
-      // fallback round-robin by length
-      var fallbacks = ["jne", "jnt", "sicepat", "anteraja", "ninja", "pos"];
-      return fallbacks[resi.length % fallbacks.length];
-    }
-
-    // ─── Generate mock result for a resi ─────────────────────────────────────────
-    function mockResult(resi, kurirKey) {
-      var status =
-        MOCK_STATUS_POOL[Math.floor(Math.random() * MOCK_STATUS_POOL.length)];
-      var receiver =
-        MOCK_NAMES[Math.floor(Math.random() * MOCK_NAMES.length)];
-      var dest = MOCK_CITIES[Math.floor(Math.random() * MOCK_CITIES.length)];
-      var today = new Date();
-      var eta =
-        status === "Delivered"
-          ? "—"
-          : status === "Not Found"
-            ? "—"
-            : formatDate(
-              new Date(
-                today.getTime() +
-                (Math.floor(Math.random() * 3) + 1) * 86400000,
-              ),
-            );
-      var checked = formatDateTime(today);
-      return {
-        id: resi.trim(),
-        kurir: kurirKey,
-        kurirName: COURIERS[kurirKey] ? COURIERS[kurirKey].name : kurirKey,
-        status: status,
-        receiver: receiver,
-        dest: dest,
-        eta: eta,
-        checked: checked,
-        position:
-          status === "Delivered"
-            ? dest + " (diterima)"
-            : status === "Not Found"
-              ? "—"
-              : status === "Pending"
-                ? "Menunggu pickup"
-                : status === "Returned"
-                  ? "Kembali ke pengirim"
-                  : MOCK_CITIES[
-                  Math.floor(Math.random() * MOCK_CITIES.length)
-                  ] + " HUB",
-      };
-    }
-
-    function formatDate(d) {
-      return (
-        d.getDate() +
-        " " +
-        [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "Mei",
-          "Jun",
-          "Jul",
-          "Agu",
-          "Sep",
-          "Okt",
-          "Nov",
-          "Des",
-        ][d.getMonth()] +
-        " " +
-        d.getFullYear()
-      );
-    }
-    function formatDateTime(d) {
-      return (
-        formatDate(d) +
-        ", " +
-        String(d.getHours()).padStart(2, "0") +
-        ":" +
-        String(d.getMinutes()).padStart(2, "0")
-      );
-    }
-
-    // ─── Check Resi ──────────────────────────────────────────────────────────────
-    function checkResi() {
-      var raw = document.getElementById("resi-input").value.trim();
-      var manual = document.getElementById("kurir-filter").value;
-      if (!raw) {
-        alert("Masukkan minimal satu nomor resi.");
-        return;
-      }
-
-      // Parse resi numbers
-      var list = raw
-        .split(/[\n,]+/)
-        .map(function (r) {
-          return r.trim();
-        })
-        .filter(function (r) {
-          return r.length > 0;
-        });
-      if (list.length > 20) {
-        alert("Maksimum 20 nomor resi sekaligus.");
-        return;
-      }
-
-      // Show progress
-      var progressWrap = document.getElementById("check-progress-wrap");
-      var progressBar = document.getElementById("check-progress-bar");
-      var progressLabel = document.getElementById("check-progress-label");
-      var progressCount = document.getElementById("check-progress-count");
-      progressWrap.classList.remove("hidden");
-      progressBar.style.width = "0%";
-      progressLabel.textContent = "Mengecek resi…";
-      document.getElementById("btn-check").disabled = true;
-
-      var total = list.length;
-      var done = 0;
-      var newResults = [];
-
-      function processNext() {
-        if (done >= total) {
-          // Merge: avoid duplicate resi
-          list.forEach(function (r, idx) {
-            var existing = RESI_DB.findIndex(function (x) {
-              return x.id === r.trim();
-            });
-            if (existing >= 0) RESI_DB[existing] = newResults[idx];
-            else RESI_DB.push(newResults[idx]);
-          });
-          progressBar.style.width = "100%";
-          progressLabel.textContent = "Selesai!";
-          progressCount.textContent = total + " / " + total;
-          setTimeout(function () {
-            progressWrap.classList.add("hidden");
-            document.getElementById("btn-check").disabled = false;
-          }, 1200);
-          renderTable();
-          updateStats();
-          return;
-        }
-        var resi = list[done].trim();
-        var kurirKey = manual === "auto" ? detectCourier(resi) : manual;
-        var result = mockResult(resi, kurirKey);
-        newResults.push(result);
-        done++;
-        var pct = Math.round((done / total) * 100);
-        progressBar.style.width = pct + "%";
-        progressCount.textContent = done + " / " + total;
-        setTimeout(processNext, 180 + Math.random() * 120);
-      }
-      processNext();
-    }
-
-    // ─── Render Table ────────────────────────────────────────────────────────────
-    function renderTable(data) {
-      var rows = data || RESI_DB;
-      var tbody = document.getElementById("result-tbody");
-      var empty = document.getElementById("empty-state");
-      var wrap = document.getElementById("result-table-wrap");
-
-      if (rows.length === 0) {
-        empty.classList.remove("hidden");
-        wrap.classList.add("hidden");
-        document.getElementById("result-count-badge").textContent = "0 resi";
-        return;
-      }
-      empty.classList.add("hidden");
-      wrap.classList.remove("hidden");
-      document.getElementById("result-count-badge").textContent =
-        rows.length + " resi";
-
-      tbody.innerHTML = rows
-        .map(function (r, idx) {
-          var st = STATUS_STYLES[r.status] || STATUS_STYLES["Pending"];
-          var ck = COURIERS[r.kurir]
-            ? COURIERS[r.kurir].color
-            : "bg-gray-100 text-gray-600";
-          return (
-            '<tr class="result-row border-b border-surface-100 fade-in" style="animation-delay:' +
-            idx * 30 +
-            'ms">' +
-            '<td class="px-6 py-3.5"><span class="font-mono text-xs font-bold text-gray-800">' +
-            r.id +
-            "</span></td>" +
-            '<td class="px-4 py-3.5"><span class="px-2 py-0.5 text-[11px] font-bold rounded-full ' +
-            ck +
-            '">' +
-            r.kurirName +
-            "</span></td>" +
-            '<td class="px-4 py-3.5"><span class="flex items-center gap-1.5 text-xs font-semibold ' +
-            (st.badge.includes("emerald")
-              ? "text-emerald-700"
-              : st.badge.includes("blue")
-                ? "text-blue-700"
-                : st.badge.includes("yellow")
-                  ? "text-yellow-700"
-                  : st.badge.includes("red")
-                    ? "text-red-700"
-                    : "text-gray-500") +
-            '">' +
-            '<i class="fa-solid ' +
-            st.icon.split(" ")[0].replace("fa-solid", "").trim() +
-            " " +
-            st.icon +
-            '"></i>' +
-            r.status +
-            "</span></td>" +
-            '<td class="px-4 py-3.5 text-xs text-gray-500">' +
-            r.position +
-            "</td>" +
-            '<td class="px-4 py-3.5 text-xs text-gray-500">' +
-            r.eta +
-            "</td>" +
-            '<td class="px-4 py-3.5 text-xs text-gray-400">' +
-            r.checked +
-            "</td>" +
-            '<td class="px-4 py-3.5 text-right"><button onclick="openDetail(\'' +
-            r.id +
-            '\')" class="px-3 py-1.5 text-xs font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-all">Detail</button></td>' +
-            "</tr>"
-          );
-        })
-        .join("");
-    }
-
-    // ─── Stats ───────────────────────────────────────────────────────────────────
-    function updateStats() {
-      document.getElementById("stat-total").textContent = RESI_DB.length;
-      document.getElementById("stat-delivered").textContent = RESI_DB.filter(
-        function (r) {
-          return r.status === "Delivered";
-        },
-      ).length;
-      document.getElementById("stat-problem").textContent = RESI_DB.filter(
-        function (r) {
-          return r.status === "Not Found" || r.status === "Returned";
-        },
-      ).length;
-    }
-
-    // ─── Table Filter ────────────────────────────────────────────────────────────
-    function applyTableFilter() {
-      var search = document
-        .getElementById("filter-search")
-        .value.toLowerCase();
-      var kurir = document.getElementById("filter-kurir").value;
-      var status = document.getElementById("filter-status").value;
-      var filtered = RESI_DB.filter(function (r) {
-        return (
-          (!search || r.id.toLowerCase().includes(search)) &&
-          (!kurir || r.kurirName === kurir) &&
-          (!status || r.status === status)
-        );
-      });
-      renderTable(filtered);
-    }
-
-    // ─── Detail Modal ─────────────────────────────────────────────────────────────
-    function openDetail(id) {
-      var r = RESI_DB.find(function (x) {
-        return x.id === id;
-      });
-      if (!r) return;
-      currentDetailId = id;
-      var st = STATUS_STYLES[r.status] || STATUS_STYLES["Pending"];
-      document.getElementById("modal-resi-number").textContent = r.id;
-      document.getElementById("modal-kurir").textContent = r.kurirName;
-      document.getElementById("modal-receiver").textContent = r.receiver;
-      document.getElementById("modal-destination").textContent = r.dest;
-      document.getElementById("modal-eta").textContent = r.eta;
-
-      var badge = document.getElementById("modal-status-badge");
-      badge.textContent = r.status;
-      badge.className =
-        "px-2 py-0.5 text-[11px] font-bold rounded-full " + st.badge;
-
-      // Build timeline
-      var events = MOCK_TIMELINES[r.status] || MOCK_TIMELINES["In Transit"];
-      var timeline = document.getElementById("modal-timeline");
-      timeline.innerHTML = events
-        .map(function (ev, i) {
-          var isLast = i === events.length - 1;
-          return (
-            '<div class="timeline-item relative pl-8 pb-5 ' +
-            (ev.done ? "done" : "") +
-            (isLast ? " pb-0" : "") +
-            '">' +
-            '<div class="absolute left-0 top-0 w-6 h-6 rounded-full flex items-center justify-center border-2 ' +
-            (ev.done
-              ? "bg-emerald-50 border-emerald-400"
-              : "bg-gray-50 border-gray-300") +
-            '">' +
-            '<i class="fa-solid ' +
-            (ev.done
-              ? "fa-check text-emerald-500"
-              : "fa-clock text-gray-400") +
-            ' text-[9px]"></i>' +
-            "</div>" +
-            '<p class="text-sm font-bold text-gray-800 leading-tight">' +
-            ev.label +
-            "</p>" +
-            '<p class="text-xs text-gray-500 mt-0.5">' +
-            ev.sub +
-            "</p>" +
-            '<p class="text-[10px] text-gray-400 mt-1">' +
-            ev.time +
-            "</p>" +
-            "</div>"
-          );
-        })
-        .join("");
-
-      document.getElementById("detailModal").classList.remove("hidden");
-    }
-
-    function closeModal() {
-      document.getElementById("detailModal").classList.add("hidden");
-      currentDetailId = null;
-    }
-
-    function closeDetail(e) {
-      if (e.target === document.getElementById("detailModal")) closeModal();
-    }
-
-    function recheckSingle() {
-      if (!currentDetailId) return;
-      var r = RESI_DB.find(function (x) {
-        return x.id === currentDetailId;
-      });
-      if (!r) return;
-      var newStatus =
-        MOCK_STATUS_POOL[Math.floor(Math.random() * MOCK_STATUS_POOL.length)];
-      r.status = newStatus;
-      r.checked = formatDateTime(new Date());
-      r.position =
-        newStatus === "Delivered"
-          ? r.dest + " (diterima)"
-          : newStatus === "Not Found"
-            ? "—"
-            : newStatus === "Pending"
-              ? "Menunggu pickup"
-              : newStatus === "Returned"
-                ? "Kembali ke pengirim"
-                : MOCK_CITIES[
-                Math.floor(Math.random() * MOCK_CITIES.length)
-                ] + " HUB";
-      closeModal();
-      renderTable();
-      updateStats();
-      setTimeout(function () {
-        openDetail(currentDetailId === null ? r.id : r.id);
-      }, 100);
-    }
-
-    // ─── Utilities ───────────────────────────────────────────────────────────────
-    function clearInput() {
-      document.getElementById("resi-input").value = "";
-      document.getElementById("kurir-filter").value = "auto";
-    }
-
-    function clearAll() {
-      if (RESI_DB.length === 0) return;
-      if (!confirm("Hapus semua " + RESI_DB.length + " hasil pengecekan?"))
-        return;
-      RESI_DB = [];
-      renderTable();
-      updateStats();
-    }
-
-    function exportResults() {
-      if (RESI_DB.length === 0) {
-        alert("Tidak ada data untuk di-export.");
-        return;
-      }
-      var header = [
-        "Nomor Resi",
-        "Kurir",
-        "Status",
-        "Posisi Terakhir",
-        "Estimasi Tiba",
-        "Dicek Pada",
+    <script>
+      // ─── Date Header ─────────────────────────────────────────
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
       ];
-      var rows = RESI_DB.map(function (r) {
-        return [
-          r.id,
-          r.kurirName,
-          r.status,
-          r.position,
-          r.eta,
-          r.checked,
-        ].join(",");
-      });
-      var csv = [header.join(",")].concat(rows).join("\n");
-      var blob = new Blob([csv], { type: "text/csv" });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url;
-      a.download = "resi-checker-export.csv";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const now = new Date();
+      document.getElementById("header-date").textContent =
+        days[now.getDay()] +
+        ", " +
+        now.getDate() +
+        " " +
+        months[now.getMonth()] +
+        " " +
+        now.getFullYear();
 
-    // ─── Sidebar Dropdowns ───────────────────────────────────────────────────────
-    function toggleDropdown(name) {
-      var dd = document.getElementById(name + "-dropdown");
-      var ar = document.getElementById(name + "-arrow");
-      if (!dd) return;
-      var open = dd.classList.contains("open");
-      dd.classList.toggle("open", !open);
-      if (ar) {
-        ar.classList.toggle("fa-chevron-down", open);
-        ar.classList.toggle("fa-chevron-up", !open);
+      // ─── Mock Session Data ───────────────────────────────────
+      var SESSIONS = [
+        {
+          name: "Drop Siang 21/2",
+          device: "Redmi 22120RN86G",
+          deviceId: "TP1A.220624....",
+          totalScanned: 1,
+          unique: 1,
+          duplicates: 0,
+          status: "Active",
+          created: "21 Feb 2026, 13.25",
+          createdFull: "21 Feb 2026, 13.25.35",
+          resi: [
+            {
+              number:
+                "LPA:1$ecprsp.eastcompeace.com$E525798DFD65427AAE89D4385D1161C2",
+              courier: "LAINNYA",
+              scans: 1,
+              scannedAt: "21 Feb 2026, 13.27.44",
+            },
+          ],
+          couriers: [{ name: "LAINNYA", count: 1, pct: 100 }],
+        },
+        {
+          name: "Drop Sore 12/2",
+          device: "Redmi 22120RN86G",
+          deviceId: "SP1A.210812....",
+          totalScanned: 4,
+          unique: 4,
+          duplicates: 0,
+          status: "Completed",
+          created: "12 Feb 2026, 15.26",
+          createdFull: "12 Feb 2026, 15.26.10",
+          resi: [
+            {
+              number: "JNE0823746510293847",
+              courier: "JNE",
+              scans: 1,
+              scannedAt: "12 Feb 2026, 15.27.12",
+            },
+            {
+              number: "JP0091827364501928",
+              courier: "J&T",
+              scans: 1,
+              scannedAt: "12 Feb 2026, 15.28.33",
+            },
+            {
+              number: "SP1234567890123456",
+              courier: "SiCepat",
+              scans: 1,
+              scannedAt: "12 Feb 2026, 15.30.05",
+            },
+            {
+              number: "ANT0091827364510928",
+              courier: "Anteraja",
+              scans: 1,
+              scannedAt: "12 Feb 2026, 15.31.18",
+            },
+          ],
+          couriers: [
+            { name: "JNE", count: 1, pct: 25 },
+            { name: "J&T", count: 1, pct: 25 },
+            { name: "SiCepat", count: 1, pct: 25 },
+            { name: "Anteraja", count: 1, pct: 25 },
+          ],
+        },
+        {
+          name: "Drop Malam 11/2",
+          device: "Redmi 22120RN86G",
+          deviceId: "SP1A.210812....",
+          totalScanned: 1,
+          unique: 1,
+          duplicates: 0,
+          status: "Active",
+          created: "11 Feb 2026, 21.08",
+          createdFull: "11 Feb 2026, 21.08.22",
+          resi: [
+            {
+              number: "NX7654321098765432",
+              courier: "LAINNYA",
+              scans: 1,
+              scannedAt: "11 Feb 2026, 21.09.15",
+            },
+          ],
+          couriers: [{ name: "LAINNYA", count: 1, pct: 100 }],
+        },
+      ];
+
+      // ─── View Switching ──────────────────────────────────────
+      function showView(viewName) {
+        document
+          .querySelectorAll(".view-section")
+          .forEach((v) => v.classList.remove("active"));
+        document.getElementById("view-" + viewName).classList.add("active");
+        window.scrollTo(0, 0);
       }
-    }
 
-    function toggleProfileDropdown() {
-      document.getElementById("profile-dropdown").classList.toggle("hidden");
-    }
+      function showSessionDetail(idx) {
+        const s = SESSIONS[idx];
+        document.getElementById("detail-breadcrumb").textContent = s.name;
+        document.getElementById("detail-title").textContent = s.name;
+        document.getElementById("detail-meta").textContent =
+          "Created: " + s.createdFull + " | Device: " + s.device;
+        document.getElementById("detail-total").textContent = s.totalScanned;
+        document.getElementById("detail-unique").textContent = s.unique;
+        document.getElementById("detail-duplicates").textContent = s.duplicates;
 
-    document.addEventListener("click", function (e) {
-      var pd = document.getElementById("profile-dropdown");
-      if (
-        !pd.classList.contains("hidden") &&
-        !pd.contains(e.target) &&
-        !e.target.closest('[onclick="toggleProfileDropdown()"]')
-      ) {
-        pd.classList.add("hidden");
+        const statusEl = document.getElementById("detail-status");
+        statusEl.textContent = s.status;
+        statusEl.className =
+          "px-3 py-1.5 text-sm font-bold rounded-full " +
+          (s.status === "Active"
+            ? "bg-emerald-500 text-white"
+            : "bg-violet-500 text-white");
+
+        // Couriers
+        const cDiv = document.getElementById("detail-couriers");
+        cDiv.innerHTML = s.couriers
+          .map(
+            (c) =>
+              '<div class="flex items-center justify-between">' +
+              '<span class="text-xs font-bold bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full">' +
+              c.name +
+              "</span>" +
+              '<span class="text-xs font-semibold text-gray-600">' +
+              c.count +
+              " (" +
+              c.pct +
+              "%)</span>" +
+              "</div>",
+          )
+          .join("");
+
+        // Resi table
+        const tbody = document.getElementById("detail-resi-table");
+        tbody.innerHTML = s.resi
+          .map(
+            (r, i) =>
+              '<tr class="hover:bg-surface-50 transition">' +
+              '<td class="px-4 py-3 text-center text-xs text-gray-400">' +
+              (i + 1) +
+              "</td>" +
+              '<td class="px-4 py-3"><span class="text-xs font-mono font-bold text-primary-600 break-all">' +
+              r.number +
+              "</span></td>" +
+              '<td class="px-4 py-3 text-center"><span class="text-[10px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">' +
+              r.courier +
+              "</span></td>" +
+              '<td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-gray-700">' +
+              r.scans +
+              "x</span></td>" +
+              '<td class="px-4 py-3"><span class="text-xs text-gray-600">' +
+              r.scannedAt +
+              "</span></td>" +
+              '<td class="px-4 py-3 text-center"><button class="p-2 hover:bg-primary-50 rounded-lg transition" title="Copy Resi" onclick="copyResi(\'' +
+              r.number +
+              '\')"><i class="fa-regular fa-copy text-gray-400 hover:text-primary-600 text-sm"></i></button></td>' +
+              "</tr>",
+          )
+          .join("");
+
+        document.getElementById("detail-record-count").textContent =
+          s.resi.length + " records shown";
+        showView("detail");
       }
-    });
-  </script>
-</body>
 
+      function copyResi(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Resi copied: " + text.substring(0, 30) + "...");
+        });
+      }
+
+      // ─── Sidebar Dropdowns ───────────────────────────────────
+      function toggleDropdown(n) {
+        const d = document.getElementById(n + "-dropdown");
+        const a = document.getElementById(n + "-arrow");
+        d.classList.toggle("open");
+        a.style.transform = d.classList.contains("open")
+          ? "rotate(180deg)"
+          : "";
+      }
+    </script>
+  </body>
 </html>

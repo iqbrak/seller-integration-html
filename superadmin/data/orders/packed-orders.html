@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" class="h-full">
 
 <head>
@@ -271,7 +271,7 @@
 
 <body class="h-full bg-surface-100">
   <div class="flex h-full">
-    <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• SIDEBAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <aside
       class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
       <div class="p-6 border-b border-surface-200">
@@ -458,7 +458,7 @@
       </nav>
     </aside>
 
-    <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MAIN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <main class="flex-1 overflow-y-auto">
       <!-- Header -->
       <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
@@ -473,7 +473,7 @@
 
           <div class="flex items-center gap-3">
             <div class="relative">
-              <input type="text" placeholder="Search sellers, orders, logs…"
+              <input type="text" placeholder="Search sellers, orders, logsâ€¦"
                 class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
               <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
@@ -530,7 +530,7 @@
               </button>
               <div id="profile-dropdown"
                 class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
-                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50">
+                <a href="../../my-profile.html" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -576,7 +576,7 @@
             <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
               <i class="fa-regular fa-clock"></i>
               Last updated:
-              <span id="last-updated-time" class="font-medium text-slate-500">—</span>
+              <span id="last-updated-time" class="font-medium text-slate-500">â€”</span>
             </p>
           </div>
           <div class="flex items-center gap-2">
@@ -597,7 +597,7 @@
         <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 space-y-3">
           <div class="flex flex-wrap items-center gap-3">
             <div class="relative flex-1 min-w-[220px]">
-              <input type="text" id="search-input" placeholder="Search order ID, tracking, buyer, product…"
+              <input type="text" id="search-input" placeholder="Search order ID, tracking, buyer, productâ€¦"
                 class="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
                 oninput="filterTable()" />
               <i class="fa-solid fa-search text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 text-sm"></i>
@@ -608,7 +608,7 @@
               <option value="shopee">Shopee</option>
               <option value="tiktok">TikTok / Tokopedia</option>
             </select>
-            <!-- Status locked to "Packed" — not user-changeable -->
+            <!-- Status locked to "Packed" â€” not user-changeable -->
             <div
               class="flex items-center gap-1.5 px-3 py-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-sm font-semibold text-emerald-700 select-none"
               title="Status filter is fixed for this page">
@@ -628,7 +628,7 @@
             <span class="text-xs font-medium text-gray-500">Order Date:</span>
             <input type="date" id="filter-date-from" onchange="filterTable()"
               class="px-3 py-2 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
-            <span class="text-xs text-gray-400">→</span>
+            <span class="text-xs text-gray-400">â†’</span>
             <input type="date" id="filter-date-to" onchange="filterTable()"
               class="px-3 py-2 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
             <button onclick="resetFilter()"
@@ -636,8 +636,8 @@
               <i class="fa-solid fa-rotate-right text-xs"></i> Reset
             </button>
             <span class="ml-auto text-xs text-gray-400 font-medium whitespace-nowrap">Showing
-              <span id="count-num" class="font-bold text-gray-700">—</span> of
-              <span id="count-total" class="font-bold text-gray-700">—</span>
+              <span id="count-num" class="font-bold text-gray-700">â€”</span> of
+              <span id="count-total" class="font-bold text-gray-700">â€”</span>
               orders</span>
           </div>
         </div>
@@ -714,7 +714,7 @@
             <div class="text-sm text-gray-500">
               Page
               <span id="curr-page" class="font-bold text-gray-800">1</span> of
-              <span id="total-pages" class="font-bold text-gray-800">—</span>
+              <span id="total-pages" class="font-bold text-gray-800">â€”</span>
             </div>
           </div>
         </div>
@@ -731,7 +731,7 @@
           </div>
           <span class="text-xs text-gray-500">Seller Integration Platform
             <span class="font-semibold text-gray-700">v3.2.1</span></span>
-          <span class="text-gray-300">•</span>
+          <span class="text-gray-300">â€¢</span>
           <span class="text-xs text-gray-400">Build <span class="font-mono">2024.10.24.001</span></span>
         </div>
         <div class="flex items-center gap-4 text-xs text-gray-400">
@@ -741,7 +741,7 @@
             Connected</span>
           <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>Queues: 3
             pending</span>
-          <span class="text-gray-300">•</span>
+          <span class="text-gray-300">â€¢</span>
           <a href="#" class="hover:text-primary-600 transition">Documentation</a>
           <a href="#" class="hover:text-primary-600 transition">Support</a>
           <a href="#" class="hover:text-primary-600 transition">Privacy</a>
@@ -750,7 +750,7 @@
     </main>
   </div>
 
-  <!-- ═══════════════ ORDER DETAIL MODAL ═══════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ORDER DETAIL MODAL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div id="orderModal"
     class="hidden fixed inset-0 z-50 flex items-start justify-center modal-overlay bg-black/40 overflow-y-auto py-6 px-4">
     <div class="modal-box bg-white rounded-2xl shadow-2xl w-full max-w-3xl mx-auto overflow-hidden">
@@ -763,9 +763,9 @@
             <span id="modal-status-badge"
               class="px-2.5 py-0.5 bg-white/20 text-white text-xs font-bold rounded-full"></span>
           </div>
-          <h3 class="text-xl font-bold text-white" id="modal-order-id">—</h3>
+          <h3 class="text-xl font-bold text-white" id="modal-order-id">â€”</h3>
           <p class="text-primary-200 text-xs mt-0.5" id="modal-order-sub">
-            —
+            â€”
           </p>
         </div>
         <button onclick="closeModal('orderModal')" class="text-white/70 hover:text-white transition mt-1">
@@ -778,13 +778,13 @@
       <div id="d-platform-source-bar"
         class="px-5 py-2 flex items-center gap-2 border-b border-surface-100 text-xs font-medium text-gray-500 bg-surface-50">
         <span>Source:</span>
-        <span id="d-platform-source-badge" class="px-2 py-0.5 rounded-full font-bold text-[11px]">—</span>
+        <span id="d-platform-source-badge" class="px-2 py-0.5 rounded-full font-bold text-[11px]">â€”</span>
         <span class="mx-1 text-gray-300">|</span>
         <span>Batch:
-          <span id="d-source-batch" class="font-bold text-gray-700">—</span></span>
+          <span id="d-source-batch" class="font-bold text-gray-700">â€”</span></span>
         <span class="mx-1 text-gray-300">|</span>
         <span>Uploaded:
-          <span id="d-source-date" class="text-gray-700">—</span></span>
+          <span id="d-source-date" class="text-gray-700">â€”</span></span>
       </div>
       <!-- Modal Tabs -->
       <div class="flex border-b border-surface-200 bg-surface-50 px-5 gap-1">
@@ -821,59 +821,59 @@
               <div class="space-y-2">
                 <div class="detail-row">
                   <span class="detail-label">Order ID</span><span class="detail-value font-mono text-xs"
-                    id="d-order-id">—</span>
+                    id="d-order-id">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Batch ID</span><span class="detail-value font-mono text-xs"
-                    id="d-batch-id">—</span>
+                    id="d-batch-id">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Package ID</span><span class="detail-value font-mono text-xs"
-                    id="d-package-id">—</span>
+                    id="d-package-id">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Platform</span><span class="detail-value" id="d-platform">—</span>
+                  <span class="detail-label">Platform</span><span class="detail-value" id="d-platform">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Order Status</span><span id="d-order-status-badge">—</span>
+                  <span class="detail-label">Order Status</span><span id="d-order-status-badge">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Cancel/Return Status</span><span class="detail-value"
-                    id="d-cancel-return-status">—</span>
+                    id="d-cancel-return-status">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Payment Method</span><span class="detail-value"
-                    id="d-payment-method">—</span>
+                    id="d-payment-method">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Normal / Pre-order</span><span class="detail-value"
-                    id="d-normal-preorder">—</span>
+                    id="d-normal-preorder">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Fulfillment Type</span><span class="detail-value"
-                    id="d-fulfillment-type">—</span>
+                    id="d-fulfillment-type">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Warehouse Name</span><span class="detail-value" id="d-warehouse">—</span>
+                  <span class="detail-label">Warehouse Name</span><span class="detail-value" id="d-warehouse">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Purchase Channel</span><span class="detail-value"
-                    id="d-purchase-channel">—</span>
+                    id="d-purchase-channel">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Product Category</span><span class="detail-value"
-                    id="d-product-category">—</span>
+                    id="d-product-category">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Packed Status</span><span class="detail-value"
-                    id="d-packed-status">—</span>
+                    id="d-packed-status">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Ship Before</span><span class="detail-value text-amber-600"
-                    id="d-ship-before-info">—</span>
+                    id="d-ship-before-info">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Is Duplicate</span><span id="d-is-duplicate">—</span>
+                  <span class="detail-label">Is Duplicate</span><span id="d-is-duplicate">â€”</span>
                 </div>
               </div>
             </div>
@@ -888,7 +888,7 @@
                   </p>
                   <div id="d-buyer-note"
                     class="bg-amber-50 border border-amber-100 rounded-xl p-3 text-sm text-gray-700 min-h-[60px]">
-                    —
+                    â€”
                   </div>
                 </div>
                 <div>
@@ -897,7 +897,7 @@
                   </p>
                   <div id="d-seller-note"
                     class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-sm text-gray-700 min-h-[60px]">
-                    —
+                    â€”
                   </div>
                 </div>
               </div>
@@ -915,18 +915,18 @@
               </div>
               <div class="flex-1">
                 <p class="font-semibold text-gray-900 text-sm leading-snug" id="d-product-name">
-                  —
+                  â€”
                 </p>
                 <p class="text-xs text-gray-500 mt-0.5" id="d-variation-name">
-                  —
+                  â€”
                 </p>
                 <div class="flex items-center gap-2 mt-2 flex-wrap">
                   <span class="text-xs bg-white border border-surface-200 rounded-lg px-2 py-1">SKU ID:
-                    <span id="d-sku-id" class="font-bold">—</span></span>
+                    <span id="d-sku-id" class="font-bold">â€”</span></span>
                   <span class="text-xs bg-white border border-surface-200 rounded-lg px-2 py-1">SKU Ref:
-                    <span id="d-sku-ref" class="font-bold">—</span></span>
+                    <span id="d-sku-ref" class="font-bold">â€”</span></span>
                   <span class="text-xs bg-white border border-surface-200 rounded-lg px-2 py-1">Weight:
-                    <span id="d-weight" class="font-bold">—</span></span>
+                    <span id="d-weight" class="font-bold">â€”</span></span>
                 </div>
               </div>
             </div>
@@ -939,34 +939,34 @@
               <div class="space-y-2">
                 <div class="detail-row">
                   <span class="detail-label">Original Price (per unit)</span><span class="detail-value"
-                    id="d-original-price">—</span>
+                    id="d-original-price">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Discounted Price</span><span class="detail-value"
-                    id="d-discounted-price">—</span>
+                    id="d-discounted-price">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Platform Discount</span><span class="detail-value text-red-400"
-                    id="d-sku-platform-discount">—</span>
+                    id="d-sku-platform-discount">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Seller Discount</span><span class="detail-value text-red-400"
-                    id="d-sku-seller-discount">—</span>
+                    id="d-sku-seller-discount">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Total Discount</span><span class="detail-value text-red-400"
-                    id="d-total-discount">—</span>
+                    id="d-total-discount">â€”</span>
                 </div>
                 <div class="detail-row border-t border-surface-200 pt-2">
                   <span class="detail-label font-bold text-gray-700">Total Product Price</span><span
-                    class="detail-value font-bold text-gray-900 text-sm" id="d-sku-subtotal-after">—</span>
+                    class="detail-value font-bold text-gray-900 text-sm" id="d-sku-subtotal-after">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Quantity</span><span class="detail-value" id="d-quantity">—</span>
+                  <span class="detail-label">Quantity</span><span class="detail-value" id="d-quantity">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Returned Qty</span><span class="detail-value text-red-500"
-                    id="d-returned-qty">—</span>
+                    id="d-returned-qty">â€”</span>
                 </div>
               </div>
             </div>
@@ -977,27 +977,27 @@
               <div class="space-y-2">
                 <div class="detail-row">
                   <span class="detail-label">Original Shipping Fee</span><span class="detail-value"
-                    id="d-original-shipping-fee">—</span>
+                    id="d-original-shipping-fee">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Fee Seller Disc.</span><span class="detail-value text-red-400"
-                    id="d-shipping-seller-discount">—</span>
+                    id="d-shipping-seller-discount">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Fee Platform Disc.</span><span class="detail-value text-red-400"
-                    id="d-shipping-platform-discount">—</span>
+                    id="d-shipping-platform-discount">â€”</span>
                 </div>
                 <div class="detail-row border-t border-surface-200 pt-2">
                   <span class="detail-label font-bold text-gray-700">Shipping Fee (Buyer Pays)</span><span
-                    class="detail-value font-bold text-gray-900" id="d-shipping-fee-after-disc">—</span>
+                    class="detail-value font-bold text-gray-900" id="d-shipping-fee-after-disc">â€”</span>
                 </div>
                 <div class="detail-row border-t border-surface-200 pt-2">
                   <span class="detail-label font-bold text-gray-700">Total Payment</span><span
-                    class="detail-value font-bold text-primary-600 text-sm" id="d-order-amount">—</span>
+                    class="detail-value font-bold text-primary-600 text-sm" id="d-order-amount">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Order Refund Amount</span><span class="detail-value text-red-600"
-                    id="d-refund-amount">—</span>
+                    id="d-refund-amount">â€”</span>
                 </div>
               </div>
             </div>
@@ -1015,7 +1015,7 @@
                 <div class="detail-row">
                   <span class="detail-label">Tracking ID / No. Resi</span>
                   <span class="detail-value font-mono text-primary-600 flex items-center gap-1.5 justify-end">
-                    <span id="d-tracking-number">—</span>
+                    <span id="d-tracking-number">â€”</span>
                     <button onclick="copyTracking()" class="text-gray-400 hover:text-primary-500 transition"
                       title="Copy">
                       <i class="fa-regular fa-copy text-xs"></i>
@@ -1024,31 +1024,31 @@
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Option</span><span class="detail-value"
-                    id="d-shipping-option">—</span>
+                    id="d-shipping-option">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Provider</span><span class="detail-value"
-                    id="d-shipping-provider">—</span>
+                    id="d-shipping-provider">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Type</span><span class="detail-value"
-                    id="d-shipping-type">—</span>
+                    id="d-shipping-type">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Ship Before</span><span class="detail-value text-amber-600"
-                    id="d-ship-before">—</span>
+                    id="d-ship-before">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Arranged Time</span><span class="detail-value"
-                    id="d-arranged-time">—</span>
+                    id="d-arranged-time">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Fulfillment Type</span><span class="detail-value"
-                    id="d-fulfillment-type-ship">—</span>
+                    id="d-fulfillment-type-ship">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Warehouse Name</span><span class="detail-value"
-                    id="d-warehouse-ship">—</span>
+                    id="d-warehouse-ship">â€”</span>
                 </div>
               </div>
             </div>
@@ -1059,25 +1059,25 @@
               <div class="bg-surface-50 rounded-xl p-4 space-y-2">
                 <div class="detail-row">
                   <span class="detail-label">Recipient Name</span><span class="detail-value"
-                    id="d-recipient-name">—</span>
+                    id="d-recipient-name">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Phone Number</span><span class="detail-value" id="d-phone-number">—</span>
+                  <span class="detail-label">Phone Number</span><span class="detail-value" id="d-phone-number">â€”</span>
                 </div>
                 <p class="text-xs text-gray-700 leading-relaxed mt-1" id="d-full-address">
-                  —
+                  â€”
                 </p>
                 <div class="grid grid-cols-2 gap-2 mt-2">
                   <div>
                     <p class="text-[10px] text-gray-400">District</p>
                     <p class="text-xs font-semibold text-gray-700" id="d-district">
-                      —
+                      â€”
                     </p>
                   </div>
                   <div>
                     <p class="text-[10px] text-gray-400">City / Kota</p>
                     <p class="text-xs font-semibold text-gray-700" id="d-city">
-                      —
+                      â€”
                     </p>
                   </div>
                   <div>
@@ -1085,19 +1085,19 @@
                       Province / Provinsi
                     </p>
                     <p class="text-xs font-semibold text-gray-700" id="d-province">
-                      —
+                      â€”
                     </p>
                   </div>
                   <div>
                     <p class="text-[10px] text-gray-400">Postal Code</p>
                     <p class="text-xs font-semibold text-gray-700" id="d-postal-code">
-                      —
+                      â€”
                     </p>
                   </div>
                   <div>
                     <p class="text-[10px] text-gray-400">Country</p>
                     <p class="text-xs font-semibold text-gray-700" id="d-country">
-                      —
+                      â€”
                     </p>
                   </div>
                 </div>
@@ -1116,7 +1116,7 @@
             </div>
             <div>
               <p class="font-bold text-gray-900 text-base" id="d-buyer-username">
-                —
+                â€”
               </p>
               <p class="text-xs text-gray-500 mt-0.5">
                 Buyer Username / Username Pembeli
@@ -1131,30 +1131,30 @@
               <div class="space-y-2">
                 <div class="detail-row">
                   <span class="detail-label">Recipient Name</span><span class="detail-value"
-                    id="d-recipient-name-b">—</span>
+                    id="d-recipient-name-b">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Phone Number</span><span class="detail-value" id="d-phone-b">—</span>
+                  <span class="detail-label">Phone Number</span><span class="detail-value" id="d-phone-b">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">District</span><span class="detail-value" id="d-district-b">—</span>
+                  <span class="detail-label">District</span><span class="detail-value" id="d-district-b">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">City / Kota</span><span class="detail-value" id="d-city-b">—</span>
+                  <span class="detail-label">City / Kota</span><span class="detail-value" id="d-city-b">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Province / Provinsi</span><span class="detail-value"
-                    id="d-province-b">—</span>
+                    id="d-province-b">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Postal Code</span><span class="detail-value" id="d-postal-code-b">—</span>
+                  <span class="detail-label">Postal Code</span><span class="detail-value" id="d-postal-code-b">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Country</span><span class="detail-value" id="d-country-b">—</span>
+                  <span class="detail-label">Country</span><span class="detail-value" id="d-country-b">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Address</span><span class="detail-value text-right"
-                    id="d-address-b">—</span>
+                    id="d-address-b">â€”</span>
                 </div>
               </div>
             </div>
@@ -1164,7 +1164,7 @@
               </p>
               <div id="d-buyer-note-b"
                 class="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-gray-700 min-h-[80px]">
-                —
+                â€”
               </div>
             </div>
           </div>
@@ -1180,30 +1180,30 @@
               <div class="space-y-2">
                 <div class="detail-row">
                   <span class="detail-label">Order Created</span><span class="detail-value text-xs"
-                    id="d-ts-created">—</span>
+                    id="d-ts-created">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Payment Time</span><span class="detail-value text-xs"
-                    id="d-ts-paid">—</span>
+                    id="d-ts-paid">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Shipping Arranged</span><span class="detail-value text-xs"
-                    id="d-ts-arranged">—</span>
+                    id="d-ts-arranged">â€”</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Shipped</span><span class="detail-value text-xs" id="d-ts-shipped">—</span>
+                  <span class="detail-label">Shipped</span><span class="detail-value text-xs" id="d-ts-shipped">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Delivered</span><span class="detail-value text-xs"
-                    id="d-ts-delivered">—</span>
+                    id="d-ts-delivered">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Order Completed</span><span class="detail-value text-xs"
-                    id="d-ts-completed">—</span>
+                    id="d-ts-completed">â€”</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Cancelled</span><span class="detail-value text-xs text-red-500"
-                    id="d-ts-cancelled">—</span>
+                    id="d-ts-cancelled">â€”</span>
                 </div>
               </div>
             </div>
@@ -1227,7 +1227,7 @@
     </div>
   </div>
 
-  <!-- ═══════════════ MODALS ═══════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODALS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <!-- Seller Detail Modal -->
   <div id="sellerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay bg-black/30">
     <div class="modal-box bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden">
@@ -1239,7 +1239,7 @@
           <div>
             <h3 class="text-lg font-bold text-white">BestFashion.id</h3>
             <p class="text-violet-200 text-sm">
-              ID: SEL-2024-00001 · Joined Jan 15, 2024
+              ID: SEL-2024-00001 Â· Joined Jan 15, 2024
             </p>
           </div>
         </div>
@@ -1254,17 +1254,17 @@
           <div class="bg-surface-50 rounded-xl p-4 text-center">
             <p class="text-2xl font-bold text-gray-900">Rp 298M</p>
             <p class="text-xs text-gray-500 mt-1">Total Revenue</p>
-            <p class="text-xs text-emerald-600 font-semibold">↑ +18% MoM</p>
+            <p class="text-xs text-emerald-600 font-semibold">â†‘ +18% MoM</p>
           </div>
           <div class="bg-surface-50 rounded-xl p-4 text-center">
             <p class="text-2xl font-bold text-gray-900">4,821</p>
             <p class="text-xs text-gray-500 mt-1">Total Orders</p>
             <p class="text-xs text-emerald-600 font-semibold">
-              ↑ +321 orders
+              â†‘ +321 orders
             </p>
           </div>
           <div class="bg-surface-50 rounded-xl p-4 text-center">
-            <p class="text-2xl font-bold text-gray-900">4.9 ★</p>
+            <p class="text-2xl font-bold text-gray-900">4.9 â˜…</p>
             <p class="text-xs text-gray-500 mt-1">Seller Rating</p>
             <p class="text-xs text-gray-400 font-semibold">1,248 reviews</p>
           </div>
@@ -1373,7 +1373,7 @@
             <div>
               <p class="text-sm font-semibold text-gray-900">TokoMaju123</p>
               <p class="text-xs text-gray-400">
-                Shopee · Jakarta · Electronics
+                Shopee Â· Jakarta Â· Electronics
               </p>
             </div>
           </div>
@@ -1399,7 +1399,7 @@
                 BeautyVibes.co
               </p>
               <p class="text-xs text-gray-400">
-                TikTok Shop · Bandung · Beauty
+                TikTok Shop Â· Bandung Â· Beauty
               </p>
             </div>
           </div>
@@ -1422,7 +1422,7 @@
             </div>
             <div>
               <p class="text-sm font-semibold text-gray-900">FreshGrocery</p>
-              <p class="text-xs text-gray-400">Tokopedia · Surabaya · Food</p>
+              <p class="text-xs text-gray-400">Tokopedia Â· Surabaya Â· Food</p>
             </div>
           </div>
           <div class="flex gap-2">
@@ -1478,7 +1478,7 @@
             </p>
           </div>
           <p class="text-xs text-red-700">
-            Shopee: 3 · Tokopedia: 2 · Lazada: 2
+            Shopee: 3 Â· Tokopedia: 2 Â· Lazada: 2
           </p>
         </div>
         <div class="space-y-3">
@@ -1486,7 +1486,7 @@
             class="flex items-center gap-3 p-3 bg-surface-50 rounded-xl cursor-pointer hover:bg-surface-100 transition">
             <input type="checkbox" checked class="w-4 h-4 text-primary-500 rounded" />
             <span class="text-sm font-medium text-gray-700">Shopee (3 failed)</span>
-            <span class="ml-auto text-xs text-orange-600 font-semibold">Rate Limit · Auth Error</span>
+            <span class="ml-auto text-xs text-orange-600 font-semibold">Rate Limit Â· Auth Error</span>
           </label>
           <label
             class="flex items-center gap-3 p-3 bg-surface-50 rounded-xl cursor-pointer hover:bg-surface-100 transition">
@@ -1520,7 +1520,7 @@
   </div>
 
   <script>
-    // ─── MOCK DATA ────────────────────────────────────────────────────────────
+    // â”€â”€â”€ MOCK DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const PLATFORMS = ["shopee", "tiktok"];
     const PLATFORM_LABELS = {
       shopee: "Shopee",
@@ -1589,7 +1589,7 @@
       return Math.round(Math.random() * (mx - mn) + mn) * 1000;
     }
     function fmtRp(v) {
-      return v == null ? "—" : "Rp " + Number(v).toLocaleString("id-ID");
+      return v == null ? "â€”" : "Rp " + Number(v).toLocaleString("id-ID");
     }
     function fmtDate(d) {
       if (!d) return null;
@@ -1633,7 +1633,7 @@
         const rtsDate =
           !isShopee && isShipped ? addDays(paymentDate, 1) : null;
 
-        // Pricing — exact DB column names
+        // Pricing â€” exact DB column names
         const original_price = randPrice(50, 500);
         const discounted_price = Math.round(
           original_price * (1 - randInt(0, 30) / 100),
@@ -1668,7 +1668,7 @@
         const batchNo = String(Math.floor(i / 50) + 1).padStart(4, "0");
 
         orders.push({
-          // ── Identity ────────────────────────────────────────────────────────
+          // â”€â”€ Identity â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           id: "UO" + String(i + 1).padStart(8, "0"),
           batch_id: "BATCH" + batchNo,
           platform,
@@ -1676,7 +1676,7 @@
             (isShopee ? "SP" : "TT") + randInt(1000000000, 9999999999),
           packed_status: null,
 
-          // ── Status ──────────────────────────────────────────────────────────
+          // â”€â”€ Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           order_status: status,
           cancellation_return_status:
             status === "Returned"
@@ -1693,7 +1693,7 @@
                 ])
               : null,
 
-          // ── Shipping ────────────────────────────────────────────────────────
+          // â”€â”€ Shipping â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           tracking_number: isShipped
             ? randItem(["JNE", "JT", "SCP", "ANT"]) +
             randInt(100000000, 999999999)
@@ -1712,7 +1712,7 @@
           shipping_arranged_time:
             isShopee && shipDate ? fmtDate(shipDate) : null,
 
-          // ── Timestamps ──────────────────────────────────────────────────────
+          // â”€â”€ Timestamps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           order_created_time: fmtDate(orderDate),
           _orderDateMs: orderDate.getTime(),
           payment_time: fmtDate(paymentDate),
@@ -1724,7 +1724,7 @@
               ? fmtDate(addDays(deliveredDate, 5))
               : null,
 
-          // ── Payment ─────────────────────────────────────────────────────────
+          // â”€â”€ Payment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           payment_method: randItem([
             "COD",
             "Bank Transfer",
@@ -1735,7 +1735,7 @@
             "QRIS",
           ]),
 
-          // ── Product ─────────────────────────────────────────────────────────
+          // â”€â”€ Product â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           sku_id: "SKU" + randInt(10000, 99999),
           sku_reference: isShopee ? "REF-" + randInt(1000, 9999) : null,
           product_name: randItem(PRODUCT_NAMES),
@@ -1757,7 +1757,7 @@
           platform_discount,
           product_weight: (randInt(100, 2000) / 1000).toFixed(3) + " kg",
 
-          // ── Shipping fees ────────────────────────────────────────────────────
+          // â”€â”€ Shipping fees â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           shipping_fee_buyer,
           original_shipping_fee,
           shipping_fee_seller_discount,
@@ -1765,12 +1765,12 @@
           total_payment,
           order_refund_amount,
 
-          // ── Notes ────────────────────────────────────────────────────────────
+          // â”€â”€ Notes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           buyer_note:
             Math.random() < 0.3
               ? randItem([
                 "Please wrap carefully!",
-                "Fragile – handle with care",
+                "Fragile â€“ handle with care",
                 "Urgent, need tomorrow",
                 null,
               ])
@@ -1780,7 +1780,7 @@
               ? randItem(["Checked & packed", "Ready to ship", null])
               : null,
 
-          // ── Buyer / Address ──────────────────────────────────────────────────
+          // â”€â”€ Buyer / Address â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           buyer_username: buyer,
           recipient_name: buyer
             .replace(/[._0-9]/g, " ")
@@ -1818,7 +1818,7 @@
           postal_code: String(randInt(10000, 99999)),
           country: "Indonesia",
 
-          // ── TikTok-only fields (null for Shopee) ─────────────────────────────
+          // â”€â”€ TikTok-only fields (null for Shopee) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           normal_or_preorder: !isShopee
             ? randItem(["Normal", "Pre-order"])
             : null,
@@ -1853,7 +1853,7 @@
             ])
             : null,
 
-          // ── Flags ────────────────────────────────────────────────────────────
+          // â”€â”€ Flags â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           is_duplicate: Math.random() < 0.012,
         });
       }
@@ -1940,13 +1940,13 @@
         <td class="px-4 py-3">
           ${o.tracking_number
               ? `<p class="text-xs font-mono text-primary-600 font-medium">${o.tracking_number}</p><p class="text-[10px] text-gray-400">${o.shipping_provider}</p>`
-              : `<span class="text-xs text-gray-300">—</span>`
+              : `<span class="text-xs text-gray-300">â€”</span>`
             }
         </td>
         <td class="px-4 py-3 text-right">
           <p class="text-xs font-bold text-gray-900">${fmtRp(o.total_payment)}</p>
         </td>
-        <td class="px-4 py-3 whitespace-nowrap"><p class="text-xs text-gray-700">${o.order_created_time || "—"}</p></td>
+        <td class="px-4 py-3 whitespace-nowrap"><p class="text-xs text-gray-700">${o.order_created_time || "â€”"}</p></td>
       </tr>
     `,
         )
@@ -1978,7 +1978,7 @@
       let prev_p = null;
       pages.forEach((p) => {
         if (prev_p !== null && p - prev_p > 1)
-          html += `<span class="w-8 h-8 flex items-center justify-center text-gray-400">…</span>`;
+          html += `<span class="w-8 h-8 flex items-center justify-center text-gray-400">â€¦</span>`;
         html += `<button onclick="goPage(${p})" class="${btnBase} ${p === currentPage ? "bg-primary-500 text-white shadow shadow-primary-500/30" : "hover:bg-surface-200 text-gray-600"}">${p}</button>`;
         prev_p = p;
       });
@@ -2084,17 +2084,17 @@
       const el = document.getElementById(id);
       if (el)
         el.textContent =
-          val != null && val !== "" && val !== undefined ? val : "—";
+          val != null && val !== "" && val !== undefined ? val : "â€”";
     }
     function setHtml(id, html) {
       const el = document.getElementById(id);
       if (el) el.innerHTML = html;
     }
     function fmtDisc(v) {
-      return v != null && v > 0 ? "-" + fmtRp(v) : "—";
+      return v != null && v > 0 ? "-" + fmtRp(v) : "â€”";
     }
     function fmtFee(v) {
-      return v != null && v > 0 ? fmtRp(v) : "—";
+      return v != null && v > 0 ? fmtRp(v) : "â€”";
     }
 
     function openOrderModal(id) {
@@ -2103,7 +2103,7 @@
       const isShopee = o.platform === "shopee";
       const isTikTok = o.platform === "tiktok" || o.platform === "tokopedia";
 
-      // ── Platform source bar ───────────────────────────────────────────────────
+      // â”€â”€ Platform source bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       const pStyle = PLATFORM_STYLES[o.platform] || {
         bg: "bg-gray-100",
         text: "text-gray-700",
@@ -2114,7 +2114,7 @@
       setText("d-source-batch", isShopee ? o.batch_id : o.package_id);
       setText("d-source-date", o.order_created_time);
 
-      // ── Modal header ──────────────────────────────────────────────────────────
+      // â”€â”€ Modal header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       setText("modal-order-id", o.order_id);
       setText(
         "modal-platform-badge",
@@ -2122,14 +2122,14 @@
       );
       setText("modal-status-badge", o.order_status);
       const subRef = isShopee
-        ? `Batch: ${o.batch_id || "—"}`
-        : `Package: ${o.package_id || "—"}`;
+        ? `Batch: ${o.batch_id || "â€”"}`
+        : `Package: ${o.package_id || "â€”"}`;
       setText(
         "modal-order-sub",
-        `${subRef}  ·  ${o.order_created_time || "—"}`,
+        `${subRef}  Â·  ${o.order_created_time || "â€”"}`,
       );
 
-      // ══ TAB: ORDER INFO ═══════════════════════════════════════════════════════
+      // â•â• TAB: ORDER INFO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       setText("d-order-id", o.order_id);
       setText("d-batch-id", o.batch_id);
       setText("d-package-id", o.package_id);
@@ -2155,7 +2155,7 @@
       document.getElementById("d-seller-note").textContent =
         o.seller_note || "No seller notes";
 
-      // ══ TAB: PRODUCT & PRICING ════════════════════════════════════════════════
+      // â•â• TAB: PRODUCT & PRICING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       setText("d-product-name", o.product_name);
       setText("d-variation-name", o.variation_name || "No variation");
       setText("d-sku-id", o.sku_id);
@@ -2189,13 +2189,13 @@
       setText("d-order-amount", fmtRp(o.total_payment));
       setText(
         "d-refund-amount",
-        o.order_refund_amount > 0 ? fmtRp(o.order_refund_amount) : "—",
+        o.order_refund_amount > 0 ? fmtRp(o.order_refund_amount) : "â€”",
       );
 
-      // ══ TAB: SHIPPING ══════════════════════════════════════════════════════════
+      // â•â• TAB: SHIPPING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       const tn = document.getElementById("d-tracking-number");
       if (tn) {
-        tn.textContent = o.tracking_number || "—";
+        tn.textContent = o.tracking_number || "â€”";
         tn.dataset.copy = o.tracking_number || "";
       }
       setText("d-shipping-option", o.shipping_option);
@@ -2211,14 +2211,14 @@
       setText("d-recipient-name", o.recipient_name);
       setText("d-phone-number", o.phone_number);
       document.getElementById("d-full-address").textContent =
-        o.shipping_address || "—";
+        o.shipping_address || "â€”";
       setText("d-district", o.district);
       setText("d-city", o.city);
       setText("d-province", o.province);
       setText("d-postal-code", o.postal_code);
       setText("d-country", o.country);
 
-      // ══ TAB: BUYER ════════════════════════════════════════════════════════════
+      // â•â• TAB: BUYER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       document.getElementById("d-buyer-avatar").textContent = (
         o.buyer_username || "?"
       )
@@ -2236,7 +2236,7 @@
       document.getElementById("d-buyer-note-b").textContent =
         o.buyer_note || "No notes from buyer";
 
-      // ══ TAB: TIMELINE ═════════════════════════════════════════════════════════
+      // â•â• TAB: TIMELINE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       // Timestamps panel
       setText("d-ts-created", o.order_created_time);
       setText("d-ts-paid", o.payment_time);
@@ -2377,7 +2377,7 @@
 
     function exportData(btn) {
       btn.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Exporting…';
+        '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Exportingâ€¦';
       btn.disabled = true;
       setTimeout(() => {
         btn.innerHTML =
@@ -2390,7 +2390,7 @@
       }, 1500);
     }
 
-    // ─── EXISTING SCRIPTS (dropdown, profile, modal helpers, clock) ──────────
+    // â”€â”€â”€ EXISTING SCRIPTS (dropdown, profile, modal helpers, clock) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function toggleDropdown(id) {
       const dropdown = document.getElementById(`${id}-dropdown`);
       const arrow = document.getElementById(`${id}-arrow`);
@@ -2453,10 +2453,10 @@
         '#syncModal button[onclick="retrySync()"]',
       );
       btn.innerHTML =
-        '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Retrying…';
+        '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Retryingâ€¦';
       btn.disabled = true;
       setTimeout(() => {
-        btn.innerHTML = "✓ Retry Complete";
+        btn.innerHTML = "âœ“ Retry Complete";
         btn.classList.remove("bg-primary-500");
         btn.classList.add("bg-emerald-500");
         setTimeout(() => closeModal("syncModal"), 1000);

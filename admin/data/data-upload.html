@@ -1,1238 +1,1253 @@
 <!doctype html>
 <html lang="en" class="h-full">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seller Integration - Data Upload</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
-          colors: {
-            primary: {
-              50: "#f0f7ff",
-              100: "#e0effe",
-              200: "#bae0fd",
-              300: "#7cc8fb",
-              400: "#36aaf5",
-              500: "#0c8ee6",
-              600: "#0070c4",
-              700: "#01599f",
-              800: "#064b83",
-              900: "#0b3f6d",
-            },
-            surface: {
-              50: "#fafbfc",
-              100: "#f4f6f8",
-              200: "#e9ecef",
-              300: "#dee2e6",
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Data Pesanan - Seller Integration</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { jakarta: ["Plus Jakarta Sans", "sans-serif"] },
+            colors: {
+              primary: {
+                50: "#f0f7ff",
+                100: "#e0effe",
+                200: "#bae0fd",
+                300: "#7cc8fb",
+                400: "#36aaf5",
+                500: "#0c8ee6",
+                600: "#0070c4",
+                700: "#01599f",
+                800: "#064b83",
+                900: "#0b3f6d",
+              },
+              surface: {
+                50: "#fafbfc",
+                100: "#f4f6f8",
+                200: "#e9ecef",
+                300: "#dee2e6",
+              },
             },
           },
         },
-      },
-    };
-  </script>
-  <style>
-    * {
-      font-family: "Plus Jakarta Sans", sans-serif;
-    }
-
-    .sidebar-item:hover {
-      background: rgba(12, 142, 230, 0.08);
-    }
-
-    .sidebar-item.active {
-      background: rgba(12, 142, 230, 0.12);
-      color: #0c8ee6;
-    }
-
-    .dropdown-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .dropdown-content.open {
-      max-height: 600px;
-    }
-
-    .card-hover {
-      transition: all 0.25s ease;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
-    }
-
-    .status-pulse {
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
+      };
+    </script>
+    <style>
+      * {
+        font-family: "Plus Jakarta Sans", sans-serif;
       }
-
-      50% {
-        opacity: 0.4;
+      .sidebar-item:hover {
+        background: rgba(12, 142, 230, 0.08);
       }
-    }
-
-    ::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #f4f6f8;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #c9d0d8;
-      border-radius: 10px;
-    }
-
-    .modal-overlay {
-      backdrop-filter: blur(4px);
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
+      .sidebar-item.active {
+        background: rgba(12, 142, 230, 0.12);
+        color: #0c8ee6;
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .dropdown-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
       }
-    }
+      .dropdown-content.open {
+        max-height: 600px;
+      }
+      .card-hover {
+        transition: all 0.25s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f4f6f8;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #c9d0d8;
+        border-radius: 10px;
+      }
+      .drop-zone {
+        border: 2px dashed #bae0fd;
+        transition: all 0.25s ease;
+      }
+      .drop-zone.drag-over {
+        border-color: #0c8ee6;
+        background: #f0f7ff;
+        transform: scale(1.01);
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .toast {
+        animation: slideUp 0.3s ease;
+      }
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
 
-    .modal-box {
-      animation: slideUp 0.25s ease;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .health-bar {
-      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .bar-chart-bar {
-      transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  </style>
-</head>
-
-<body class="h-full bg-surface-100">
-  <div class="flex h-full">
-    <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
-    <aside
-      class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0">
-      <div class="p-6 border-b border-surface-200">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <div>
-            <h1 class="font-bold text-gray-900 text-lg leading-tight">
-              Seller Integration
-            </h1>
-            <span
-              class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide">ADMIN</span>
-          </div>
-        </div>
-      </div>
-
-      <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
-
-        <a href="../dashboard.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-          <i class="fa-solid fa-home w-5"></i>Dashboard
-        </a>
-
-        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Data Management</div>
-
-        <div>
-          <button onclick="toggleDropdown('orders')"
-            class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-            <div class="flex items-center gap-3">
-              <i class="fa-solid fa-cart-shopping w-5"></i>Orders
-            </div>
-            <i id="orders-arrow" class="fa-solid fa-chevron-down text-gray-400"></i>
-          </button>
-          <div id="orders-dropdown" class="dropdown-content pl-11 space-y-0.5 mt-0.5">
-            <a href="../data/orders/all-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">All
-              Orders</a>
-            <a href="../data/orders/to-confirm-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Awaiting
-              Confirmation</a>
-            <a href="../data/orders/to-pack-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Ready
-              to Pack</a>
-            <a href="../data/orders/packed-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Packed
-              Orders</a>
-            <a href="../data/orders/returned-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Returned
-              Orders</a>
-            <a href="../data/orders/shopee-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">Shopee</a>
-            <a href="../data/orders/tiktok-orders.html"
-              class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">TikTok/Tokopedia</a>
-          </div>
-        </div>
-
-        <a href="../data/data-upload.html"
-          class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
-          <i class="fa-solid fa-upload w-5"></i>Data Upload
-        </a>
-
-        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Shipping &amp;
-          Logistics</div>
-
-        <a href="../shipping/print-label.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-          <i class="fa-solid fa-print w-5"></i>Print Shipping Labels
-        </a>
-        <a href="../shipping/resi-checker.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-          <i class="fa-solid fa-barcode w-5"></i>Resi Checker
-        </a>
-        <a href="../shipping/tracking-center.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-          <i class="fa-solid fa-truck w-5"></i>Tracking Center
-        </a>
-
-        <div class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">Analytics</div>
-
-        <a href="../analystics/product.html"
-          class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all">
-          <i class="fa-solid fa-chart-line w-5"></i>Product Performance
-        </a>
-
-      </nav>
-    </aside>
-
-    <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
-    <main class="flex-1 overflow-y-auto">
-      <!-- Header -->
-      <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
-        <div class="flex items-center justify-between px-8 py-3 border-b border-surface-100">
-          <nav class="flex items-center gap-2 text-sm text-slate-500">
-            <a href="dashboard.html" class="hover:text-primary-600 transition">Dashboard</a>
-            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-            <span class="text-slate-900 font-semibold">Data Upload</span>
-          </nav>
+  <body class="h-full bg-surface-100">
+    <div class="flex h-full">
+      <!-- SIDEBAR -->
+      <aside
+        class="w-72 bg-white border-r border-surface-200 flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
+      >
+        <div class="p-6 border-b border-surface-200">
           <div class="flex items-center gap-3">
-            <div class="relative">
-              <input type="text" placeholder="Search sellers, orders, logs…"
-                class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all" />
-              <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
-            <div class="relative group">
-              <button class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
-                <svg class="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition" fill="none"
-                  stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            <div>
+              <h1 class="font-bold text-gray-900 text-lg leading-tight">
+                Seller Integration
+              </h1>
+              <span
+                class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-700 rounded-full uppercase tracking-wide"
+                >ADMIN</span
+              >
+            </div>
+          </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-4 space-y-0.5">
+          <a
+            href="../dashboard.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-home w-5"></i>Dashboard</a
+          >
+          <div
+            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            Data Management
+          </div>
+          <div>
+            <button
+              onclick="toggleDropdown('orders')"
+              class="sidebar-item w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            >
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-cart-shopping w-5"></i>Orders
+              </div>
+              <i
+                id="orders-arrow"
+                class="fa-solid fa-chevron-down text-gray-400"
+              ></i>
+            </button>
+            <div
+              id="orders-dropdown"
+              class="dropdown-content pl-11 space-y-0.5 mt-0.5"
+            >
+              <a
+                href="../data/orders/manage-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >All Orders</a
+              >
+              <a
+                href="../data/orders/confirm-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Awaiting Confirmation</a
+              >
+              <a
+                href="../data/orders/pack-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Ready to Pack</a
+              >
+              <a
+                href="../data/orders/shipped-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Packed Orders</a
+              >
+              <a
+                href="../data/orders/return-orders.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Returned Orders</a
+              >
+              <a
+                href="../data/orders/shopee-pesanan.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >Shopee</a
+              >
+              <a
+                href="../data/orders/tiktok-pesanan.html"
+                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                >TikTok/Tokopedia</a
+              >
+            </div>
+          </div>
+          <a
+            href="../data/data-upload.html"
+            class="sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+            ><i class="fa-solid fa-upload w-5"></i>Data Upload</a
+          >
+          <div
+            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            Shipping &amp; Logistics
+          </div>
+          <a
+            href="../shipping/cetak-label.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-print w-5"></i>Print Shipping Labels</a
+          >
+          <a
+            href="../shipping/cek-resi.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-barcode w-5"></i>Resi Checker</a
+          >
+          <a
+            href="../shipping/lacak-pengiriman.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-truck w-5"></i>Tracking Center</a
+          >
+          <div
+            class="pt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2"
+          >
+            Analytics
+          </div>
+          <a
+            href="../analytics/performa-produk.html"
+            class="sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 transition-all"
+            ><i class="fa-solid fa-chart-line w-5"></i>Product Performance</a
+          >
+        </nav>
+        <div class="p-4 border-t border-surface-200">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-sm shadow"
+            >
+              AD
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-800 truncate">
+                Admin User
+              </p>
+              <p class="text-xs text-gray-400 truncate">admin@seller.id</p>
+            </div>
+            <a
+              href="../../login.html"
+              class="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
+              title="Logout"
+              ><i class="fa-solid fa-right-from-bracket text-sm"></i
+            ></a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 overflow-y-auto">
+        <!-- Header -->
+        <header class="bg-white border-b border-surface-200 sticky top-0 z-10">
+          <div class="flex items-center justify-between px-8 py-3">
+            <nav class="flex items-center gap-2 text-sm text-slate-500">
+              <a
+                href="../dashboard.html"
+                class="hover:text-primary-600 transition"
+                >Dashboard</a
+              >
+              <svg
+                class="w-4 h-4 text-slate-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+              <span class="text-slate-900 font-semibold">Upload Data</span>
+            </nav>
+            <div class="flex items-center gap-3">
+              <div class="relative">
+                <input
+                  type="text"
+                  placeholder="Cari pesanan, produk…"
+                  class="w-56 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
+                />
+                <svg
+                  class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              <button
+                class="relative p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all"
+              >
+                <svg
+                  class="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
                 </svg>
                 <span
-                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
+                  >3</span
+                >
               </button>
-            </div>
-            <div class="relative group">
-              <button class="p-2.5 bg-surface-100 rounded-xl hover:bg-surface-200 transition-all">
-                <svg class="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition" fill="none"
-                  stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8.228 9a3 3 0 115.544 1c0 2-3 2-3 4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
-            </div>
-            <div class="relative">
-              <button onclick="toggleProfileDropdown()"
-                class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors">
+              <div class="relative">
+                <button
+                  onclick="toggleProfileDropdown()"
+                  class="flex items-center gap-2 p-1 pr-3 bg-surface-100 rounded-lg hover:bg-surface-200 transition-colors"
+                >
+                  <div
+                    class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-xs shadow"
+                  >
+                    AD
+                  </div>
+                  <div class="text-left">
+                    <p class="text-sm font-semibold text-gray-900 leading-none">
+                      Admin User
+                    </p>
+                    <p class="text-[11px] text-emerald-600 mt-0.5">Admin</p>
+                  </div>
+                </button>
                 <div
-                  class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-xs shadow">
-                  AD</div>
-                <div class="text-left">
-                  <p class="text-sm font-semibold text-gray-900 leading-none">Admin User</p>
-                  <p class="text-[11px] text-emerald-600 mt-0.5">Admin</p>
+                  id="profile-dropdown"
+                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20"
+                >
+                  <a
+                    href="../my-profile.html"
+                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"
+                    ><i class="fa-solid fa-user w-4"></i>My Profile</a
+                  >
+                  <hr class="my-1 border-surface-200" />
+                  <a
+                    href="../../login.html"
+                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                    ><i class="fa-solid fa-right-from-bracket w-4"></i>Sign
+                    Out</a
+                  >
                 </div>
-                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div id="profile-dropdown"
-                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-surface-200 py-1.5 z-20">
-                <a href="../my-profile.html"
-                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-surface-50"><svg
-                    class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>My Profile</a>
-                <hr class="my-1 border-surface-200">
-                <a href="../login.html"
-                  class="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><svg class="w-4 h-4"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>Sign Out</a>
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <!-- Page Content -->
-      <div class="p-8 space-y-6">
-        <!-- Page Title + Actions -->
-        <div class="flex items-center justify-between flex-wrap gap-4">
+        <!-- Page Content -->
+        <div class="p-8 space-y-6">
+          <!-- Title -->
           <div>
-            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">
-              Upload Monitoring 📊
+            <h2
+              class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5"
+            >
+              <span
+                class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow shadow-primary-500/30 flex-shrink-0"
+              >
+                <i class="fa-solid fa-cloud-arrow-up text-white text-sm"></i>
+              </span>
+              Upload Data Pesanan
             </h2>
             <p class="text-slate-500 text-sm mt-1">
-              Monitor and oversee upload activity across all sellers and
-              marketplaces.
+              Upload file CSV atau Excel untuk mengimpor data pesanan ke
+              marketplace Anda.
             </p>
           </div>
-          <div class="flex items-center gap-3">
-            <div class="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2">
-              <span class="w-2 h-2 bg-emerald-500 rounded-full status-pulse"></span>
-              <span class="text-xs font-semibold text-emerald-700">All Systems Operational</span>
-            </div>
-            <div class="hidden xl:flex items-center gap-2 px-3 py-2 bg-surface-100 rounded-xl">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span id="live-clock" class="text-xs font-semibold text-gray-600 font-mono"></span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Stats Row -->
-        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-          <div class="bg-white rounded-2xl p-5 border border-surface-200 card-hover">
-            <div class="flex items-center justify-between mb-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-cloud-arrow-up text-white"></i>
-              </div>
-              <span
-                class="flex items-center gap-0.5 text-emerald-600 text-xs font-bold bg-emerald-50 px-1.5 py-0.5 rounded-lg"><i
-                  class="fa-solid fa-arrow-up text-[8px]"></i>18.2%</span>
-            </div>
-            <p class="text-xs text-gray-500 font-medium">Total Uploads</p>
-            <p class="text-xl font-bold text-gray-900 mt-0.5">12,847</p>
-            <p class="text-[10px] text-gray-400 mt-1">All sellers combined</p>
-          </div>
-          <div class="bg-white rounded-2xl p-5 border border-surface-200 card-hover">
-            <div class="flex items-center justify-between mb-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-circle-check text-white"></i>
-              </div>
-              <span
-                class="flex items-center gap-0.5 text-emerald-600 text-xs font-bold bg-emerald-50 px-1.5 py-0.5 rounded-lg">99.4%</span>
-            </div>
-            <p class="text-xs text-gray-500 font-medium">Rows Processed</p>
-            <p class="text-xl font-bold text-gray-900 mt-0.5">547,293</p>
-            <p class="text-[10px] text-emerald-600 mt-1">Success rate</p>
-          </div>
-          <div class="bg-white rounded-2xl p-5 border border-surface-200 card-hover">
-            <div class="flex items-center justify-between mb-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-triangle-exclamation text-white"></i>
-              </div>
-              <span
-                class="flex items-center gap-0.5 text-red-600 text-xs font-bold bg-red-50 px-1.5 py-0.5 rounded-lg"><i
-                  class="fa-solid fa-arrow-up text-[8px]"></i>2.1%</span>
-            </div>
-            <p class="text-xs text-gray-500 font-medium">Rows Skipped</p>
-            <p class="text-xl font-bold text-gray-900 mt-0.5">3,241</p>
-            <p class="text-[10px] text-amber-600 mt-1">
-              Format/validation errors
-            </p>
-          </div>
-          <div class="bg-white rounded-2xl p-5 border border-surface-200 card-hover">
-            <div class="flex items-center justify-between mb-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-users text-white"></i>
-              </div>
-            </div>
-            <p class="text-xs text-gray-500 font-medium">Active Uploaders</p>
-            <p class="text-xl font-bold text-gray-900 mt-0.5">248</p>
-            <p class="text-[10px] text-gray-400 mt-1">Sellers this month</p>
-          </div>
-          <div class="bg-white rounded-2xl p-5 border border-surface-200 card-hover">
-            <div class="flex items-center justify-between mb-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-clock-rotate-left text-white"></i>
-              </div>
-            </div>
-            <p class="text-xs text-gray-500 font-medium">Uploads Today</p>
-            <p class="text-xl font-bold text-gray-900 mt-0.5">87</p>
-            <p class="text-[10px] text-gray-400 mt-1">From 34 sellers</p>
-          </div>
-          <div class="bg-white rounded-2xl p-5 border border-surface-200 card-hover">
-            <div class="flex items-center justify-between mb-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-br from-red-400 to-red-600 rounded-xl flex items-center justify-center">
-                <i class="fa-solid fa-circle-xmark text-white"></i>
-              </div>
-            </div>
-            <p class="text-xs text-gray-500 font-medium">Failed Uploads</p>
-            <p class="text-xl font-bold text-gray-900 mt-0.5">14</p>
-            <p class="text-[10px] text-red-600 mt-1">Needs attention</p>
-          </div>
-        </div>
-
-        <!-- Monitoring Widgets -->
-        <div class="grid grid-cols-3 gap-6">
-          <!-- Upload Activity Chart -->
-          <div class="col-span-2 bg-white rounded-2xl p-6 border border-surface-200">
-            <div class="flex items-center justify-between mb-5">
-              <div>
-                <h3 class="text-base font-bold text-gray-900">
-                  Upload Activity
-                </h3>
-                <p class="text-sm text-gray-400">
-                  Uploads per day — last 7 days
-                </p>
-              </div>
-              <div class="flex gap-2">
-                <select
-                  class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400">
-                  <option>All Marketplaces</option>
-                  <option>Shopee</option>
-                  <option>TikTok Shop</option>
-                  <option>Tokopedia</option>
-                  <option>Lazada</option>
-                </select>
-                <select
-                  class="text-xs border border-surface-200 rounded-lg px-3 py-2 text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400">
-                  <option>Last 7 Days</option>
-                  <option>Last 30 Days</option>
-                  <option>This Month</option>
-                </select>
-              </div>
-            </div>
-            <!-- Bar Chart -->
-            <div class="flex items-end gap-3 h-48 px-2">
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 60%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    78 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 70%"></div>
-                  <div class="w-full bg-orange-400" style="height: 20%"></div>
-                  <div class="w-full bg-gray-800" style="height: 10%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400">Sen</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 85%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    104 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 65%"></div>
-                  <div class="w-full bg-orange-400" style="height: 25%"></div>
-                  <div class="w-full bg-gray-800" style="height: 10%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400">Sel</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 45%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    56 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 75%"></div>
-                  <div class="w-full bg-orange-400" style="height: 15%"></div>
-                  <div class="w-full bg-gray-800" style="height: 10%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400">Rab</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 100%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    127 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 60%"></div>
-                  <div class="w-full bg-orange-400" style="height: 30%"></div>
-                  <div class="w-full bg-gray-800" style="height: 10%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400">Kam</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 70%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    87 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 72%"></div>
-                  <div class="w-full bg-orange-400" style="height: 18%"></div>
-                  <div class="w-full bg-gray-800" style="height: 10%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400 font-bold text-primary-600">Jum</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 35%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    42 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 80%"></div>
-                  <div class="w-full bg-orange-400" style="height: 10%"></div>
-                  <div class="w-full bg-gray-800" style="height: 10%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400">Sab</span>
-              </div>
-              <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full bg-primary-100 rounded-t-lg bar-chart-bar relative group" style="height: 25%">
-                  <div
-                    class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                    29 uploads
-                  </div>
-                  <div class="w-full bg-primary-500 rounded-t-lg" style="height: 85%"></div>
-                  <div class="w-full bg-orange-400" style="height: 10%"></div>
-                  <div class="w-full bg-gray-800" style="height: 5%"></div>
-                </div>
-                <span class="text-[10px] text-gray-400">Min</span>
-              </div>
-            </div>
-            <!-- Legend -->
-            <div class="flex items-center justify-center gap-5 mt-4 pt-3 border-t border-surface-100">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 bg-primary-500 rounded-sm"></span><span
-                  class="text-[10px] text-gray-500">Shopee</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 bg-orange-400 rounded-sm"></span><span
-                  class="text-[10px] text-gray-500">TikTok/Tokopedia</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 bg-gray-800 rounded-sm"></span><span
-                  class="text-[10px] text-gray-500">Lazada</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column: Top Uploaders + Platform Health -->
-          <div class="space-y-4">
-            <!-- Top Uploaders -->
-            <div class="bg-white rounded-2xl p-6 border border-surface-200">
-              <h3 class="text-base font-bold text-gray-900 mb-1">
-                Top Uploaders
-              </h3>
-              <p class="text-sm text-gray-400 mb-4">
-                Most active sellers this month
-              </p>
-              <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                  <span
-                    class="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-[10px] font-bold">🥇</span>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-semibold text-gray-900 truncate">
-                      Toko Sepatu ID
-                    </p>
-                    <p class="text-[10px] text-gray-400">
-                      Shopee · 347 uploads
-                    </p>
-                  </div>
-                  <span class="text-xs font-bold text-emerald-600">99.2%</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span
-                    class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 text-[10px] font-bold">🥈</span>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-semibold text-gray-900 truncate">
-                      Beauty Fashion
-                    </p>
-                    <p class="text-[10px] text-gray-400">
-                      TikTok · 289 uploads
-                    </p>
-                  </div>
-                  <span class="text-xs font-bold text-emerald-600">98.7%</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span
-                    class="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 text-[10px] font-bold">🥉</span>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-semibold text-gray-900 truncate">
-                      Gadget Empire
-                    </p>
-                    <p class="text-[10px] text-gray-400">
-                      Tokopedia · 256 uploads
-                    </p>
-                  </div>
-                  <span class="text-xs font-bold text-amber-600">96.4%</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span
-                    class="w-6 h-6 bg-surface-100 rounded-full flex items-center justify-center text-gray-500 text-[10px] font-bold">4</span>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-semibold text-gray-900 truncate">
-                      Hijab Jaya
-                    </p>
-                    <p class="text-[10px] text-gray-400">
-                      Lazada · 198 uploads
-                    </p>
-                  </div>
-                  <span class="text-xs font-bold text-emerald-600">97.8%</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span
-                    class="w-6 h-6 bg-surface-100 rounded-full flex items-center justify-center text-gray-500 text-[10px] font-bold">5</span>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-semibold text-gray-900 truncate">
-                      Elektronik Murah
-                    </p>
-                    <p class="text-[10px] text-gray-400">
-                      Shopee · 174 uploads
-                    </p>
-                  </div>
-                  <span class="text-xs font-bold text-emerald-600">99.5%</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Platform Health -->
-            <div class="bg-white rounded-2xl p-5 border border-surface-200">
+          <!-- Stats Row — Own Store Only -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="bg-white rounded-2xl p-5 border border-surface-200 card-hover"
+            >
               <div class="flex items-center justify-between mb-3">
-                <h3 class="text-sm font-bold text-gray-900">
-                  Platform Health
-                </h3>
-                <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">All
-                  Online</span>
+                <div
+                  class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-cloud-arrow-up text-white"></i>
+                </div>
+                <span
+                  class="flex items-center gap-0.5 text-emerald-600 text-xs font-bold bg-emerald-50 px-1.5 py-0.5 rounded-lg"
+                  ><i class="fa-solid fa-arrow-up text-[8px]"></i>12%</span
+                >
               </div>
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 bg-orange-500 rounded-full"></span><span
-                      class="text-xs text-gray-700 font-medium">Shopee API</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="w-16 h-1.5 bg-surface-100 rounded-full">
-                      <div class="health-bar bg-emerald-500 h-full rounded-full" style="width: 99.8%"></div>
-                    </div>
-                    <span class="text-[10px] text-emerald-600 font-bold">99.8%</span>
-                  </div>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 bg-gray-900 rounded-full"></span><span
-                      class="text-xs text-gray-700 font-medium">TikTok API</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="w-16 h-1.5 bg-surface-100 rounded-full">
-                      <div class="health-bar bg-emerald-500 h-full rounded-full" style="width: 99.5%"></div>
-                    </div>
-                    <span class="text-[10px] text-emerald-600 font-bold">99.5%</span>
-                  </div>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span><span
-                      class="text-xs text-gray-700 font-medium">Tokopedia API</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="w-16 h-1.5 bg-surface-100 rounded-full">
-                      <div class="health-bar bg-emerald-500 h-full rounded-full" style="width: 99.9%"></div>
-                    </div>
-                    <span class="text-[10px] text-emerald-600 font-bold">99.9%</span>
-                  </div>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span><span
-                      class="text-xs text-gray-700 font-medium">Lazada API</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="w-16 h-1.5 bg-surface-100 rounded-full">
-                      <div class="health-bar bg-amber-500 h-full rounded-full" style="width: 97.2%"></div>
-                    </div>
-                    <span class="text-[10px] text-amber-600 font-bold">97.2%</span>
-                  </div>
-                </div>
-              </div>
+              <p class="text-xs text-gray-500 font-medium">Upload Bulan Ini</p>
+              <p class="text-xl font-bold text-gray-900 mt-0.5">34</p>
+              <p class="text-[10px] text-gray-400 mt-1">+4 dari bulan lalu</p>
             </div>
-
-            <!-- Recent Errors -->
-            <div class="bg-red-50 rounded-2xl p-5 border border-red-100">
-              <div class="flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-circle-exclamation text-red-500"></i>
-                <h3 class="text-sm font-bold text-red-800">
-                  Recent Errors (14)
-                </h3>
+            <div
+              class="bg-white rounded-2xl p-5 border border-surface-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-circle-check text-white"></i>
+                </div>
+                <span
+                  class="text-emerald-600 text-xs font-bold bg-emerald-50 px-1.5 py-0.5 rounded-lg"
+                  >98.7%</span
+                >
               </div>
-              <div class="space-y-2">
-                <div class="bg-white rounded-lg p-2.5 border border-red-100">
-                  <p class="text-[10px] text-red-700 font-semibold">
-                    Hijab Jaya — stok_lazada_err.xlsx
-                  </p>
-                  <p class="text-[10px] text-red-500">
-                    HTTP 500 · Lazada API timeout · 22 Okt, 09:30
-                  </p>
-                </div>
-                <div class="bg-white rounded-lg p-2.5 border border-red-100">
-                  <p class="text-[10px] text-red-700 font-semibold">
-                    Gadget Empire — products_tokoped.csv
-                  </p>
-                  <p class="text-[10px] text-red-500">
-                    12 rows skipped · Invalid SKU format · 23 Okt, 16:40
-                  </p>
-                </div>
-                <div class="bg-white rounded-lg p-2.5 border border-red-100">
-                  <p class="text-[10px] text-red-700 font-semibold">
-                    Elektronik Murah — resi_batch.csv
-                  </p>
-                  <p class="text-[10px] text-red-500">
-                    Auth expired · Shopee token refresh needed · 23 Okt, 12:15
-                  </p>
-                </div>
-              </div>
-              <a href="#"
-                class="flex items-center gap-1.5 mt-3 text-xs font-semibold text-red-600 hover:text-red-700"><i
-                  class="fa-solid fa-arrow-right text-[10px]"></i>View All
-                Errors</a>
+              <p class="text-xs text-gray-500 font-medium">Baris Berhasil</p>
+              <p class="text-xl font-bold text-gray-900 mt-0.5">4,521</p>
+              <p class="text-[10px] text-emerald-600 mt-1">Success rate</p>
             </div>
-          </div>
-        </div>
-
-        <!-- Upload History Table -->
-        <div class="bg-white rounded-2xl border border-surface-200 overflow-hidden">
-          <div class="px-6 py-5 border-b border-surface-100 flex items-center justify-between">
-            <div>
-              <h3 class="text-base font-bold text-gray-900">
-                Upload History — All Sellers
-              </h3>
-              <p class="text-sm text-gray-400">
-                Platform-wide upload activity log
+            <div
+              class="bg-white rounded-2xl p-5 border border-surface-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-triangle-exclamation text-white"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 font-medium">Baris Gagal</p>
+              <p class="text-xl font-bold text-gray-900 mt-0.5">59</p>
+              <p class="text-[10px] text-amber-600 mt-1">
+                Format/validasi error
               </p>
             </div>
-            <div class="flex items-center gap-3">
-              <div class="flex gap-1.5">
-                <button class="px-3 py-1.5 bg-surface-100 text-gray-600 rounded-lg text-xs font-semibold">
-                  Semua
-                </button>
-                <button class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold">
-                  Sukses
-                </button>
-                <button class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold">
-                  Partial
-                </button>
-                <button class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold">
-                  Gagal
-                </button>
+            <div
+              class="bg-white rounded-2xl p-5 border border-surface-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-clock-rotate-left text-white"></i>
+                </div>
               </div>
-              <button
-                class="flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-600 rounded-lg text-xs font-bold hover:bg-primary-100 transition">
-                <i class="fa-solid fa-download text-[10px]"></i>Export Log
-              </button>
+              <p class="text-xs text-gray-500 font-medium">Upload Terakhir</p>
+              <p class="text-xl font-bold text-gray-900 mt-0.5">Hari Ini</p>
+              <p class="text-[10px] text-gray-400 mt-1">27 Feb 2026, 10:30</p>
             </div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left">
-              <thead>
-                <tr class="bg-surface-50 border-b border-surface-100">
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    File
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Seller
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Tipe
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Platform
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Tanggal
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Baris
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">
-                    Aksi
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-surface-50">
-                <tr class="hover:bg-surface-50 transition-colors">
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-file-csv text-emerald-600 text-sm"></i>
+
+          <!-- Upload Section -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <!-- Upload Form (2 cols) -->
+            <div class="xl:col-span-2 space-y-6">
+              <!-- Upload Zone -->
+              <div class="bg-white rounded-2xl border border-surface-200 p-6">
+                <h3 class="text-base font-bold text-gray-900 mb-1">
+                  Upload File
+                </h3>
+                <p class="text-sm text-gray-400 mb-5">
+                  Drag & drop atau pilih file CSV/Excel untuk mengimpor data
+                  pesanan.
+                </p>
+
+                <!-- Marketplace Selector -->
+                <div class="flex items-center gap-3 mb-5">
+                  <label class="text-xs font-semibold text-gray-600"
+                    >Marketplace Tujuan:</label
+                  >
+                  <select
+                    id="marketplaceSelect"
+                    class="text-sm border border-surface-200 rounded-xl px-4 py-2.5 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400"
+                  >
+                    <option>Shopee</option>
+                    <option>TikTok Shop</option>
+                    <option>Tokopedia</option>
+                    <option>Lazada</option>
+                  </select>
+                  <label class="text-xs font-semibold text-gray-600 ml-4"
+                    >Tipe Data:</label
+                  >
+                  <select
+                    class="text-sm border border-surface-200 rounded-xl px-4 py-2.5 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400"
+                  >
+                    <option>Pesanan Baru</option>
+                    <option>Update Resi</option>
+                    <option>Update Stok</option>
+                    <option>Data Produk</option>
+                  </select>
+                </div>
+
+                <!-- Drop Zone -->
+                <div
+                  id="dropZone"
+                  class="drop-zone rounded-2xl p-10 text-center cursor-pointer bg-primary-50/30 hover:bg-primary-50"
+                  onclick="document.getElementById('fileInput').click()"
+                  ondragover="
+                    event.preventDefault();
+                    this.classList.add('drag-over');
+                  "
+                  ondragleave="this.classList.remove('drag-over')"
+                  ondrop="
+                    event.preventDefault();
+                    this.classList.remove('drag-over');
+                    handleDrop(event);
+                  "
+                >
+                  <div
+                    class="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  >
+                    <i
+                      class="fa-solid fa-cloud-arrow-up text-primary-500 text-2xl"
+                    ></i>
+                  </div>
+                  <p class="text-sm font-bold text-gray-700">
+                    Drag & drop file di sini
+                  </p>
+                  <p class="text-xs text-gray-400 mt-1">
+                    atau
+                    <span
+                      class="text-primary-600 font-semibold cursor-pointer hover:underline"
+                      >pilih dari komputer</span
+                    >
+                  </p>
+                  <p class="text-[10px] text-gray-400 mt-3">
+                    Format: CSV, XLSX, XLS · Maks: 50MB
+                  </p>
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept=".csv,.xlsx,.xls"
+                    class="hidden"
+                    onchange="if (this.files[0]) showFile(this.files[0]);"
+                  />
+                </div>
+
+                <!-- File Selected -->
+                <div
+                  id="fileSelected"
+                  class="hidden mt-4 p-4 bg-surface-50 border border-surface-200 rounded-xl"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center"
+                      >
+                        <i class="fa-solid fa-file-excel text-emerald-600"></i>
                       </div>
                       <div>
-                        <p class="text-sm font-medium text-gray-900">
-                          orders_bulk_oct24.csv
+                        <p
+                          id="fileName"
+                          class="text-sm font-bold text-gray-900"
+                        >
+                          file.csv
                         </p>
-                        <p class="text-[10px] text-gray-400">1.2 MB</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2">
-                      <div
-                        class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-[10px] font-bold">
-                        TS
-                      </div>
-                      <span class="text-xs text-gray-700">Toko Sepatu ID</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span
-                      class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">Orders</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="flex items-center gap-1.5 text-xs font-semibold text-orange-600"><span
-                        class="w-2 h-2 bg-orange-500 rounded-full"></span>Shopee</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-xs text-gray-500">
-                    24 Okt 2024, 14:22
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-sm font-semibold text-gray-900">1,247</span><span
-                      class="text-[10px] text-emerald-600 ml-1">✓1,245</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="status-badge bg-emerald-50 text-emerald-700"><span
-                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Selesai</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-right">
-                    <button class="text-xs font-semibold text-primary-600 hover:underline">
-                      Detail
-                    </button>
-                  </td>
-                </tr>
-                <tr class="hover:bg-surface-50 transition-colors">
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-file-excel text-blue-600 text-sm"></i>
-                      </div>
-                      <div>
-                        <p class="text-sm font-medium text-gray-900">
-                          resi_update_all.xlsx
+                        <p id="fileSize" class="text-[10px] text-gray-400">
+                          0 KB
                         </p>
-                        <p class="text-[10px] text-gray-400">890 KB</p>
                       </div>
                     </div>
-                  </td>
-                  <td class="px-6 py-3.5">
                     <div class="flex items-center gap-2">
-                      <div
-                        class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 text-[10px] font-bold">
-                        BF
-                      </div>
-                      <span class="text-xs text-gray-700">Beauty Fashion</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span
-                      class="text-xs font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full">Resi</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="flex items-center gap-1.5 text-xs font-semibold text-gray-700"><span
-                        class="w-2 h-2 bg-gray-900 rounded-full"></span>TikTok</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-xs text-gray-500">
-                    24 Okt 2024, 11:05
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-sm font-semibold text-gray-900">534</span><span
-                      class="text-[10px] text-emerald-600 ml-1">✓534</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="status-badge bg-emerald-50 text-emerald-700"><span
-                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Selesai</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-right">
-                    <button class="text-xs font-semibold text-primary-600 hover:underline">
-                      Detail
-                    </button>
-                  </td>
-                </tr>
-                <tr class="hover:bg-surface-50 transition-colors">
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-file-csv text-amber-600 text-sm"></i>
-                      </div>
-                      <div>
-                        <p class="text-sm font-medium text-gray-900">
-                          products_tokoped.csv
-                        </p>
-                        <p class="text-[10px] text-gray-400">2.4 MB</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2">
-                      <div
-                        class="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-[10px] font-bold">
-                        GE
-                      </div>
-                      <span class="text-xs text-gray-700">Gadget Empire</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span
-                      class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Produk</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="flex items-center gap-1.5 text-xs font-semibold text-emerald-700"><span
-                        class="w-2 h-2 bg-emerald-500 rounded-full"></span>Tokopedia</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-xs text-gray-500">
-                    23 Okt 2024, 16:40
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-sm font-semibold text-gray-900">892</span><span
-                      class="text-[10px] text-amber-600 ml-1">⚠12 skip</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="status-badge bg-amber-50 text-amber-700"><span
-                        class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>Partial</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="text-xs font-semibold text-primary-600 hover:underline">
-                        Detail</button><button class="text-xs font-semibold text-amber-600 hover:underline">
-                        Retry
+                      <button
+                        onclick="removeFile()"
+                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition"
+                      >
+                        <i class="fa-solid fa-trash-can text-sm"></i>
                       </button>
                     </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-surface-50 transition-colors">
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-file-excel text-red-600 text-sm"></i>
-                      </div>
-                      <div>
-                        <p class="text-sm font-medium text-gray-900">
-                          stok_lazada_err.xlsx
-                        </p>
-                        <p class="text-[10px] text-gray-400">340 KB</p>
-                      </div>
+                  </div>
+                  <!-- Progress Bar -->
+                  <div id="progressWrap" class="hidden mt-3">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="text-[10px] text-gray-500 font-medium"
+                        >Mengupload...</span
+                      >
+                      <span
+                        id="progressPct"
+                        class="text-[10px] font-bold text-primary-600"
+                        >0%</span
+                      >
                     </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2">
+                    <div class="w-full bg-surface-200 rounded-full h-1.5">
                       <div
-                        class="w-6 h-6 bg-violet-100 rounded-full flex items-center justify-center text-violet-600 text-[10px] font-bold">
-                        HJ
-                      </div>
-                      <span class="text-xs text-gray-700">Hijab Jaya</span>
+                        id="progressBar"
+                        class="bg-primary-500 h-full rounded-full transition-all"
+                        style="width: 0%"
+                      ></div>
                     </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span
-                      class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">Stok</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="flex items-center gap-1.5 text-xs font-semibold text-blue-600"><span
-                        class="w-2 h-2 bg-blue-500 rounded-full"></span>Lazada</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-xs text-gray-500">
-                    22 Okt 2024, 09:30
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-sm font-semibold text-gray-900">156</span><span
-                      class="text-[10px] text-red-600 ml-1">✗ all failed</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="status-badge bg-red-50 text-red-700"><span
-                        class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Gagal</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="text-xs font-semibold text-primary-600 hover:underline">
-                        Lihat Error</button><button class="text-xs font-semibold text-amber-600 hover:underline">
-                        Retry
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-surface-50 transition-colors">
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-file-csv text-emerald-600 text-sm"></i>
-                      </div>
-                      <div>
-                        <p class="text-sm font-medium text-gray-900">
-                          sellers_batch_new.csv
-                        </p>
-                        <p class="text-[10px] text-gray-400">67 KB</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <div class="flex items-center gap-2">
-                      <div
-                        class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 text-[10px] font-bold">
-                        SA
-                      </div>
-                      <span class="text-xs text-gray-700 font-semibold">Superadmin</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-xs font-semibold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-full">Sellers</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-xs text-gray-500">Multi-platform</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-xs text-gray-500">
-                    21 Okt 2024, 15:20
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="text-sm font-semibold text-gray-900">42</span><span
-                      class="text-[10px] text-emerald-600 ml-1">✓42</span>
-                  </td>
-                  <td class="px-6 py-3.5">
-                    <span class="status-badge bg-emerald-50 text-emerald-700"><span
-                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Selesai</span>
-                  </td>
-                  <td class="px-6 py-3.5 text-right">
-                    <button class="text-xs font-semibold text-primary-600 hover:underline">
-                      Detail
+                  </div>
+                </div>
+
+                <!-- Upload Button -->
+                <div class="flex items-center justify-between mt-5">
+                  <p class="text-[10px] text-gray-400">
+                    <i class="fa-solid fa-circle-info mr-1"></i>Pastikan format
+                    file sesuai template marketplace
+                  </p>
+                  <button
+                    id="uploadBtn"
+                    onclick="startUpload()"
+                    class="flex items-center gap-2 px-6 py-2.5 bg-primary-500 text-white text-sm font-bold rounded-xl hover:bg-primary-600 shadow-md shadow-primary-500/25 transition-all"
+                  >
+                    <i class="fa-solid fa-cloud-arrow-up"></i>Upload & Import
+                  </button>
+                </div>
+              </div>
+
+              <!-- Upload History Table -->
+              <div
+                class="bg-white rounded-2xl border border-surface-200 overflow-hidden"
+              >
+                <div
+                  class="px-6 py-5 border-b border-surface-100 flex items-center justify-between"
+                >
+                  <div>
+                    <h3 class="text-base font-bold text-gray-900">
+                      Riwayat Upload
+                    </h3>
+                    <p class="text-sm text-gray-400">
+                      Upload terakhir dari toko Anda
+                    </p>
+                  </div>
+                  <div class="flex gap-1.5">
+                    <button
+                      class="px-3 py-1.5 bg-surface-100 text-gray-600 rounded-lg text-xs font-semibold"
+                    >
+                      Semua
                     </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="px-6 py-4 border-t border-surface-100 flex items-center justify-between">
-            <p class="text-xs text-gray-500">
-              Menampilkan
-              <span class="font-semibold text-gray-800">1–5</span> dari
-              <span class="font-semibold text-gray-800">12,847</span> uploads
-            </p>
-            <div class="flex items-center gap-1">
-              <button
-                class="px-3 py-1.5 text-xs text-gray-400 bg-surface-100 rounded-lg hover:bg-surface-200 transition-all">
-                ← Prev
-              </button>
-              <button class="px-3 py-1.5 text-xs font-bold text-white bg-primary-500 rounded-lg">
-                1
-              </button>
-              <button class="px-3 py-1.5 text-xs text-gray-500 hover:bg-surface-100 rounded-lg transition-all">
-                2
-              </button>
-              <button class="px-3 py-1.5 text-xs text-gray-500 hover:bg-surface-100 rounded-lg transition-all">
-                3
-              </button>
-              <span class="px-1 text-gray-400 text-xs">…</span>
-              <button class="px-3 py-1.5 text-xs text-gray-500 hover:bg-surface-100 rounded-lg transition-all">
-                2,570
-              </button>
-              <button
-                class="px-3 py-1.5 text-xs text-gray-500 bg-surface-100 rounded-lg hover:bg-surface-200 transition-all">
-                Next →
-              </button>
+                    <button
+                      class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold"
+                    >
+                      Sukses
+                    </button>
+                    <button
+                      class="px-3 py-1.5 text-gray-500 hover:bg-surface-100 rounded-lg text-xs font-semibold"
+                    >
+                      Gagal
+                    </button>
+                  </div>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left">
+                    <thead>
+                      <tr class="bg-surface-50 border-b border-surface-100">
+                        <th
+                          class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                          File
+                        </th>
+                        <th
+                          class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                          Tipe
+                        </th>
+                        <th
+                          class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                          Marketplace
+                        </th>
+                        <th
+                          class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                          Tanggal
+                        </th>
+                        <th
+                          class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                          Baris
+                        </th>
+                        <th
+                          class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-100">
+                      <tr class="hover:bg-surface-50 transition">
+                        <td class="px-6 py-3.5">
+                          <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-csv text-emerald-500"></i
+                            ><span class="text-sm font-semibold text-gray-900"
+                              >pesanan_shopee_feb.csv</span
+                            >
+                          </div>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >Pesanan Baru</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded-lg"
+                            >Shopee</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >27 Feb 2026, 10:30</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-900 font-semibold"
+                            >248</span
+                          ><span class="text-[10px] text-gray-400 ml-1"
+                            >baris</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="status-badge bg-emerald-50 text-emerald-700"
+                            ><span
+                              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
+                            ></span
+                            >Sukses</span
+                          >
+                        </td>
+                      </tr>
+                      <tr class="hover:bg-surface-50 transition">
+                        <td class="px-6 py-3.5">
+                          <div class="flex items-center gap-2">
+                            <i
+                              class="fa-solid fa-file-excel text-emerald-500"
+                            ></i
+                            ><span class="text-sm font-semibold text-gray-900"
+                              >update_resi_tiktok.xlsx</span
+                            >
+                          </div>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600">Update Resi</span>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded-lg"
+                            >TikTok</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >26 Feb 2026, 15:45</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-900 font-semibold"
+                            >87</span
+                          ><span class="text-[10px] text-gray-400 ml-1"
+                            >baris</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="status-badge bg-emerald-50 text-emerald-700"
+                            ><span
+                              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
+                            ></span
+                            >Sukses</span
+                          >
+                        </td>
+                      </tr>
+                      <tr class="hover:bg-surface-50 transition">
+                        <td class="px-6 py-3.5">
+                          <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-csv text-emerald-500"></i
+                            ><span class="text-sm font-semibold text-gray-900"
+                              >stok_tokopedia_batch2.csv</span
+                            >
+                          </div>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600">Update Stok</span>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg"
+                            >Tokopedia</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >25 Feb 2026, 09:15</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-900 font-semibold"
+                            >156</span
+                          ><span class="text-[10px] text-gray-400 ml-1"
+                            >baris</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="status-badge bg-amber-50 text-amber-700"
+                            ><span
+                              class="w-1.5 h-1.5 bg-amber-500 rounded-full"
+                            ></span
+                            >Partial — 3 gagal</span
+                          >
+                        </td>
+                      </tr>
+                      <tr class="hover:bg-surface-50 transition">
+                        <td class="px-6 py-3.5">
+                          <div class="flex items-center gap-2">
+                            <i
+                              class="fa-solid fa-file-excel text-emerald-500"
+                            ></i
+                            ><span class="text-sm font-semibold text-gray-900"
+                              >produk_shopee_new.xlsx</span
+                            >
+                          </div>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600">Data Produk</span>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded-lg"
+                            >Shopee</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >24 Feb 2026, 14:20</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-900 font-semibold"
+                            >42</span
+                          ><span class="text-[10px] text-gray-400 ml-1"
+                            >baris</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="status-badge bg-red-50 text-red-700"
+                            ><span
+                              class="w-1.5 h-1.5 bg-red-500 rounded-full"
+                            ></span
+                            >Gagal</span
+                          >
+                        </td>
+                      </tr>
+                      <tr class="hover:bg-surface-50 transition">
+                        <td class="px-6 py-3.5">
+                          <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-csv text-emerald-500"></i
+                            ><span class="text-sm font-semibold text-gray-900"
+                              >pesanan_lazada_jan.csv</span
+                            >
+                          </div>
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >Pesanan Baru</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded-lg"
+                            >Lazada</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-600"
+                            >22 Feb 2026, 11:00</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span class="text-xs text-gray-900 font-semibold"
+                            >189</span
+                          ><span class="text-[10px] text-gray-400 ml-1"
+                            >baris</span
+                          >
+                        </td>
+                        <td class="px-6 py-3.5">
+                          <span
+                            class="status-badge bg-emerald-50 text-emerald-700"
+                            ><span
+                              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"
+                            ></span
+                            >Sukses</span
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Pagination -->
+                <div
+                  class="px-6 py-4 border-t border-surface-100 flex items-center justify-between"
+                >
+                  <p class="text-xs text-gray-400">
+                    Menampilkan 1-5 dari 34 upload
+                  </p>
+                  <div class="flex gap-1">
+                    <button
+                      class="w-8 h-8 bg-primary-500 text-white text-xs font-bold rounded-lg"
+                    >
+                      1
+                    </button>
+                    <button
+                      class="w-8 h-8 bg-surface-100 text-gray-600 text-xs font-semibold rounded-lg hover:bg-surface-200 transition"
+                    >
+                      2
+                    </button>
+                    <button
+                      class="w-8 h-8 bg-surface-100 text-gray-600 text-xs font-semibold rounded-lg hover:bg-surface-200 transition"
+                    >
+                      3
+                    </button>
+                    <button
+                      class="w-8 h-8 bg-surface-100 text-gray-600 text-xs font-semibold rounded-lg hover:bg-surface-200 transition"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Templates + Tips -->
+            <div class="space-y-5">
+              <!-- Download Templates -->
+              <div class="bg-white rounded-2xl border border-surface-200 p-6">
+                <h3 class="text-base font-bold text-gray-900 mb-1">
+                  <i class="fa-solid fa-download text-primary-500 mr-2"></i
+                  >Download Template
+                </h3>
+                <p class="text-sm text-gray-400 mb-4">
+                  Gunakan template resmi agar upload tidak error.
+                </p>
+                <div class="space-y-2.5">
+                  <button
+                    class="w-full flex items-center gap-3 p-3.5 bg-orange-50 border border-orange-100 rounded-xl hover:bg-orange-100 transition group"
+                  >
+                    <div
+                      class="w-9 h-9 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-200 transition"
+                    >
+                      <i
+                        class="fa-solid fa-file-csv text-orange-600 text-sm"
+                      ></i>
+                    </div>
+                    <div class="text-left flex-1">
+                      <p class="text-xs font-bold text-gray-800">
+                        Template Shopee
+                      </p>
+                      <p class="text-[10px] text-gray-400">
+                        Pesanan & Update Resi
+                      </p>
+                    </div>
+                    <i class="fa-solid fa-download text-orange-400 text-xs"></i>
+                  </button>
+                  <button
+                    class="w-full flex items-center gap-3 p-3.5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-gray-100 transition group"
+                  >
+                    <div
+                      class="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition"
+                    >
+                      <i
+                        class="fa-solid fa-file-excel text-gray-700 text-sm"
+                      ></i>
+                    </div>
+                    <div class="text-left flex-1">
+                      <p class="text-xs font-bold text-gray-800">
+                        Template TikTok Shop
+                      </p>
+                      <p class="text-[10px] text-gray-400">Pesanan & Produk</p>
+                    </div>
+                    <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+                  </button>
+                  <button
+                    class="w-full flex items-center gap-3 p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl hover:bg-emerald-100 transition group"
+                  >
+                    <div
+                      class="w-9 h-9 bg-emerald-100 rounded-lg flex items-center justify-center group-hover:bg-emerald-200 transition"
+                    >
+                      <i
+                        class="fa-solid fa-file-excel text-emerald-600 text-sm"
+                      ></i>
+                    </div>
+                    <div class="text-left flex-1">
+                      <p class="text-xs font-bold text-gray-800">
+                        Template Tokopedia
+                      </p>
+                      <p class="text-[10px] text-gray-400">Pesanan & Stok</p>
+                    </div>
+                    <i
+                      class="fa-solid fa-download text-emerald-400 text-xs"
+                    ></i>
+                  </button>
+                  <button
+                    class="w-full flex items-center gap-3 p-3.5 bg-blue-50 border border-blue-100 rounded-xl hover:bg-blue-100 transition group"
+                  >
+                    <div
+                      class="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition"
+                    >
+                      <i class="fa-solid fa-file-csv text-blue-600 text-sm"></i>
+                    </div>
+                    <div class="text-left flex-1">
+                      <p class="text-xs font-bold text-gray-800">
+                        Template Lazada
+                      </p>
+                      <p class="text-[10px] text-gray-400">Pesanan & Resi</p>
+                    </div>
+                    <i class="fa-solid fa-download text-blue-400 text-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Upload Tips -->
+              <div
+                class="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl border border-primary-200 p-6"
+              >
+                <h3 class="text-sm font-bold text-primary-900 mb-3">
+                  <i class="fa-solid fa-lightbulb text-primary-500 mr-1.5"></i
+                  >Tips Upload
+                </h3>
+                <ul class="space-y-2.5">
+                  <li class="flex items-start gap-2">
+                    <i
+                      class="fa-solid fa-check-circle text-primary-500 text-xs mt-0.5 flex-shrink-0"
+                    ></i
+                    ><span class="text-xs text-primary-800"
+                      >Gunakan template dari masing-masing marketplace agar
+                      kolom sesuai.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i
+                      class="fa-solid fa-check-circle text-primary-500 text-xs mt-0.5 flex-shrink-0"
+                    ></i
+                    ><span class="text-xs text-primary-800"
+                      >Pastikan format tanggal:
+                      <strong>DD/MM/YYYY</strong>.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i
+                      class="fa-solid fa-check-circle text-primary-500 text-xs mt-0.5 flex-shrink-0"
+                    ></i
+                    ><span class="text-xs text-primary-800"
+                      >Nomor resi harus unik — duplikat akan otomatis
+                      dilewati.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i
+                      class="fa-solid fa-check-circle text-primary-500 text-xs mt-0.5 flex-shrink-0"
+                    ></i
+                    ><span class="text-xs text-primary-800"
+                      >Ukuran file maksimal <strong>50MB</strong> per
+                      upload.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i
+                      class="fa-solid fa-check-circle text-primary-500 text-xs mt-0.5 flex-shrink-0"
+                    ></i
+                    ><span class="text-xs text-primary-800"
+                      >Untuk update stok massal, gunakan kolom
+                      <strong>SKU</strong> sebagai identifier.</span
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Recent Errors -->
+              <div class="bg-red-50 rounded-2xl border border-red-100 p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="fa-solid fa-circle-exclamation text-red-500"></i>
+                  <h3 class="text-sm font-bold text-red-800">Error Terakhir</h3>
+                </div>
+                <div class="space-y-2">
+                  <div class="bg-white rounded-lg p-2.5 border border-red-100">
+                    <p class="text-[10px] text-red-700 font-semibold">
+                      produk_shopee_new.xlsx
+                    </p>
+                    <p class="text-[10px] text-red-500">
+                      Kolom "Harga" kosong pada baris 15, 28, 33 · 24 Feb
+                    </p>
+                  </div>
+                  <div class="bg-white rounded-lg p-2.5 border border-red-100">
+                    <p class="text-[10px] text-red-700 font-semibold">
+                      stok_tokopedia_batch2.csv
+                    </p>
+                    <p class="text-[10px] text-red-500">
+                      SKU tidak ditemukan: SKU-8834, SKU-9012 · 25 Feb
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <!-- end page content -->
+      </main>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-6 right-6 z-50">
+      <div
+        class="toast flex items-center gap-3 px-5 py-3.5 bg-gray-900 text-white text-sm font-semibold rounded-2xl shadow-2xl"
+      >
+        <i
+          id="toast-icon"
+          class="fa-solid fa-circle-check text-emerald-400 text-base"
+        ></i>
+        <span id="toast-msg">Done.</span>
       </div>
-      <!-- end p-8 -->
+    </div>
 
-      <!-- Footer -->
-      <footer class="border-t border-surface-200 bg-white px-8 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center">
-            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <span class="text-xs text-gray-500">Seller Integration Platform
-            <span class="font-semibold text-gray-700">v3.2.1</span></span>
-          <span class="text-gray-300">•</span>
-          <span class="text-xs text-primary-600 font-semibold bg-primary-50 px-2 py-0.5 rounded-full">Superadmin
-            Panel</span>
-        </div>
-        <div class="flex items-center gap-4 text-xs text-gray-400">
-          <span class="flex items-center gap-1.5"><span
-              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Shopee</span>
-          <span class="flex items-center gap-1.5"><span
-              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>TikTok</span>
-          <span class="flex items-center gap-1.5"><span
-              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Tokopedia</span>
-          <span class="flex items-center gap-1.5"><span
-              class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Lazada</span>
-        </div>
-      </footer>
-    </main>
-  </div>
+    <script>
+      // Sidebar toggle
+      function toggleDropdown(n) {
+        const d = document.getElementById(n + "-dropdown"),
+          a = document.getElementById(n + "-arrow");
+        if (!d || !a) return;
+        d.classList.toggle("open");
+        a.style.transform = d.classList.contains("open")
+          ? "rotate(180deg)"
+          : "";
+      }
 
-  <script>
-    // Dropdown
-    function toggleDropdown(id) {
-      const dropdown = document.getElementById(`${id}-dropdown`);
-      const arrow = document.getElementById(`${id}-arrow`);
-      const isOpen = dropdown.classList.contains("open");
-      document
-        .querySelectorAll(".dropdown-content")
-        .forEach((d) => d.classList.remove("open"));
-      document
-        .querySelectorAll('[id$="-arrow"]')
-        .forEach((a) => (a.style.transform = "rotate(0)"));
-      if (!isOpen) {
-        dropdown.classList.add("open");
-        if (arrow) arrow.style.transform = "rotate(180deg)";
+      // Profile dropdown
+      function toggleProfileDropdown() {
+        document.getElementById("profile-dropdown").classList.toggle("hidden");
       }
-    }
+      document.addEventListener("click", (e) => {
+        const d = document.getElementById("profile-dropdown");
+        if (d && !e.target.closest("[onclick*='toggleProfileDropdown']"))
+          d.classList.add("hidden");
+      });
 
-    // Profile dropdown
-    function toggleProfileDropdown() {
-      document.getElementById("profile-dropdown").classList.toggle("hidden");
-    }
-    document.addEventListener("click", (e) => {
-      const pd = document.getElementById("profile-dropdown");
-      if (!e.target.closest('[onclick="toggleProfileDropdown()"]')) {
-        if (pd && !pd.contains(e.target)) pd.classList.add("hidden");
+      // Toast
+      function showToast(msg, type) {
+        const t = document.getElementById("toast"),
+          icon = document.getElementById("toast-icon"),
+          m = document.getElementById("toast-msg");
+        m.textContent = msg;
+        icon.className =
+          type === "error"
+            ? "fa-solid fa-circle-xmark text-red-400 text-base"
+            : "fa-solid fa-circle-check text-emerald-400 text-base";
+        t.classList.remove("hidden");
+        setTimeout(() => t.classList.add("hidden"), 3000);
       }
-    });
 
-    // File handling
-    function handleFile(input) {
-      if (input.files.length > 0) showFile(input.files[0]);
-    }
-    function handleDrop(e) {
-      e.preventDefault();
-      document.getElementById("dropZone").classList.remove("drag-over");
-      if (e.dataTransfer.files.length > 0) showFile(e.dataTransfer.files[0]);
-    }
-    function showFile(file) {
-      const valid = [".csv", ".xlsx", ".xls"];
-      const ext = "." + file.name.split(".").pop().toLowerCase();
-      if (!valid.includes(ext)) {
-        alert("Format file tidak didukung. Gunakan CSV atau Excel.");
-        return;
+      // File upload
+      function handleDrop(e) {
+        if (e.dataTransfer.files.length > 0) showFile(e.dataTransfer.files[0]);
       }
-      if (file.size > 50 * 1024 * 1024) {
-        alert("Ukuran file melebihi 50MB.");
-        return;
-      }
-      document.getElementById("fileName").textContent = file.name;
-      document.getElementById("fileSize").textContent =
-        (file.size / 1024).toFixed(0) + " KB";
-      document.getElementById("fileSelected").classList.remove("hidden");
-      document.getElementById("dropZone").style.display = "none";
-    }
-    function removeFile() {
-      document.getElementById("fileInput").value = "";
-      document.getElementById("fileSelected").classList.add("hidden");
-      document.getElementById("dropZone").style.display = "";
-      document.getElementById("progressWrap").classList.add("hidden");
-      document.getElementById("progressBar").style.width = "0%";
-      const btn = document.getElementById("uploadBtn");
-      btn.disabled = false;
-      btn.innerHTML =
-        '<i class="fa-solid fa-cloud-arrow-up"></i> Upload & Import';
-      btn.classList.remove("bg-emerald-500");
-      btn.classList.add(
-        "bg-primary-500",
-        "hover:bg-primary-600",
-        "shadow-primary-500/25",
-      );
-    }
-    function startUpload() {
-      const btn = document.getElementById("uploadBtn");
-      btn.disabled = true;
-      btn.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> Memproses…';
-      document.getElementById("progressWrap").classList.remove("hidden");
-      let pct = 0;
-      const iv = setInterval(() => {
-        pct += Math.random() * 15 + 5;
-        if (pct >= 100) {
-          pct = 100;
-          clearInterval(iv);
-          onUploadDone();
+      function showFile(file) {
+        const valid = [".csv", ".xlsx", ".xls"];
+        const ext = "." + file.name.split(".").pop().toLowerCase();
+        if (!valid.includes(ext)) {
+          showToast(
+            "Format file tidak didukung. Gunakan CSV atau Excel.",
+            "error",
+          );
+          return;
         }
-        document.getElementById("progressBar").style.width = pct + "%";
-        document.getElementById("progressPct").textContent =
-          Math.round(pct) + "%";
-      }, 300);
-    }
-    function onUploadDone() {
-      const btn = document.getElementById("uploadBtn");
-      btn.innerHTML =
-        '<i class="fa-solid fa-circle-check"></i> Upload Berhasil!';
-      btn.classList.remove(
-        "bg-primary-500",
-        "hover:bg-primary-600",
-        "shadow-primary-500/25",
-      );
-      btn.classList.add("bg-emerald-500");
-    }
-
-    // Live clock
-    function updateClock() {
-      const now = new Date();
-      const time = now.toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
-      const date = now.toLocaleDateString("id-ID", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      });
-      const el = document.getElementById("live-clock");
-      if (el) el.textContent = `${date}  ${time}`;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
-  </script>
-</body>
-
+        if (file.size > 50 * 1024 * 1024) {
+          showToast("Ukuran file melebihi 50MB.", "error");
+          return;
+        }
+        document.getElementById("fileName").textContent = file.name;
+        document.getElementById("fileSize").textContent =
+          (file.size / 1024).toFixed(0) + " KB";
+        document.getElementById("fileSelected").classList.remove("hidden");
+        document.getElementById("dropZone").style.display = "none";
+      }
+      function removeFile() {
+        document.getElementById("fileInput").value = "";
+        document.getElementById("fileSelected").classList.add("hidden");
+        document.getElementById("dropZone").style.display = "";
+        document.getElementById("progressWrap").classList.add("hidden");
+        document.getElementById("progressBar").style.width = "0%";
+        const btn = document.getElementById("uploadBtn");
+        btn.disabled = false;
+        btn.innerHTML =
+          '<i class="fa-solid fa-cloud-arrow-up"></i> Upload & Import';
+        btn.classList.remove("bg-emerald-500");
+        btn.classList.add(
+          "bg-primary-500",
+          "hover:bg-primary-600",
+          "shadow-primary-500/25",
+        );
+      }
+      function startUpload() {
+        const fi = document.getElementById("fileInput");
+        if (
+          !fi.value &&
+          document.getElementById("fileSelected").classList.contains("hidden")
+        ) {
+          showToast("Pilih file terlebih dahulu.", "error");
+          return;
+        }
+        const btn = document.getElementById("uploadBtn");
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Memproses…';
+        document.getElementById("progressWrap").classList.remove("hidden");
+        let pct = 0;
+        const iv = setInterval(() => {
+          pct += Math.random() * 15 + 5;
+          if (pct >= 100) {
+            pct = 100;
+            clearInterval(iv);
+            onUploadDone();
+          }
+          document.getElementById("progressBar").style.width = pct + "%";
+          document.getElementById("progressPct").textContent =
+            Math.round(pct) + "%";
+        }, 300);
+      }
+      function onUploadDone() {
+        const btn = document.getElementById("uploadBtn");
+        btn.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i> Upload Berhasil!';
+        btn.classList.remove(
+          "bg-primary-500",
+          "hover:bg-primary-600",
+          "shadow-primary-500/25",
+        );
+        btn.classList.add("bg-emerald-500");
+        showToast("File berhasil diupload dan diproses!", "success");
+      }
+    </script>
+  </body>
 </html>
