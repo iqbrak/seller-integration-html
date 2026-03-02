@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="h-full">
 
 <head>
@@ -219,7 +219,7 @@
           </nav>
           <div class="flex items-center gap-3">
             <div class="relative">
-              <input type="text" placeholder="Search sellers, orders, logsâ€¦"
+              <input type="text" placeholder="Search sellers, orders, logs…"
                 class="w-64 pl-10 pr-4 py-2 bg-surface-100 border-0 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all">
               <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
@@ -321,7 +321,7 @@
               <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center"><i
                   class="fa-solid fa-list-check text-primary-500 text-sm"></i></div>
             </div>
-            <p class="text-3xl font-extrabold text-gray-900" id="stat-total">â€”</p>
+            <p class="text-3xl font-extrabold text-gray-900" id="stat-total">—</p>
           </div>
           <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
             <div class="flex items-center justify-between mb-2">
@@ -329,7 +329,7 @@
               <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center"><i
                   class="fa-solid fa-circle-check text-emerald-500 text-sm"></i></div>
             </div>
-            <p class="text-3xl font-extrabold text-emerald-600" id="stat-success">â€”</p>
+            <p class="text-3xl font-extrabold text-emerald-600" id="stat-success">—</p>
           </div>
           <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
             <div class="flex items-center justify-between mb-2">
@@ -337,7 +337,7 @@
               <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center"><i
                   class="fa-solid fa-circle-xmark text-red-400 text-sm"></i></div>
             </div>
-            <p class="text-3xl font-extrabold text-red-500" id="stat-failed">â€”</p>
+            <p class="text-3xl font-extrabold text-red-500" id="stat-failed">—</p>
           </div>
           <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5">
             <div class="flex items-center justify-between mb-2">
@@ -345,14 +345,14 @@
               <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center"><i
                   class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i></div>
             </div>
-            <p class="text-3xl font-extrabold text-amber-600" id="stat-warning">â€”</p>
+            <p class="text-3xl font-extrabold text-amber-600" id="stat-warning">—</p>
           </div>
         </div>
 
         <div class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 flex flex-wrap items-center gap-3">
           <div class="relative flex-1 min-w-[200px]">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-            <input id="search-input" type="text" placeholder="Search actor, target, IP addressâ€¦" oninput="filterTable()"
+            <input id="search-input" type="text" placeholder="Search actor, target, IP address…" oninput="filterTable()"
               class="w-full pl-8 pr-3 py-2 text-sm border border-surface-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 transition">
           </div>
           <select id="filter-action" onchange="filterTable()"
@@ -461,7 +461,7 @@
           </div>
           <div>
             <h3 class="font-bold text-gray-900 text-sm" id="modal-title">Log Detail</h3>
-            <p class="text-xs text-gray-400" id="modal-subtitle">â€”</p>
+            <p class="text-xs text-gray-400" id="modal-subtitle">—</p>
           </div>
         </div>
         <button onclick="closeModal()"
@@ -473,52 +473,52 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Log ID</p>
-            <p class="font-mono text-xs text-gray-700 break-all" id="modal-id">â€”</p>
+            <p class="font-mono text-xs text-gray-700 break-all" id="modal-id">—</p>
           </div>
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Timestamp</p>
-            <p class="text-xs text-gray-700" id="modal-timestamp">â€”</p>
+            <p class="text-xs text-gray-700" id="modal-timestamp">—</p>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Actor</p>
-            <p class="text-sm font-semibold text-gray-800" id="modal-actor">â€”</p>
+            <p class="text-sm font-semibold text-gray-800" id="modal-actor">—</p>
           </div>
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Role</p>
-            <p id="modal-role">â€”</p>
+            <p id="modal-role">—</p>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Action</p>
-            <p id="modal-action">â€”</p>
+            <p id="modal-action">—</p>
           </div>
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Platform</p>
-            <p id="modal-platform">â€”</p>
+            <p id="modal-platform">—</p>
           </div>
         </div>
         <div class="bg-surface-50 rounded-xl p-3">
           <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Target</p>
-          <p class="text-sm text-gray-700" id="modal-target">â€”</p>
+          <p class="text-sm text-gray-700" id="modal-target">—</p>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Status</p>
-            <p id="modal-status">â€”</p>
+            <p id="modal-status">—</p>
           </div>
           <div class="bg-surface-50 rounded-xl p-3">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">IP Address</p>
-            <p class="font-mono text-xs text-gray-700" id="modal-ip">â€”</p>
+            <p class="font-mono text-xs text-gray-700" id="modal-ip">—</p>
           </div>
         </div>
         <div class="bg-surface-50 rounded-xl p-3">
           <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Metadata</p>
           <pre
             class="font-mono text-[11px] text-gray-600 whitespace-pre-wrap break-all leading-relaxed bg-white border border-surface-200 rounded-lg p-2.5"
-            id="modal-metadata">â€”</pre>
+            id="modal-metadata">—</pre>
         </div>
       </div>
       <div class="px-6 py-4 border-t border-surface-100 flex justify-end">
@@ -641,7 +641,7 @@
         action: 'shop_authorize', platform: 'tiktok',
         target: 'TikTok MY Shop (7265839104728361984)',
         status: 'success', ip_address: '180.244.132.10',
-        metadata: JSON.stringify({ shop_id: '7265839104728361984', region: 'MY', shop_cipher: 'ROW_mNoPqRsTuVwâ€¦', oauth_state: 'completed' }, null, 2),
+        metadata: JSON.stringify({ shop_id: '7265839104728361984', region: 'MY', shop_cipher: 'ROW_mNoPqRsTuVw…', oauth_state: 'completed' }, null, 2),
         created_at: daysAgo(1),
       },
       {
@@ -691,7 +691,7 @@
     };
 
     function fmtDate(iso) {
-      if (!iso) return 'â€”';
+      if (!iso) return '—';
       var d = new Date(iso);
       return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
         + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -744,10 +744,10 @@
       } else {
         empty.classList.add('hidden');
         tbody.innerHTML = page.map(function (l) {
-          var platformHtml = PLATFORM_BADGES[l.platform] || '<span class="text-gray-400 text-xs">â€”</span>';
+          var platformHtml = PLATFORM_BADGES[l.platform] || '<span class="text-gray-400 text-xs">—</span>';
           var targetHtml = l.target
             ? '<span class="text-gray-700 text-xs">' + l.target + '</span>'
-            : '<span class="text-gray-400 text-xs italic">â€”</span>';
+            : '<span class="text-gray-400 text-xs italic">—</span>';
           return [
             '<tr class="table-row transition-colors" onclick="openDetailModal(\'' + l.id + '\')">',
             '  <td class="px-5 py-3.5 whitespace-nowrap">',
@@ -762,7 +762,7 @@
             '  <td class="px-5 py-3.5 whitespace-nowrap">' + platformHtml + '</td>',
             '  <td class="px-5 py-3.5 max-w-[200px] truncate">' + targetHtml + '</td>',
             '  <td class="px-5 py-3.5 whitespace-nowrap">' + statusBadge(l.status) + '</td>',
-            '  <td class="px-5 py-3.5"><span class="font-mono text-xs text-gray-500">' + (l.ip_address || 'â€”') + '</span></td>',
+            '  <td class="px-5 py-3.5"><span class="font-mono text-xs text-gray-500">' + (l.ip_address || '—') + '</span></td>',
             '</tr>',
           ].join('\n');
         }).join('');
@@ -771,7 +771,7 @@
       var total = filteredData.length;
       var showing = Math.min(start + PAGE_SIZE, total);
       document.getElementById('pagination-info').textContent =
-        total === 0 ? '' : 'Showing ' + (start + 1) + 'â€“' + showing + ' of ' + total + ' events';
+        total === 0 ? '' : 'Showing ' + (start + 1) + '–' + showing + ' of ' + total + ' events';
       document.getElementById('result-count').textContent =
         total + ' event' + (total !== 1 ? 's' : '');
 
@@ -828,11 +828,11 @@
       document.getElementById('modal-actor').textContent = l.actor_name;
       document.getElementById('modal-role').innerHTML = roleBadge(l.actor_role);
       document.getElementById('modal-action').innerHTML = actionBadge(l.action);
-      document.getElementById('modal-platform').innerHTML = PLATFORM_BADGES[l.platform] || '<span class="text-gray-400 text-xs">â€”</span>';
-      document.getElementById('modal-target').textContent = l.target || 'â€”';
+      document.getElementById('modal-platform').innerHTML = PLATFORM_BADGES[l.platform] || '<span class="text-gray-400 text-xs">—</span>';
+      document.getElementById('modal-target').textContent = l.target || '—';
       document.getElementById('modal-status').innerHTML = statusBadge(l.status);
-      document.getElementById('modal-ip').textContent = l.ip_address || 'â€”';
-      document.getElementById('modal-metadata').textContent = l.metadata || 'â€”';
+      document.getElementById('modal-ip').textContent = l.ip_address || '—';
+      document.getElementById('modal-metadata').textContent = l.metadata || '—';
       document.getElementById('detailModal').classList.remove('hidden');
     }
 
