@@ -15,6 +15,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -269,6 +275,103 @@
       .tiktok-field {
         display: none;
       }
+
+      /* Select2 custom styling */
+      .select2-container--default .select2-selection--single {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        height: 42px;
+        padding: 6px 12px;
+        font-size: 14px;
+        color: #374151;
+        transition: all 0.2s;
+      }
+      .select2-container--default .select2-selection--single:hover {
+        border-color: #cbd5e1;
+      }
+      .select2-container--default.select2-container--focus
+        .select2-selection--single,
+      .select2-container--default.select2-container--open
+        .select2-selection--single {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+        outline: none;
+        background: #fff;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__rendered {
+        color: #374151;
+        line-height: 28px;
+        padding-left: 0;
+        padding-right: 24px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__placeholder {
+        color: #9ca3af;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow {
+        height: 42px;
+        right: 8px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow
+        b {
+        border-color: #9ca3af transparent transparent transparent;
+      }
+      .select2-dropdown {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-top: 4px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      .select2-container--default .select2-search--dropdown {
+        padding: 8px 10px;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 6px 10px;
+        font-size: 13px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        outline: none;
+        transition: all 0.2s;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+      }
+      .select2-results__option {
+        padding: 8px 12px;
+        font-size: 13px;
+        transition: background 0.15s;
+      }
+      .select2-container--default
+        .select2-results__option--highlighted[aria-selected] {
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .select2-container--default .select2-results__option--selected {
+        background: #dbeafe;
+        color: #1e40af;
+        font-weight: 600;
+      }
+      .select2-container {
+        min-width: 160px;
+      }
     </style>
   </head>
 
@@ -349,31 +452,13 @@
                 href="all-orders.html"
                 class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg"
               >
-                All Orders
+                Semua
               </a>
               <a
-                href="to-confirm-orders.html"
+                href="to-ship.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                Awaiting Confirmation
-              </a>
-              <a
-                href="to-pack-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Ready to Pack
-              </a>
-              <a
-                href="packed-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Packed Orders
-              </a>
-              <a
-                href="returned-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Returned Orders
+                To Ship
               </a>
               <a
                 href="shopee-orders.html"
@@ -385,7 +470,7 @@
                 href="tiktok-orders.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                TikTok/Tokopedia
+                TikTok / Tokopedia
               </a>
             </div>
           </div>
@@ -769,7 +854,7 @@
                 All Orders
               </h2>
               <p class="text-slate-500 text-sm mt-1.5">
-                Complete order data from all uploaded batches
+                Search and browse all uploaded orders.
               </p>
               <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
                 <i class="fa-regular fa-clock"></i>
@@ -788,12 +873,125 @@
                 Export CSV
               </button>
               <button
-                class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 text-white text-sm font-semibold rounded-xl hover:bg-primary-600 transition-all shadow shadow-primary-500/30"
+                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-50 transition-all shadow-sm"
               >
-                <i class="fa-solid fa-file-excel"></i>
+                <i class="fa-solid fa-file-excel text-gray-500"></i>
                 Export Excel
               </button>
+              <a
+                href="../data-upload.html"
+                class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 text-white text-sm font-semibold rounded-xl hover:bg-primary-600 transition-all shadow shadow-primary-500/30"
+              >
+                <i class="fa-solid fa-upload"></i>
+                Upload New File
+              </a>
             </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center"
+              >
+                <i class="fa-solid fa-list-check text-blue-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">Total Orders</p>
+                <p
+                  id="stat-total-orders"
+                  class="text-2xl font-bold text-gray-900"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center"
+              >
+                <i
+                  class="fa-solid fa-hourglass-half text-amber-500 text-lg"
+                ></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">To Confirm</p>
+                <p
+                  id="stat-to-confirm"
+                  class="text-2xl font-bold text-gray-900"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center"
+              >
+                <i class="fa-solid fa-box text-cyan-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">To Pack</p>
+                <p id="stat-to-pack" class="text-2xl font-bold text-gray-900">
+                  0
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center"
+              >
+                <i class="fa-solid fa-box-archive text-green-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">Packed</p>
+                <p id="stat-packed" class="text-2xl font-bold text-gray-900">
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Filter Tabs -->
+          <div class="flex items-center gap-1">
+            <button
+              onclick="setQuickFilter(this, 'today')"
+              class="quick-tab active px-4 py-2 rounded-lg text-sm font-semibold bg-primary-500 text-white"
+            >
+              Today
+            </button>
+            <button
+              onclick="setQuickFilter(this, 'yesterday')"
+              class="quick-tab px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:bg-surface-200"
+            >
+              Yesterday
+            </button>
+            <button
+              onclick="setQuickFilter(this, 'last7')"
+              class="quick-tab px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:bg-surface-200"
+            >
+              Last 7 Days
+            </button>
+            <button
+              onclick="setQuickFilter(this, 'last30')"
+              class="quick-tab px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:bg-surface-200"
+            >
+              Last 30 Days
+            </button>
+            <button
+              onclick="setQuickFilter(this, 'all')"
+              class="quick-tab px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:bg-surface-200"
+            >
+              All Time
+            </button>
           </div>
 
           <!-- Filter Bar -->
@@ -824,8 +1022,8 @@
               </select>
               <select
                 id="filter-status"
-                onchange="filterTable()"
-                class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]"
+                class="select2-status"
+                style="width: 220px"
               >
                 <option value="">All Status</option>
                 <option value="UNPAID">Unpaid</option>
@@ -2800,14 +2998,108 @@
         [
           "search-input",
           "filter-platform",
-          "filter-status",
           "filter-duplicate",
           "filter-date-from",
           "filter-date-to",
         ].forEach((id) => {
           document.getElementById(id).value = "";
         });
+        $("#filter-status").val("").trigger("change.select2");
+        // Reset quick filter to "All Time"
+        document.querySelectorAll(".quick-tab").forEach((t) => {
+          t.classList.remove("active", "bg-primary-500", "text-white");
+          t.classList.add("text-gray-600");
+        });
+        const allBtn = document.querySelector(".quick-tab:last-child");
+        if (allBtn) {
+          allBtn.classList.add("active", "bg-primary-500", "text-white");
+          allBtn.classList.remove("text-gray-600");
+        }
         filterTable();
+      }
+
+      function setQuickFilter(btn, period) {
+        // Update active tab style
+        document.querySelectorAll(".quick-tab").forEach((t) => {
+          t.classList.remove("active", "bg-primary-500", "text-white");
+          t.classList.add("text-gray-600");
+        });
+        btn.classList.add("active", "bg-primary-500", "text-white");
+        btn.classList.remove("text-gray-600");
+
+        // Calculate date range
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let fromDate = null;
+        let toDate = new Date();
+        toDate.setHours(23, 59, 59, 999);
+
+        switch (period) {
+          case "today":
+            fromDate = new Date(today);
+            break;
+          case "yesterday":
+            fromDate = new Date(today);
+            fromDate.setDate(fromDate.getDate() - 1);
+            toDate = new Date(fromDate);
+            toDate.setHours(23, 59, 59, 999);
+            break;
+          case "last7":
+            fromDate = new Date(today);
+            fromDate.setDate(fromDate.getDate() - 6);
+            break;
+          case "last30":
+            fromDate = new Date(today);
+            fromDate.setDate(fromDate.getDate() - 29);
+            break;
+          case "all":
+            fromDate = null;
+            toDate = null;
+            break;
+        }
+
+        // Update date inputs
+        const fromInput = document.getElementById("filter-date-from");
+        const toInput = document.getElementById("filter-date-to");
+        fromInput.value = fromDate ? fromDate.toISOString().split("T")[0] : "";
+        toInput.value = toDate ? toDate.toISOString().split("T")[0] : "";
+
+        filterTable();
+      }
+
+      function updateStats() {
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+        const todayMs = now.getTime();
+        const tomorrowMs = todayMs + 86400000;
+
+        // Filter orders for today
+        const todayOrders = ALL_ORDERS.filter(
+          (o) => o._orderDateMs >= todayMs && o._orderDateMs < tomorrowMs,
+        );
+
+        // Count by status
+        const toConfirm = todayOrders.filter(
+          (o) => o.order_status === "UNPAID" || o.order_status === "ON_HOLD",
+        ).length;
+        const toPack = todayOrders.filter(
+          (o) =>
+            o.order_status === "READY_TO_SHIP" ||
+            o.order_status === "AWAITING_SHIPMENT" ||
+            o.order_status === "PROCESSED",
+        ).length;
+        const packed = todayOrders.filter(
+          (o) =>
+            o.order_status === "SHIPPED" ||
+            o.order_status === "IN_TRANSIT" ||
+            o.order_status === "AWAITING_COLLECTION",
+        ).length;
+
+        document.getElementById("stat-total-orders").textContent =
+          todayOrders.length;
+        document.getElementById("stat-to-confirm").textContent = toConfirm;
+        document.getElementById("stat-to-pack").textContent = toPack;
+        document.getElementById("stat-packed").textContent = packed;
       }
 
       function setTab(btn, tab) {
@@ -3260,8 +3552,23 @@
         el.textContent = now.toLocaleString("en-GB", opts);
       })();
 
+      // Init Select2 for status filter
+      $(document).ready(function () {
+        $("#filter-status")
+          .select2({
+            placeholder: "All Status",
+            allowClear: true,
+            minimumResultsForSearch: 0,
+            width: "style",
+          })
+          .on("change", function () {
+            filterTable();
+          });
+      });
+
       // Init orders table
       filterTable();
+      updateStats();
     </script>
   </body>
 </html>

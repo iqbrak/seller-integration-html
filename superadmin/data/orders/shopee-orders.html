@@ -15,6 +15,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -269,6 +275,103 @@
       .tiktok-field {
         display: none;
       }
+
+      /* Select2 custom styling */
+      .select2-container--default .select2-selection--single {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        height: 42px;
+        padding: 6px 12px;
+        font-size: 14px;
+        color: #374151;
+        transition: all 0.2s;
+      }
+      .select2-container--default .select2-selection--single:hover {
+        border-color: #cbd5e1;
+      }
+      .select2-container--default.select2-container--focus
+        .select2-selection--single,
+      .select2-container--default.select2-container--open
+        .select2-selection--single {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+        outline: none;
+        background: #fff;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__rendered {
+        color: #374151;
+        line-height: 28px;
+        padding-left: 0;
+        padding-right: 24px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__placeholder {
+        color: #9ca3af;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow {
+        height: 42px;
+        right: 8px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow
+        b {
+        border-color: #9ca3af transparent transparent transparent;
+      }
+      .select2-dropdown {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-top: 4px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      .select2-container--default .select2-search--dropdown {
+        padding: 8px 10px;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 6px 10px;
+        font-size: 13px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        outline: none;
+        transition: all 0.2s;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+      }
+      .select2-results__option {
+        padding: 8px 12px;
+        font-size: 13px;
+        transition: background 0.15s;
+      }
+      .select2-container--default
+        .select2-results__option--highlighted[aria-selected] {
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .select2-container--default .select2-results__option--selected {
+        background: #dbeafe;
+        color: #1e40af;
+        font-weight: 600;
+      }
+      .select2-container {
+        min-width: 160px;
+      }
     </style>
   </head>
 
@@ -349,31 +452,13 @@
                 href="all-orders.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                All Orders
+                Semua
               </a>
               <a
-                href="to-confirm-orders.html"
+                href="to-ship.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                Awaiting Confirmation
-              </a>
-              <a
-                href="to-pack-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Ready to Pack
-              </a>
-              <a
-                href="packed-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Packed Orders
-              </a>
-              <a
-                href="returned-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Returned Orders
+                To Ship
               </a>
               <a
                 href="shopee-orders.html"
@@ -385,7 +470,7 @@
                 href="tiktok-orders.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                TikTok/Tokopedia
+                TikTok / Tokopedia
               </a>
             </div>
           </div>
@@ -824,8 +909,8 @@
               </div>
               <select
                 id="filter-status"
-                onchange="filterTable()"
-                class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]"
+                class="select2-status"
+                style="width: 220px"
               >
                 <option value="">All Status</option>
                 <option value="UNPAID">Unpaid</option>
@@ -2309,9 +2394,7 @@
           const isShopee = platform === "shopee";
           const orderDate = new Date(Date.now() - randInt(1, 180) * 86400000);
           const paymentDate = addHours(orderDate, randInt(1, 12));
-          const isShipped = ["SHIPPED", "COMPLETED", "PROCESSED"].includes(
-            status,
-          );
+          const isShipped = ["SHIPPED", "COMPLETED"].includes(status);
           const shipDate = isShipped
             ? addDays(paymentDate, randInt(1, 3))
             : null;
@@ -2769,13 +2852,13 @@
       function resetFilter() {
         [
           "search-input",
-          "filter-status",
           "filter-duplicate",
           "filter-date-from",
           "filter-date-to",
         ].forEach((id) => {
           document.getElementById(id).value = "";
         });
+        $("#filter-status").val("").trigger("change.select2");
         filterTable();
       }
 
@@ -3228,6 +3311,20 @@
         };
         el.textContent = now.toLocaleString("en-GB", opts);
       })();
+
+      // Init Select2 for status filter
+      $(document).ready(function () {
+        $("#filter-status")
+          .select2({
+            placeholder: "All Status",
+            allowClear: true,
+            minimumResultsForSearch: 0,
+            width: "style",
+          })
+          .on("change", function () {
+            filterTable();
+          });
+      });
 
       // Init orders table
       filterTable();

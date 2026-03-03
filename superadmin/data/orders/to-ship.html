@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seller Integration - To Pack Orders</title>
+    <title>Seller Integration - To Ship Orders</title>
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,6 +15,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -269,6 +275,103 @@
       .tiktok-field {
         display: none;
       }
+
+      /* Select2 custom styling */
+      .select2-container--default .select2-selection--single {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        height: 42px;
+        padding: 6px 12px;
+        font-size: 14px;
+        color: #374151;
+        transition: all 0.2s;
+      }
+      .select2-container--default .select2-selection--single:hover {
+        border-color: #cbd5e1;
+      }
+      .select2-container--default.select2-container--focus
+        .select2-selection--single,
+      .select2-container--default.select2-container--open
+        .select2-selection--single {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+        outline: none;
+        background: #fff;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__rendered {
+        color: #374151;
+        line-height: 28px;
+        padding-left: 0;
+        padding-right: 24px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__placeholder {
+        color: #9ca3af;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow {
+        height: 42px;
+        right: 8px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow
+        b {
+        border-color: #9ca3af transparent transparent transparent;
+      }
+      .select2-dropdown {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-top: 4px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      .select2-container--default .select2-search--dropdown {
+        padding: 8px 10px;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 6px 10px;
+        font-size: 13px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        outline: none;
+        transition: all 0.2s;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+      }
+      .select2-results__option {
+        padding: 8px 12px;
+        font-size: 13px;
+        transition: background 0.15s;
+      }
+      .select2-container--default
+        .select2-results__option--highlighted[aria-selected] {
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+      .select2-container--default .select2-results__option--selected {
+        background: #dbeafe;
+        color: #1e40af;
+        font-weight: 600;
+      }
+      .select2-container {
+        min-width: 160px;
+      }
     </style>
   </head>
 
@@ -349,31 +452,13 @@
                 href="all-orders.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                All Orders
+                Semua
               </a>
               <a
-                href="to-confirm-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Awaiting Confirmation
-              </a>
-              <a
-                href="to-pack-orders.html"
+                href="to-ship.html"
                 class="block py-2 px-4 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg"
               >
-                Ready to Pack
-              </a>
-              <a
-                href="packed-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Packed Orders
-              </a>
-              <a
-                href="returned-orders.html"
-                class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
-              >
-                Returned Orders
+                To Ship
               </a>
               <a
                 href="shopee-orders.html"
@@ -385,7 +470,7 @@
                 href="tiktok-orders.html"
                 class="block py-2 px-4 text-sm text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
               >
-                TikTok/Tokopedia
+                TikTok / Tokopedia
               </a>
             </div>
           </div>
@@ -766,11 +851,10 @@
                 >
                   <i class="fa-solid fa-cart-shopping text-white text-sm"></i>
                 </span>
-                To Pack Orders
+                To Ship Orders
               </h2>
               <p class="text-slate-500 text-sm mt-1.5">
-                Orders that have been confirmed and are ready to be prepared for
-                packaging and shipment
+                Orders ready for packing and shipping.
               </p>
               <p class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
                 <i class="fa-regular fa-clock"></i>
@@ -781,108 +865,216 @@
               </p>
             </div>
             <div class="flex items-center gap-2">
-              <button
-                onclick="exportData(this)"
-                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-surface-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-surface-50 transition-all shadow-sm"
-              >
-                <i class="fa-solid fa-file-csv text-gray-500"></i>
-                Export CSV
-              </button>
-              <button
+              <a
+                href="../data-upload.html"
                 class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 text-white text-sm font-semibold rounded-xl hover:bg-primary-600 transition-all shadow shadow-primary-500/30"
               >
-                <i class="fa-solid fa-file-excel"></i>
-                Export Excel
-              </button>
+                <i class="fa-solid fa-upload"></i>
+                Upload New File
+              </a>
             </div>
           </div>
 
           <!-- Filter Bar -->
           <div
-            class="bg-white rounded-2xl border border-surface-200 shadow-sm p-4 space-y-3"
+            class="bg-white rounded-2xl border border-surface-200 shadow-sm p-5"
           >
-            <div class="flex flex-wrap items-center gap-3">
-              <div class="relative flex-1 min-w-[220px]">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >From Date</label
+                >
                 <input
-                  type="text"
-                  id="search-input"
-                  placeholder="Search order ID, tracking, buyer, product…"
-                  class="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
-                  oninput="filterTable()"
+                  type="date"
+                  id="filter-date-from"
+                  class="w-full px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
                 />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >To Date</label
+                >
+                <input
+                  type="date"
+                  id="filter-date-to"
+                  class="w-full px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+                />
+              </div>
+              <div class="md:col-span-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Search</label
+                >
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Order ID or customer name..."
+                    class="w-full pl-10 pr-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all"
+                  />
+                  <i
+                    class="fa-solid fa-search text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 text-sm"
+                  ></i>
+                </div>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Platform</label
+                >
+                <select
+                  id="filter-platform"
+                  class="w-full px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none"
+                >
+                  <option value="">All</option>
+                  <option value="shopee">Shopee</option>
+                  <option value="tiktok">Tiktok</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Status</label
+                >
+                <select
+                  id="filter-status-simple"
+                  class="w-full px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none"
+                >
+                  <option value="">All</option>
+                  <option value="need_ship">Perlu Dikirim</option>
+                  <option value="need_confirm">Perlu Dikonfirm</option>
+                </select>
+              </div>
+              <div class="md:col-span-1">
+                <button
+                  onclick="filterTable()"
+                  class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-500 text-white rounded-xl text-sm font-semibold hover:bg-primary-600 transition shadow"
+                >
+                  <i class="fa-solid fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center"
+              >
+                <i class="fa-solid fa-box text-blue-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">Total Pesanan</p>
+                <p
+                  id="stat-total-pesanan"
+                  class="text-2xl font-bold text-gray-900"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center"
+              >
+                <i class="fa-solid fa-truck text-cyan-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">Perlu Dikirim</p>
+                <p
+                  id="stat-perlu-dikirim"
+                  class="text-2xl font-bold text-gray-900"
+                >
+                  0
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center"
+              >
                 <i
-                  class="fa-solid fa-search text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 text-sm"
+                  class="fa-solid fa-circle-question text-amber-500 text-lg"
                 ></i>
               </div>
-              <select
-                id="filter-platform"
-                onchange="filterTable()"
-                class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]"
-              >
-                <option value="">All Platform</option>
-                <option value="shopee">Shopee</option>
-                <option value="tiktok">TikTok / Tokopedia</option>
-              </select>
-              <select
-                id="filter-status"
-                onchange="filterTable()"
-                class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[160px]"
-              >
-                <option value="">All Status</option>
-                <option value="READY_TO_SHIP">Ready to Ship</option>
-                <option value="AWAITING_SHIPMENT">Awaiting Shipment</option>
-                <option value="PROCESSED">Processed</option>
-                <option value="AWAITING_COLLECTION">Awaiting Pickup</option>
-              </select>
-              <!-- Status locked to "To Pack" — not user-changeable -->
-              <div
-                class="flex items-center gap-1.5 px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-xl text-sm font-semibold text-blue-700 select-none"
-                title="Status filter is fixed for this page"
-              >
-                <i class="fa-solid fa-lock text-blue-400 text-xs"></i>
-                Status: To Pack
+              <div>
+                <p class="text-sm text-gray-500 font-medium">Perlu Dikonfirm</p>
+                <p
+                  id="stat-perlu-konfirm"
+                  class="text-2xl font-bold text-gray-900"
+                >
+                  0
+                </p>
               </div>
-              <select
-                id="filter-duplicate"
-                onchange="filterTable()"
-                class="px-3 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all appearance-none min-w-[150px]"
-              >
-                <option value="">All Data</option>
-                <option value="true">Duplicate Only</option>
-                <option value="false">Non-Duplicate</option>
-              </select>
             </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-4 flex items-center gap-4"
+            >
+              <div
+                class="w-12 h-12 bg-violet-50 rounded-xl flex items-center justify-center"
+              >
+                <i class="fa-solid fa-store text-violet-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 font-medium">Platforms</p>
+                <p id="stat-platforms" class="text-2xl font-bold text-gray-900">
+                  0
+                </p>
+              </div>
+            </div>
+          </div>
 
-            <div class="flex flex-wrap items-center gap-3">
-              <i class="fa-regular fa-calendar text-gray-400 text-sm"></i>
-              <span class="text-xs font-medium text-gray-500">Order Date:</span>
-              <input
-                type="date"
-                id="filter-date-from"
-                onchange="filterTable()"
-                class="px-3 py-2 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
-              />
-              <span class="text-xs text-gray-400">→</span>
-              <input
-                type="date"
-                id="filter-date-to"
-                onchange="filterTable()"
-                class="px-3 py-2 bg-surface-50 border border-surface-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
-              />
-              <button
-                onclick="resetFilter()"
-                class="px-3 py-2 bg-surface-100 text-gray-500 text-sm font-medium rounded-xl hover:bg-surface-200 transition-all flex items-center gap-1.5"
-              >
-                <i class="fa-solid fa-rotate-right text-xs"></i> Reset
-              </button>
+          <!-- Keterangan (Legend) -->
+          <div class="flex flex-wrap items-center gap-4 text-sm">
+            <span class="text-gray-600 font-medium">Keterangan:</span>
+            <div class="flex items-center gap-1.5">
               <span
-                class="ml-auto text-xs text-gray-400 font-medium whitespace-nowrap"
-                >Showing
-                <span id="count-num" class="font-bold text-gray-700">—</span> of
-                <span id="count-total" class="font-bold text-gray-700">—</span>
-                orders</span
+                class="px-2.5 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-semibold"
+                >Perlu Dikirim</span
               >
+              <span class="text-gray-500">= Sudah ada resi</span>
             </div>
+            <div class="flex items-center gap-1.5">
+              <span
+                class="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold"
+                >Perlu Dikonfirm</span
+              >
+              <span class="text-gray-500">= Belum ada resi</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span
+                class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold"
+                >BTL</span
+              >
+              <span class="text-gray-500">= Pembatalan diajukan</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span
+                class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs font-semibold"
+                >DUP</span
+              >
+              <span class="text-gray-500">= Order ID sama (multi-item)</span>
+            </div>
+          </div>
+
+          <!-- Result Count -->
+          <div class="flex items-center justify-between">
+            <p class="text-sm text-gray-600">
+              Showing
+              <span id="count-rows" class="font-semibold text-gray-800">0</span>
+              rows (<span id="count-unique" class="font-semibold text-gray-800"
+                >0</span
+              >
+              unique) of
+              <span id="count-total" class="font-semibold text-gray-800"
+                >0</span
+              >
+              total pesanan
+            </p>
           </div>
 
           <!-- Data Table -->
@@ -890,53 +1082,26 @@
             class="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden"
           >
             <div class="overflow-x-auto">
-              <table class="w-full text-sm min-w-[1100px]">
+              <table class="w-full text-sm min-w-[1400px]">
                 <thead>
                   <tr class="border-b border-surface-200 bg-surface-50">
                     <th
-                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-10"
+                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-600"
+                      onclick="sortTable('platform')"
                     >
-                      <input
-                        type="checkbox"
-                        id="check-all"
-                        class="rounded"
-                        onchange="toggleAllCheckbox(this)"
-                      />
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider w-10"
-                    >
-                      #
+                      Platform
                     </th>
                     <th
                       class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-600"
                       onclick="sortTable('order_id')"
                     >
                       Order ID
-                      <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-600"
-                      onclick="sortTable('platform')"
-                    >
-                      Platform
-                      <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
-                    >
-                      Product
-                    </th>
-                    <th
-                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
-                    >
-                      Customer
                     </th>
                     <th
                       class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-600"
                       onclick="sortTable('order_status')"
                     >
-                      Status <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
+                      Status
                     </th>
                     <th
                       class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
@@ -944,18 +1109,36 @@
                       Tracking
                     </th>
                     <th
+                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
+                    >
+                      Product
+                    </th>
+                    <th
+                      class="text-center px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
+                    >
+                      QTY
+                    </th>
+                    <th
                       class="text-right px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-600"
                       onclick="sortTable('total_payment')"
                     >
-                      Total Payment
-                      <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
+                      Total
+                    </th>
+                    <th
+                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
+                    >
+                      Customer
+                    </th>
+                    <th
+                      class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider"
+                    >
+                      Location
                     </th>
                     <th
                       class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-600"
-                      onclick="sortTable('order_created_time')"
+                      onclick="sortTable('_orderDateMs')"
                     >
                       Order Date
-                      <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
                     </th>
                   </tr>
                 </thead>
@@ -2256,6 +2439,16 @@
         "Sepatu Boot Wanita Kulit Asli Premium",
         "Set Peralatan Masak Anti Lengket 5 Pcs",
         "Kacamata Minus Bingkai Titanium Tipis",
+        "Celana Jeans Slim Fit Pria Stretch",
+        "Gamis Syari Polos Wanita Set Hijab",
+        "Earphone Bluetooth Wireless TWS Premium",
+        "Mouse Gaming RGB 6 Tombol DPI 3200",
+        "Charger Fast Charging Type C 65W PD",
+        "Tumbler Stainless Steel 500ml Keep Cold",
+        "Sandal Slop Pria Anti Slip EVA Foam",
+        "Dompet Kulit Pria RFID Blocking Original",
+        "Masker Wajah Organic Clay Mask 100g",
+        "Kemeja Flanel Kotak Unisex Oversized",
       ];
       const CITIES = [
         "Jakarta Selatan",
@@ -2266,6 +2459,14 @@
         "Semarang",
         "Palembang",
         "Tangerang",
+        "Bekasi",
+        "Depok",
+        "Bogor",
+        "Yogyakarta",
+        "Malang",
+        "Solo",
+        "Denpasar",
+        "Balikpapan",
       ];
       const PROVINCES = [
         "DKI Jakarta",
@@ -2274,6 +2475,11 @@
         "Sumatera Utara",
         "Sulawesi Selatan",
         "Jawa Tengah",
+        "Banten",
+        "Sumatera Selatan",
+        "D.I. Yogyakarta",
+        "Bali",
+        "Kalimantan Timur",
       ];
       const BUYER_NAMES = [
         "budi.santoso",
@@ -2286,6 +2492,16 @@
         "nabila_cantik",
         "hendra_s",
         "yeni.a",
+        "muhammad_iqbal",
+        "sarah.amanda",
+        "dewi_lestari21",
+        "agus.prasetyo",
+        "putri_ayu_",
+        "rendi.kusuma",
+        "fitria99",
+        "yoga_perdana",
+        "novi.indah",
+        "bayu_setiawan",
       ];
 
       function randInt(a, b) {
@@ -2323,13 +2539,26 @@
 
       function generateOrders(n) {
         const orders = [];
+        // For to-ship page, we want 80% of orders to be "to ship" statuses
+        const TO_SHIP_SHOPEE = ["READY_TO_SHIP", "PROCESSED"];
+        const TO_SHIP_TIKTOK = ["AWAITING_SHIPMENT", "AWAITING_COLLECTION"];
+
         for (let i = 0; i < n; i++) {
           const platform = randItem(PLATFORMS);
           const isShopee = platform === "shopee";
-          const status = isShopee
-            ? randItem(SHOPEE_STATUSES)
-            : randItem(TIKTOK_STATUSES);
-          const orderDate = new Date(Date.now() - randInt(1, 180) * 86400000);
+          // 80% chance to be a "to ship" status
+          let status;
+          if (Math.random() < 0.8) {
+            status = isShopee
+              ? randItem(TO_SHIP_SHOPEE)
+              : randItem(TO_SHIP_TIKTOK);
+          } else {
+            status = isShopee
+              ? randItem(SHOPEE_STATUSES)
+              : randItem(TIKTOK_STATUSES);
+          }
+          // Use recent dates (last 7 days) for more realistic to-ship data
+          const orderDate = new Date(Date.now() - randInt(0, 7) * 86400000);
           const paymentDate = addHours(orderDate, randInt(1, 12));
           const isShipped = [
             "SHIPPED",
@@ -2411,10 +2640,12 @@
                 : null,
 
             // ── Shipping ────────────────────────────────────────────────────────
-            tracking_number: isShipped
-              ? randItem(["JNE", "JT", "SCP", "ANT"]) +
-                randInt(100000000, 999999999)
-              : null,
+            // For to-ship page: ~60% have tracking (Perlu Dikirim), ~40% don't (Perlu Dikonfirm)
+            tracking_number:
+              isShipped || Math.random() < 0.6
+                ? randItem(["JNE", "JT", "SCP", "ANT"]) +
+                  randInt(100000000, 999999999)
+                : null,
             shipping_option: randItem([
               "Standard",
               "Express",
@@ -2574,7 +2805,7 @@
               : null,
 
             // ── Flags ────────────────────────────────────────────────────────────
-            is_duplicate: Math.random() < 0.012,
+            is_duplicate: Math.random() < 0.08, // ~8% duplicates for demo
           });
         }
         return orders;
@@ -2660,51 +2891,81 @@
         const start = (currentPage - 1) * perPage;
         const slice = filteredOrders.slice(start, start + perPage);
 
-        document.getElementById("count-num").textContent =
-          filteredOrders.length.toLocaleString("id-ID");
-        document.getElementById("count-total").textContent =
-          ALL_ORDERS.length.toLocaleString("id-ID");
+        // Calculate unique order IDs
+        const uniqueOrderIds = new Set(filteredOrders.map((o) => o.order_id));
+        document.getElementById("count-rows").textContent =
+          filteredOrders.length;
+        document.getElementById("count-unique").textContent =
+          uniqueOrderIds.size;
+        document.getElementById("count-total").textContent = ALL_ORDERS.filter(
+          (o) => {
+            const LOCKED_STATUSES = [
+              "ready_to_ship",
+              "awaiting_shipment",
+              "processed",
+              "awaiting_collection",
+            ];
+            return LOCKED_STATUSES.includes(o.order_status.toLowerCase());
+          },
+        ).length;
         document.getElementById("curr-page").textContent = currentPage;
         document.getElementById("total-pages").textContent = totalPages;
 
         if (!slice.length) {
-          tbody.innerHTML = `<tr><td colspan="11" class="text-center py-16 text-gray-400"><i class="fa-solid fa-box-open text-3xl mb-3 block text-gray-300"></i>No orders found</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="10" class="text-center py-16 text-gray-400"><i class="fa-solid fa-box-open text-3xl mb-3 block text-gray-300"></i>No orders found</td></tr>`;
           renderPagination(0, perPage);
           return;
         }
         tbody.innerHTML = slice
-          .map(
-            (o) => `
-      <tr class="table-row-hover transition-colors ${o.is_duplicate ? "bg-amber-50" : ""}" onclick="openOrderModal('${o.id}')">
-        <td class="px-4 py-3" onclick="event.stopPropagation()"><input type="checkbox" class="row-check rounded" value="${o.id}"></td>
-        <td class="px-4 py-3 text-xs text-gray-400 font-medium">${(currentPage - 1) * perPage + slice.indexOf(o) + 1}</td>
-        <td class="px-4 py-3">
-          <p class="text-xs font-bold text-gray-900 font-mono">${o.order_id}</p>
-        </td>
+          .map((o) => {
+            const hasTracking =
+              o.tracking_number && o.tracking_number.trim() !== "";
+            const statusLabel = hasTracking
+              ? "Perlu Dikirim"
+              : "Perlu Dikonfirm";
+            const statusClass = hasTracking
+              ? "bg-cyan-100 text-cyan-700"
+              : "bg-purple-100 text-purple-700";
+            const dupBadge = o.is_duplicate
+              ? `<span class="ml-1 px-1.5 py-0.5 bg-gray-200 text-gray-600 rounded text-[10px] font-bold">DUP</span>`
+              : "";
+            return `
+      <tr class="table-row-hover transition-colors" onclick="openOrderModal('${o.id}')">
         <td class="px-4 py-3">${platformBadge(o.platform)}</td>
-        <td class="px-4 py-3 max-w-[180px]">
-          <p class="text-xs font-semibold text-gray-800 truncate" title="${o.product_name}">${o.product_name}</p>
-          ${o.variation_name ? `<p class="text-[10px] text-gray-400 mt-0.5">${o.variation_name}</p>` : ""}
+        <td class="px-4 py-3">
+          <a href="#" class="text-sm font-semibold text-violet-600 hover:underline" onclick="event.stopPropagation(); openOrderModal('${o.id}')">${o.order_id}</a>${dupBadge}
         </td>
         <td class="px-4 py-3">
-          <p class="text-xs font-medium text-gray-800">${o.buyer_username}</p>
-          <p class="text-[10px] text-gray-400 mt-0.5">${o.city}</p>
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusClass}">${statusLabel}</span>
         </td>
-        <td class="px-4 py-3">${statusBadge(o.order_status)}</td>
         <td class="px-4 py-3">
           ${
-            o.tracking_number
-              ? `<p class="text-xs font-mono text-primary-600 font-medium">${o.tracking_number}</p><p class="text-[10px] text-gray-400">${o.shipping_provider}</p>`
-              : `<span class="text-xs text-gray-300">—</span>`
+            hasTracking
+              ? `<p class="text-xs font-mono text-gray-700">${o.tracking_number}</p>`
+              : `<span class="text-xs text-gray-400">-</span>`
           }
         </td>
-        <td class="px-4 py-3 text-right">
-          <p class="text-xs font-bold text-gray-900">${fmtRp(o.total_payment)}</p>
+        <td class="px-4 py-3 max-w-[200px]">
+          <p class="text-xs text-gray-800 truncate" title="${o.product_name}">${o.product_name}</p>
         </td>
-        <td class="px-4 py-3 whitespace-nowrap"><p class="text-xs text-gray-700">${o.order_created_time || "—"}</p></td>
+        <td class="px-4 py-3 text-center">
+          <span class="text-sm font-medium text-gray-800">${o.quantity || 1}</span>
+        </td>
+        <td class="px-4 py-3 text-right">
+          <p class="text-sm font-semibold text-gray-900">${fmtRp(o.total_payment)}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-xs text-gray-700">${o.buyer_username}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-xs text-gray-600">${o.city}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-xs text-gray-600">${o.order_created_time || "-"}</p>
+        </td>
       </tr>
-    `,
-          )
+    `;
+          })
           .join("");
         renderPagination(filteredOrders.length, perPage);
       }
@@ -2754,8 +3015,14 @@
           .getElementById("search-input")
           .value.toLowerCase();
         const platform = document.getElementById("filter-platform").value;
-        const status = "to pack"; // locked for this page
-        const dup = document.getElementById("filter-duplicate").value;
+        const LOCKED_STATUSES = [
+          "ready_to_ship",
+          "awaiting_shipment",
+          "processed",
+          "awaiting_collection",
+        ]; // locked for this page
+        const simpleStatus =
+          document.getElementById("filter-status-simple")?.value || "";
         const dateFrom = document.getElementById("filter-date-from").value;
         const dateTo = document.getElementById("filter-date-to").value;
         const msFrom = dateFrom ? new Date(dateFrom).getTime() : null;
@@ -2775,32 +3042,77 @@
             (platform === "tiktok"
               ? o.platform === "tiktok" || o.platform === "tokopedia"
               : o.platform === platform);
-          const mst = !status || o.order_status.toLowerCase() === status;
-          const md = !dup || String(o.is_duplicate) === dup;
-          const mt =
-            currentTab === "all"
-              ? true
-              : o.order_status.toLowerCase() === currentTab;
+          // Must be in to-ship statuses
+          const isToShip = LOCKED_STATUSES.includes(
+            o.order_status.toLowerCase(),
+          );
+          // Apply simple status filter
+          let mSimple = true;
+          if (simpleStatus === "need_ship") {
+            mSimple = o.tracking_number && o.tracking_number.trim() !== "";
+          } else if (simpleStatus === "need_confirm") {
+            mSimple = !o.tracking_number || o.tracking_number.trim() === "";
+          }
           const mdf = !msFrom || o._orderDateMs >= msFrom;
           const mdt = !msTo || o._orderDateMs <= msTo;
-          return ms && mp && mst && md && mt && mdf && mdt;
+          return ms && mp && isToShip && mSimple && mdf && mdt;
         });
         if (sortKey) applySort();
         currentPage = 1;
         renderTable();
+        updateStats();
       }
 
       function resetFilter() {
         [
           "search-input",
           "filter-platform",
-          "filter-duplicate",
+          "filter-status-simple",
           "filter-date-from",
           "filter-date-to",
         ].forEach((id) => {
-          document.getElementById(id).value = "";
+          const el = document.getElementById(id);
+          if (el) el.value = "";
         });
         filterTable();
+      }
+
+      // Handle date input change
+      document.addEventListener("DOMContentLoaded", function () {
+        const dateFromInput = document.getElementById("filter-date-from");
+        const dateToInput = document.getElementById("filter-date-to");
+        if (dateFromInput) {
+          dateFromInput.addEventListener("change", filterTable);
+        }
+        if (dateToInput) {
+          dateToInput.addEventListener("change", filterTable);
+        }
+      });
+
+      function updateStats() {
+        const LOCKED_STATUSES = [
+          "ready_to_ship",
+          "awaiting_shipment",
+          "processed",
+          "awaiting_collection",
+        ];
+        const toShipOrders = ALL_ORDERS.filter((o) =>
+          LOCKED_STATUSES.includes(o.order_status.toLowerCase()),
+        );
+        const needShip = toShipOrders.filter(
+          (o) => o.tracking_number && o.tracking_number.trim() !== "",
+        ).length;
+        const needConfirm = toShipOrders.filter(
+          (o) => !o.tracking_number || o.tracking_number.trim() === "",
+        ).length;
+        // Count unique platforms
+        const platforms = new Set(toShipOrders.map((o) => o.platform));
+
+        document.getElementById("stat-total-pesanan").textContent =
+          toShipOrders.length;
+        document.getElementById("stat-perlu-dikirim").textContent = needShip;
+        document.getElementById("stat-perlu-konfirm").textContent = needConfirm;
+        document.getElementById("stat-platforms").textContent = platforms.size;
       }
 
       function setTab(btn, tab) {
