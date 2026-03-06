@@ -103,6 +103,81 @@
       .fade-in {
         animation: fadeIn 0.25s ease both;
       }
+      .photo-thumb {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid #e9ecef;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .photo-thumb:hover {
+        border-color: #0c8ee6;
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .photo-drop-zone {
+        border: 2px dashed #dee2e6;
+        border-radius: 16px;
+        padding: 32px;
+        text-align: center;
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+      .photo-drop-zone:hover,
+      .photo-drop-zone.drag-over {
+        border-color: #0c8ee6;
+        background: #f0f7ff;
+      }
+      .photo-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .photo-preview-item {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        aspect-ratio: 1;
+      }
+      .photo-preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .photo-preview-item .remove-photo {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 20px;
+        height: 20px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .lightbox-overlay {
+        backdrop-filter: blur(8px);
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .modal-box {
+        animation: slideUp 0.25s ease;
+      }
     </style>
   </head>
 
@@ -400,7 +475,8 @@
                   Resi Checker
                 </h2>
                 <p class="text-slate-500 text-sm mt-0.5">
-                  View resi scanning reports from mobile app.
+                  View resi scanning reports from mobile app. Upload & view foto
+                  bukti per resi.
                 </p>
               </div>
             </div>
@@ -475,6 +551,74 @@
                 <div>
                   <p class="text-xs text-gray-400 font-semibold">Duplicates</p>
                   <p class="text-2xl font-extrabold text-gray-900">0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Row: Photo Stats -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-camera text-indigo-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">Total Foto</p>
+                  <p
+                    class="text-2xl font-extrabold text-gray-900"
+                    id="stat-total-photos"
+                  >
+                    4
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-image text-emerald-500"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">
+                    Resi Dengan Foto
+                  </p>
+                  <p
+                    class="text-2xl font-extrabold text-emerald-600"
+                    id="stat-resi-with-photo"
+                  >
+                    3
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-2xl border border-surface-200 p-5 card-hover"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center"
+                >
+                  <i class="fa-regular fa-image text-red-400"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-semibold">
+                    Resi Tanpa Foto
+                  </p>
+                  <p
+                    class="text-2xl font-extrabold text-red-500"
+                    id="stat-resi-no-photo"
+                  >
+                    3
+                  </p>
                 </div>
               </div>
             </div>
@@ -1159,6 +1303,11 @@
                       <th
                         class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
                       >
+                        Foto
+                      </th>
+                      <th
+                        class="text-center px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                      >
                         Actions
                       </th>
                     </tr>
@@ -1212,6 +1361,171 @@
               >
                 <span id="detail-record-count">1 records shown</span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- MODAL: Upload Photo -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+          id="photoUploadModal"
+          class="hidden fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
+          style="backdrop-filter: blur(4px)"
+        >
+          <div
+            class="modal-box bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden"
+          >
+            <div
+              class="flex items-center justify-between px-6 py-4 border-b border-surface-200"
+            >
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-camera text-white text-xs"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-gray-900 text-sm">
+                    Upload Foto Resi
+                  </h3>
+                  <p class="text-xs text-gray-400" id="upload-resi-label">—</p>
+                </div>
+              </div>
+              <button
+                onclick="closePhotoUpload()"
+                class="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-surface-100 rounded-lg transition"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 space-y-4">
+              <!-- Drop Zone -->
+              <div
+                id="photoDropZone"
+                class="photo-drop-zone"
+                onclick="document.getElementById('photoFileInput').click()"
+                ondragover="
+                  event.preventDefault();
+                  this.classList.add('drag-over');
+                "
+                ondragleave="this.classList.remove('drag-over')"
+                ondrop="
+                  event.preventDefault();
+                  this.classList.remove('drag-over');
+                  handlePhotoDrop(event);
+                "
+              >
+                <div
+                  class="w-14 h-14 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-3"
+                >
+                  <i
+                    class="fa-solid fa-cloud-arrow-up text-primary-500 text-xl"
+                  ></i>
+                </div>
+                <p class="text-sm font-semibold text-gray-700">
+                  Drag & drop foto di sini
+                </p>
+                <p class="text-xs text-gray-400 mt-1">
+                  atau klik untuk memilih file
+                </p>
+                <p class="text-[10px] text-gray-300 mt-2">
+                  JPG, PNG, WEBP — Max 5MB per foto — Max 3 foto per resi
+                </p>
+              </div>
+              <input
+                type="file"
+                id="photoFileInput"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                class="hidden"
+                onchange="handlePhotoSelect(this.files)"
+              />
+
+              <!-- Camera Capture (Mobile) -->
+              <button
+                onclick="document.getElementById('cameraCaptureInput').click()"
+                class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-50 border border-indigo-200 text-indigo-700 text-sm font-semibold rounded-xl hover:bg-indigo-100 transition"
+              >
+                <i class="fa-solid fa-camera"></i>Ambil Foto dari Kamera
+              </button>
+              <input
+                type="file"
+                id="cameraCaptureInput"
+                accept="image/*"
+                capture="environment"
+                class="hidden"
+                onchange="handlePhotoSelect(this.files)"
+              />
+
+              <!-- Preview Grid -->
+              <div id="photoPreviewContainer" class="hidden">
+                <p class="text-xs font-semibold text-gray-500 mb-2">
+                  Preview (<span id="photoCount">0</span>/3)
+                </p>
+                <div id="photoPreviewGrid" class="photo-preview-grid"></div>
+              </div>
+            </div>
+            <div
+              class="px-6 py-4 border-t border-surface-100 flex justify-end gap-2"
+            >
+              <button
+                onclick="closePhotoUpload()"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 bg-surface-100 hover:bg-surface-200 rounded-xl transition"
+              >
+                Batal
+              </button>
+              <button
+                onclick="savePhotos()"
+                id="btnSavePhoto"
+                disabled
+                class="px-4 py-2 text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition flex items-center gap-2"
+              >
+                <i class="fa-solid fa-check"></i>Simpan Foto
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- MODAL: Photo Lightbox -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div
+          id="photoLightbox"
+          class="hidden fixed inset-0 z-[60] lightbox-overlay bg-black/80 flex items-center justify-center p-4"
+          onclick="if (event.target === this) closeLightbox();"
+        >
+          <div class="relative max-w-3xl w-full">
+            <button
+              onclick="closeLightbox()"
+              class="absolute -top-10 right-0 text-white/70 hover:text-white text-lg transition"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img
+              id="lightboxImage"
+              src=""
+              alt="Foto Resi"
+              class="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+            />
+            <div class="flex items-center justify-center gap-3 mt-4">
+              <button
+                onclick="lightboxPrev()"
+                class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition"
+              >
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <span
+                id="lightboxCounter"
+                class="text-white text-sm font-semibold"
+                >1 / 1</span
+              >
+              <button
+                onclick="lightboxNext()"
+                class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition"
+              >
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -1291,6 +1605,45 @@
         months[now.getMonth()] +
         " " +
         now.getFullYear();
+
+      // ─── Mock Photo Data ───────────────────────────────────
+      var RESI_PHOTOS = {
+        JNE0823746510293847: [
+          {
+            id: "p1",
+            url: "https://placehold.co/400x400/e0effe/0c8ee6?text=Foto+Paket+1",
+            name: "paket-jne-01.jpg",
+            uploadedAt: "12 Feb 2026, 15:35",
+          },
+        ],
+        JP0091827364501928: [
+          {
+            id: "p2",
+            url: "https://placehold.co/400x400/d1fae5/059669?text=Foto+Resi+JT",
+            name: "resi-jt-01.jpg",
+            uploadedAt: "12 Feb 2026, 15:40",
+          },
+          {
+            id: "p3",
+            url: "https://placehold.co/400x400/fef3c7/d97706?text=Foto+Paket+JT",
+            name: "paket-jt-01.jpg",
+            uploadedAt: "12 Feb 2026, 15:41",
+          },
+        ],
+        NX7654321098765432: [
+          {
+            id: "p4",
+            url: "https://placehold.co/400x400/ede9fe/7c3aed?text=Foto+Drop+Malam",
+            name: "drop-malam.jpg",
+            uploadedAt: "11 Feb 2026, 21:15",
+          },
+        ],
+      };
+
+      var uploadTargetResi = null;
+      var pendingPhotos = [];
+      var lightboxPhotos = [];
+      var lightboxIndex = 0;
 
       // ─── Mock Session Data ───────────────────────────────────
       var SESSIONS = [
@@ -1446,15 +1799,25 @@
               '<td class="px-4 py-3"><span class="text-xs text-gray-600">' +
               r.scannedAt +
               "</span></td>" +
-              '<td class="px-4 py-3 text-center"><button class="p-2 hover:bg-primary-50 rounded-lg transition" title="Copy Resi" onclick="copyResi(\'' +
+              '<td class="px-4 py-3 text-center">' +
+              renderPhotoCell(r.number) +
+              "</td>" +
+              '<td class="px-4 py-3 text-center"><div class="flex items-center justify-center gap-1"><button class="p-2 hover:bg-primary-50 rounded-lg transition" title="Copy Resi" onclick="copyResi(\'' +
               r.number +
-              '\')"><i class="fa-regular fa-copy text-gray-400 hover:text-primary-600 text-sm"></i></button></td>' +
+              '\')"><i class="fa-regular fa-copy text-gray-400 hover:text-primary-600 text-sm"></i></button>' +
+              '<button class="p-2 hover:bg-indigo-50 rounded-lg transition" title="Upload Foto" onclick="openPhotoUpload(\'' +
+              r.number +
+              "')\">" +
+              '<i class="fa-solid fa-camera text-gray-400 hover:text-indigo-600 text-sm"></i></button></div></td>' +
               "</tr>",
           )
           .join("");
 
         document.getElementById("detail-record-count").textContent =
           s.resi.length + " records shown";
+        document
+          .getElementById("view-detail")
+          .setAttribute("data-session-idx", idx);
         showView("detail");
       }
 
@@ -1463,6 +1826,228 @@
           alert("Resi copied: " + text.substring(0, 30) + "...");
         });
       }
+
+      // ─── Photo Functions ─────────────────────────────────────
+      function renderPhotoCell(resiNumber) {
+        var photos = RESI_PHOTOS[resiNumber];
+        if (!photos || photos.length === 0) {
+          return '<span class="text-gray-300 text-xs"><i class="fa-regular fa-image"></i></span>';
+        }
+        var html = '<div class="flex items-center justify-center gap-1">';
+        html +=
+          '<img src="' +
+          photos[0].url +
+          '" class="photo-thumb" onclick="openLightbox(\'' +
+          resiNumber +
+          '\', 0)" alt="Foto">';
+        if (photos.length > 1) {
+          html +=
+            '<span class="text-[10px] font-bold text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded-full cursor-pointer" onclick="openLightbox(\'' +
+            resiNumber +
+            "', 0)\">+" +
+            (photos.length - 1) +
+            "</span>";
+        }
+        html += "</div>";
+        return html;
+      }
+
+      function openPhotoUpload(resiNumber) {
+        uploadTargetResi = resiNumber;
+        pendingPhotos = [];
+        document.getElementById("upload-resi-label").textContent =
+          "Resi: " +
+          resiNumber.substring(0, 30) +
+          (resiNumber.length > 30 ? "..." : "");
+        document
+          .getElementById("photoPreviewContainer")
+          .classList.add("hidden");
+        document.getElementById("photoPreviewGrid").innerHTML = "";
+        document.getElementById("photoFileInput").value = "";
+        document.getElementById("cameraCaptureInput").value = "";
+        document.getElementById("btnSavePhoto").disabled = true;
+        var existing = RESI_PHOTOS[resiNumber]
+          ? RESI_PHOTOS[resiNumber].length
+          : 0;
+        if (existing >= 3) {
+          alert(
+            "Resi ini sudah memiliki 3 foto (maksimum). Hapus foto lama terlebih dahulu.",
+          );
+          return;
+        }
+        document.getElementById("photoUploadModal").classList.remove("hidden");
+      }
+
+      function closePhotoUpload() {
+        document.getElementById("photoUploadModal").classList.add("hidden");
+        uploadTargetResi = null;
+        pendingPhotos = [];
+      }
+
+      function handlePhotoDrop(e) {
+        var files = e.dataTransfer.files;
+        handlePhotoSelect(files);
+      }
+
+      function handlePhotoSelect(files) {
+        var existing = RESI_PHOTOS[uploadTargetResi]
+          ? RESI_PHOTOS[uploadTargetResi].length
+          : 0;
+        var maxNew = 3 - existing - pendingPhotos.length;
+        for (var i = 0; i < files.length && i < maxNew; i++) {
+          var f = files[i];
+          if (!f.type.match(/^image\/(jpeg|png|webp)$/)) continue;
+          if (f.size > 5 * 1024 * 1024) {
+            alert(f.name + " terlalu besar (max 5MB)");
+            continue;
+          }
+          pendingPhotos.push(f);
+        }
+        if (files.length > maxNew && maxNew >= 0) {
+          alert(
+            "Maksimum 3 foto per resi. " +
+              (maxNew <= 0
+                ? "Slot penuh."
+                : "Hanya " + maxNew + " foto yang dapat ditambahkan."),
+          );
+        }
+        renderPhotoPreview();
+      }
+
+      function renderPhotoPreview() {
+        var grid = document.getElementById("photoPreviewGrid");
+        var container = document.getElementById("photoPreviewContainer");
+        if (pendingPhotos.length === 0) {
+          container.classList.add("hidden");
+          document.getElementById("btnSavePhoto").disabled = true;
+          return;
+        }
+        container.classList.remove("hidden");
+        document.getElementById("photoCount").textContent =
+          pendingPhotos.length;
+        document.getElementById("btnSavePhoto").disabled = false;
+        grid.innerHTML = "";
+        pendingPhotos.forEach(function (f, idx) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            var div = document.createElement("div");
+            div.className = "photo-preview-item border border-surface-200";
+            div.innerHTML =
+              '<img src="' +
+              e.target.result +
+              '" alt="Preview">' +
+              '<button class="remove-photo" onclick="removePendingPhoto(' +
+              idx +
+              ')" title="Hapus"><i class="fa-solid fa-xmark"></i></button>';
+            grid.appendChild(div);
+          };
+          reader.readAsDataURL(f);
+        });
+      }
+
+      function removePendingPhoto(idx) {
+        pendingPhotos.splice(idx, 1);
+        renderPhotoPreview();
+      }
+
+      function savePhotos() {
+        if (!uploadTargetResi || pendingPhotos.length === 0) return;
+        if (!RESI_PHOTOS[uploadTargetResi]) RESI_PHOTOS[uploadTargetResi] = [];
+        var now = new Date();
+        var ts =
+          now.getDate() +
+          " " +
+          months[now.getMonth()] +
+          " " +
+          now.getFullYear() +
+          ", " +
+          String(now.getHours()).padStart(2, "0") +
+          ":" +
+          String(now.getMinutes()).padStart(2, "0");
+        pendingPhotos.forEach(function (f, i) {
+          var url = URL.createObjectURL(f);
+          RESI_PHOTOS[uploadTargetResi].push({
+            id: "p" + Date.now() + i,
+            url: url,
+            name: f.name,
+            uploadedAt: ts,
+          });
+        });
+        closePhotoUpload();
+        // Re-render current session detail if visible
+        var detailView = document.getElementById("view-detail");
+        if (detailView.classList.contains("active")) {
+          var currentSessionIdx = parseInt(
+            detailView.getAttribute("data-session-idx") || "0",
+          );
+          showSessionDetail(currentSessionIdx);
+        }
+        updatePhotoStats();
+      }
+
+      function openLightbox(resiNumber, startIdx) {
+        lightboxPhotos = RESI_PHOTOS[resiNumber] || [];
+        if (lightboxPhotos.length === 0) return;
+        lightboxIndex = startIdx || 0;
+        updateLightbox();
+        document.getElementById("photoLightbox").classList.remove("hidden");
+      }
+
+      function closeLightbox() {
+        document.getElementById("photoLightbox").classList.add("hidden");
+      }
+
+      function updateLightbox() {
+        document.getElementById("lightboxImage").src =
+          lightboxPhotos[lightboxIndex].url;
+        document.getElementById("lightboxCounter").textContent =
+          lightboxIndex + 1 + " / " + lightboxPhotos.length;
+      }
+
+      function lightboxPrev() {
+        lightboxIndex =
+          (lightboxIndex - 1 + lightboxPhotos.length) % lightboxPhotos.length;
+        updateLightbox();
+      }
+
+      function lightboxNext() {
+        lightboxIndex = (lightboxIndex + 1) % lightboxPhotos.length;
+        updateLightbox();
+      }
+
+      function updatePhotoStats() {
+        var totalPhotos = 0;
+        var resiWithPhoto = 0;
+        var allResi = new Set();
+        SESSIONS.forEach(function (s) {
+          s.resi.forEach(function (r) {
+            allResi.add(r.number);
+          });
+        });
+        allResi.forEach(function (rn) {
+          var photos = RESI_PHOTOS[rn];
+          if (photos && photos.length > 0) {
+            resiWithPhoto++;
+            totalPhotos += photos.length;
+          }
+        });
+        document.getElementById("stat-total-photos").textContent = totalPhotos;
+        document.getElementById("stat-resi-with-photo").textContent =
+          resiWithPhoto;
+        document.getElementById("stat-resi-no-photo").textContent =
+          allResi.size - resiWithPhoto;
+      }
+
+      // Keyboard nav for lightbox
+      document.addEventListener("keydown", function (e) {
+        if (
+          document.getElementById("photoLightbox").classList.contains("hidden")
+        )
+          return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") lightboxPrev();
+        if (e.key === "ArrowRight") lightboxNext();
+      });
 
       // ─── Sidebar Dropdowns ───────────────────────────────────
       function toggleDropdown(n) {

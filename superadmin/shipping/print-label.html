@@ -99,6 +99,23 @@
       .spin {
         animation: spin 0.8s linear infinite;
       }
+      .photo-thumb {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid #e9ecef;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .photo-thumb:hover {
+        border-color: #0c8ee6;
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .lightbox-overlay {
+        backdrop-filter: blur(8px);
+      }
 
       @media print {
         body * {
@@ -774,6 +791,11 @@
                     <th
                       class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
                     >
+                      Foto
+                    </th>
+                    <th
+                      class="text-left px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider"
+                    >
                       Label Status
                     </th>
                     <th
@@ -907,6 +929,47 @@
 
     <div id="print-area" class="hidden"></div>
 
+    <!-- Photo Lightbox -->
+    <div
+      id="labelPhotoLightbox"
+      class="hidden fixed inset-0 z-[60] lightbox-overlay bg-black/80 flex items-center justify-center p-4"
+      onclick="if (event.target === this) closeLabelLightbox();"
+    >
+      <div class="relative max-w-3xl w-full">
+        <button
+          onclick="closeLabelLightbox()"
+          class="absolute -top-10 right-0 text-white/70 hover:text-white text-lg transition"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img
+          id="labelLightboxImage"
+          src=""
+          alt="Foto Resi"
+          class="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+        />
+        <div class="flex items-center justify-center gap-3 mt-4">
+          <button
+            onclick="labelLightboxPrev()"
+            class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition"
+          >
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span
+            id="labelLightboxCounter"
+            class="text-white text-sm font-semibold"
+            >1 / 1</span
+          >
+          <button
+            onclick="labelLightboxNext()"
+            class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition"
+          >
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div
       id="fetchModal"
       class="hidden fixed inset-0 z-50 modal-overlay bg-black/50 flex items-center justify-center p-4"
@@ -1009,6 +1072,9 @@
           shop: "Pakan Ayam Official",
           shop_id: "7201938475610234881",
           api_ref: "doc_url:https://tiktok.cdn/label/PKG-TT-00001.pdf",
+          photos: [
+            { url: "https://placehold.co/100x100/e0effe/0c8ee6?text=Foto+1" },
+          ],
         },
         {
           id: "TT-2024102400002",
@@ -1045,6 +1111,10 @@
           shop: "Pakan Ayam Bebek Store",
           shop_id: "7183746291038475264",
           api_ref: "doc_url:https://tiktok.cdn/label/PKG-TT-00003.pdf",
+          photos: [
+            { url: "https://placehold.co/100x100/d1fae5/059669?text=Foto+3a" },
+            { url: "https://placehold.co/100x100/fef3c7/d97706?text=Foto+3b" },
+          ],
         },
         {
           id: "TT-2024102400004",
@@ -1135,6 +1205,9 @@
           shop: "Shopee Official Store",
           shop_id: "SP-1234567",
           api_ref: "pdf_url:https://shopee.cdn/label/SP-2024102400008.pdf",
+          photos: [
+            { url: "https://placehold.co/100x100/ede9fe/7c3aed?text=Foto+SP" },
+          ],
         },
         {
           id: "SP-2024102400009",
@@ -1340,6 +1413,9 @@
                 "</span></td>" +
                 '<td class="px-4 py-3.5">' +
                 tracking +
+                "</td>" +
+                '<td class="px-4 py-3.5">' +
+                renderOrderPhoto(o) +
                 "</td>" +
                 '<td class="px-4 py-3.5">' +
                 labelBadge(o.label_status, o.printed_at) +
@@ -1792,6 +1868,74 @@
 
       applyFilters();
       updateStats();
+
+      // Photo functions
+      function renderOrderPhoto(order) {
+        if (!order.photos || order.photos.length === 0) {
+          return '<span class="text-gray-300 text-xs"><i class="fa-regular fa-image"></i></span>';
+        }
+        var html = '<div class="flex items-center gap-1">';
+        html +=
+          '<img src="' +
+          order.photos[0].url +
+          '" class="photo-thumb" onclick="openLabelLightbox(\'' +
+          order.id +
+          '\', 0)" alt="Foto">';
+        if (order.photos.length > 1) {
+          html +=
+            '<span class="text-[10px] font-bold text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded-full cursor-pointer" onclick="openLabelLightbox(\'' +
+            order.id +
+            "', 0)\">+" +
+            (order.photos.length - 1) +
+            "</span>";
+        }
+        html += "</div>";
+        return html;
+      }
+
+      var lblLbPhotos = [];
+      var lblLbIdx = 0;
+
+      function openLabelLightbox(orderId, startIdx) {
+        var order = MOCK_ORDERS.find(function (o) {
+          return o.id === orderId;
+        });
+        if (!order || !order.photos || order.photos.length === 0) return;
+        lblLbPhotos = order.photos;
+        lblLbIdx = startIdx || 0;
+        updateLabelLightbox();
+        document
+          .getElementById("labelPhotoLightbox")
+          .classList.remove("hidden");
+      }
+      function closeLabelLightbox() {
+        document.getElementById("labelPhotoLightbox").classList.add("hidden");
+      }
+      function updateLabelLightbox() {
+        document.getElementById("labelLightboxImage").src =
+          lblLbPhotos[lblLbIdx].url;
+        document.getElementById("labelLightboxCounter").textContent =
+          lblLbIdx + 1 + " / " + lblLbPhotos.length;
+      }
+      function labelLightboxPrev() {
+        lblLbIdx = (lblLbIdx - 1 + lblLbPhotos.length) % lblLbPhotos.length;
+        updateLabelLightbox();
+      }
+      function labelLightboxNext() {
+        lblLbIdx = (lblLbIdx + 1) % lblLbPhotos.length;
+        updateLabelLightbox();
+      }
+      document.addEventListener("keydown", function (e) {
+        if (
+          document
+            .getElementById("labelPhotoLightbox")
+            .classList.contains("hidden")
+        )
+          return;
+        if (e.key === "Escape") closeLabelLightbox();
+        if (e.key === "ArrowLeft") labelLightboxPrev();
+        if (e.key === "ArrowRight") labelLightboxNext();
+      });
     </script>
   </body>
 </html>
